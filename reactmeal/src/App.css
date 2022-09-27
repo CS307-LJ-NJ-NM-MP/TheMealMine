@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+.topnav{
+  display: flex;
+  justify-content: space-between;
+}
+
+.topnav > * {
+  color: #61dafb;
+}
+
+.sidenav{
+  display: flex;
+  flex-direction: column;
+  max-width: 100px ;
+  margin-left: auto;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
