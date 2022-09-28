@@ -1,4 +1,5 @@
-# TheMealMine
+#TheMealMine
 
-Gmail: themealmine@gmail.com
-Password: CS307MealMine
+##MongoDB Organization Credentials
+###themealmine@gmail.com
+###CS307MealMine
