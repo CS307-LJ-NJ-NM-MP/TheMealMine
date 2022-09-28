@@ -5,13 +5,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function main() {
 	try {
     		await client.connect();
-		await newEntry(client,"UserAccounts",{name:"john2791"});
-		user = await getEntry(client,"UserAccounts","john2791");
-		console.log(user);
-		await editEntry(client,"UserAccounts","john2791",{name:"Nate"});
-		user = await getEntry(client,"UserAccounts","Nate");
-		console.log(user);
-		await removeEntry(client,"UserAccounts","Nate");
+		//Insert code here to access API for MongoDB Atlas
 	} catch (e) {
     		console.error(e);
 	} finally {
