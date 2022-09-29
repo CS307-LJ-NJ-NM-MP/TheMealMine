@@ -5,7 +5,9 @@
 .topnav{
   display: flex;
   justify-content: space-between;
+  padding: 10px;
 }
+
 
 .topnav > * {
   color: #61dafb;
@@ -17,6 +19,12 @@
   max-width: 100px ;
   margin-left: auto;
 }
+
+.searchnav{
+  display: flex;
+  flex-direction: column;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

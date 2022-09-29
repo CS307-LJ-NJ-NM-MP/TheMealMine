@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
-import Settings from "./settings.png"
-import AddFriend from "./addFriend.png"
-import Bookmark from "./bookmark.png"
-import Feed from "./feed.png"
+import Settings from "./imgs/settings.png"
+import AddFriend from "./imgs/addFriend.png"
+import Bookmark from "./imgs/bookmark.png"
+import Feed from "./imgs/feed.png"
 
 
 export const SideNav = () => {
     return (
         <div className="sidenav">
-            <img src={Settings}></img>
-            <img src={AddFriend}></img>
-            <img src={Bookmark}></img>
-            <img src={Feed}></img>
+            <Link to="/settings"><img src={Settings}></img></Link>
+            <Link to="/addFriend"><img src={AddFriend}></img></Link>
+            <Link to="/bookmarks"><img src={Bookmark}></img></Link>
+            <Link to="/feed"><img src={Feed}></img></Link>
         </div>
     );
 }
