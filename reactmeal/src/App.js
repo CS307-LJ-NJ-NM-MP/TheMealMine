@@ -6,6 +6,8 @@ import { Settings } from "./components/settings"
 import { Feed } from "./components/feed"
 import { Bookmarks } from "./components/bookmarks"
 import { Friends } from "./components/addFriend"
+import { Login } from "./components/login"
+import { Signup } from "./components/signup"
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         <Route path='/bookmarks' element={<Bookmarks/>} ></Route>
         <Route path='/addFriend' element={<Friends/>} ></Route>
         <Route path='/feed' element={<Feed/>} ></Route>
+        <Route path='/login' element={<Login/>} ></Route>
+        <Route path='/signup' element={<Signup/>} ></Route>
       </Routes>
     </>
   );
