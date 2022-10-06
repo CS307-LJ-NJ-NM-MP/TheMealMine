@@ -1,9 +1,9 @@
 # TheMealMine
 
 ##  MongoDB Organization Credentials 
-    themealmine@gmail.com 
-    CS307MealMine
+    Username: themealmine@gmail.com 
+    Password: CS307MealMine
 
 ##  MongoDB SuperUser Credentials
-    Team17
-    Team17
+    Username: Team17
+    Password: Team17
