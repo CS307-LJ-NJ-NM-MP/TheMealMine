@@ -1,0 +1,24 @@
+{
+  "name": "themealmine",
+  "version": "1.0.0",
+  "description": "Username: themealmine@gmail.com \r     Password: CS307MealMine",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS307-LJ-NJ-NM-MP/TheMealMine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CS307-LJ-NJ-NM-MP/TheMealMine/issues"
+  },
+  "homepage": "https://github.com/CS307-LJ-NJ-NM-MP/TheMealMine#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongodb": "^4.10.0"
+  }
+}
