@@ -34,3 +34,7 @@
 .loginForm > * {
   width: 20%;
 }
+
+.home-display{
+  display: flex;
+}

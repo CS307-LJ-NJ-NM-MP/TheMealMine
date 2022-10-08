@@ -6,9 +6,12 @@ import { SearchNav } from './searchNav'
 export const Home = () => {
     return (
         <>
+            
             <TopNav/>
-            <SearchNav/>
-            <SideNav/>
+            <div className="home-display">
+                <SearchNav/>
+                <SideNav/>
+            </div>
             <div>This is the homepage</div>
         </>
     );
