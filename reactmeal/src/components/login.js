@@ -7,21 +7,26 @@ export const Login = () => {
     return (
         <>
             <TopNav/>
+            <Link to="/signup">Create an Account</Link>
             <div className="login">
                 <form className="loginForm">
-                    <label>
+                    
                         Username:
-                        <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-                    </label>
-                    <br/>
-                    <label>
+                        <form>
+                            <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
+                        </form>
+                    
+                   
+                    
                         Password:
-                        <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-                    </label>
-                    <br/>
+                        <form>
+                            <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
+                        </form>
+                    
+                  
                     <input type="submit" value="Submit" />
                 </form>
-                <Link to="/signup">Create an Account</Link>
+                Guest Account
                 <SideNav/>
             </div>
         </>

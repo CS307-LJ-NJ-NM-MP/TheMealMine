@@ -5,6 +5,7 @@ import { SideNav } from '../sideNav'
 export const Signup = () => {return (
 <>
 	<TopNav/>
+	<div className='login'>
       	<form className="loginForm">
 			Email:
 			<form>
@@ -26,6 +27,8 @@ export const Signup = () => {return (
 				<button type="submit">Submit</button>
        		</form>
   		</form>
-	<SideNav/>
+		<SideNav/>
+	</div>
+	
 </>
 );}
