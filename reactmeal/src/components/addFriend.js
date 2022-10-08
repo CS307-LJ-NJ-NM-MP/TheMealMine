@@ -6,8 +6,9 @@ export const Friends = () => {
     return (
         <>
             <TopNav/>
-            <SideNav/>
             <div>This is the friends homepage</div>
+            <SideNav/>
+            
         </>
     );
 }

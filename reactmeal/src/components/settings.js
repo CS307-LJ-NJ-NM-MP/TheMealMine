@@ -6,8 +6,9 @@ export const Settings = () => {
     return (
         <>
             <TopNav/>
-            <SideNav/>
             <div>This is the settings homepage</div>
+            <SideNav/>
+            
         </>
     );
 }

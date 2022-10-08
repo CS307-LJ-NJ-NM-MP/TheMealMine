@@ -6,8 +6,9 @@ export const Feed = () => {
     return (
         <>
             <TopNav/>
-            <SideNav/>
             <div>This is the feed homepage</div>
+            <SideNav/>
+            
         </>
     );
 }

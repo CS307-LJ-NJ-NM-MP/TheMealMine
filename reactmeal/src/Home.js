@@ -10,9 +10,10 @@ export const Home = () => {
             <TopNav/>
             <div className="home-display">
                 <SearchNav/>
+                <div>This is the homepage</div>
                 <SideNav/>
             </div>
-            <div>This is the homepage</div>
+            
         </>
     );
 }

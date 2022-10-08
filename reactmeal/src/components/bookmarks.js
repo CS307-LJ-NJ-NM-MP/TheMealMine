@@ -6,8 +6,9 @@ export const Bookmarks = () => {
     return (
         <>
             <TopNav/>
-            <SideNav/>
             <div>This is the bookmarks homepage</div>
+            <SideNav/>
+            
         </>
     );
 }
