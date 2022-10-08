@@ -35,6 +35,10 @@
   width: 20%;
 }
 
+.login{
+  display: flex;
+}
+
 .home-display{
   display: flex;
 }
