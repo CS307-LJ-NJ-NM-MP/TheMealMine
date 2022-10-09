@@ -1,22 +1,11 @@
-const express = require("express");
-const app = express();
+const express = require("express"),
+  app = express(),
+  port = process.env.PORT || 5000,
+  cors = require("cors");
 
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors());
+app.listen(port, () => console.log("Backend server live on " + port));
 
-app.get("/", function(req, res) {
-  res.send("Server Functional");
-});
-
-let port = process.env.PORT;
-
-if(port == null || port == "") {
- port = 5000;
-}
-
-app.listen(port, function() {
- console.log("Server started successfully");
+app.get("/", (req, res) => {
+  res.send({ message: "We did it!" });
 });
