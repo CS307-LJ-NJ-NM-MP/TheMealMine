@@ -3,7 +3,8 @@ import React from "react";
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
 
-function sendMessage() {
+function sendMessage(e) {
+	e.preventDefault();
 	 Axios({
   		method: "GET",
     		url: "http://localhost:5000/signup",
