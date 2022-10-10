@@ -11,22 +11,9 @@ import { Friends } from "./components/addFriend"
 import { Login } from "./components/login"
 import { Signup } from "./components/signup"
 
-function sendMessage() {
-	 Axios({
-    		method: "GET",
-    		url: "http://localhost:5000/",
-    		headers: {
-      		"Content-Type": "application/json"
-    		}
-  	}).then(res => {
-    		console.log(res.data.message);
-  	});
-}
-
 function App() {
   return (
     <>
-	<button onClick={sendMessage}>Send</button>
       <Routes>
         <Route path='/' element={<Home/>} ></Route>
         <Route path='/settings' element={<Settings/>} ></Route>
