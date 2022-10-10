@@ -3,8 +3,16 @@ import React from "react";
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
 
-function onSubmit() {
-	console.log(`Form submitted: `);
+function sendMessage() {
+	 Axios({
+  		method: "GET",
+    		url: "http://localhost:5000/signup",
+    		headers: {
+      		"Content-Type": "application/json"
+    		}
+  	}).then(res => {
+    		console.log(res.data.message);
+  	});
 }
 
 //need to check how to resize input text box sizes
@@ -30,7 +38,7 @@ export const Signup = () => {return (
                         <input type="password" /*value={this.state.value} onChange={this.handleChange}*/ />
         		</div>
 			<div>
-				<button type="submit" onClick={onSubmit}>Submit</button>
+				<button type="submit" onClick={sendMessage}>Submit</button>
        		</div>
   		</form>
 		<SideNav/>
