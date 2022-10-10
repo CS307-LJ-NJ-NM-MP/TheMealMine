@@ -4,6 +4,11 @@ import { SideNav } from '../sideNav'
 
 //need to check how to resize input text box sizes
 export const Login = () => {
+
+    function onSubmit() {
+        console.log(`Form submitted: `);
+    }
+
     return (
         <>
             <TopNav/>
@@ -12,19 +17,19 @@ export const Login = () => {
                 <form className="loginForm">
                     
                         Username:
-                        <form>
+                        <div>
                             <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-                        </form>
+                        </div>
                     
                    
                     
                         Password:
-                        <form>
+                        <div>
                             <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-                        </form>
+                        </div>
                     
                   
-                    <input type="submit" value="Submit" />
+                    <input type="submit" onClick={onSubmit} value="Submit" />
                 </form>
                 Guest Account
                 <SideNav/>

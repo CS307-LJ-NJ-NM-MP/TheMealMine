@@ -14,24 +14,24 @@ export const Signup = () => {return (
 	<div className='login'>
       	<form className="loginForm">
 			Email:
-			<label>
+			<div>
 				<input type="text" /*value={this.state.value} onChange={this.handleChange}*//>
-			</label>
+			</div>
 			Username:
-            	<label>
+            	<div>
               		<input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-         		</label>
+         		</div>
 			Password:
-        		<label>
-                		<input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-           		</label>
+        		<div>
+                		<input type="password" /*value={this.state.value} onChange={this.handleChange}*/ />
+           		</div>
 			Re-enter Password:
-             	<label>
-                        <input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
-        		</label>
-			<label>
+             	<div>
+                        <input type="password" /*value={this.state.value} onChange={this.handleChange}*/ />
+        		</div>
+			<div>
 				<button type="submit" onClick={onSubmit}>Submit</button>
-       		</label>
+       		</div>
   		</form>
 		<SideNav/>
 	</div>
