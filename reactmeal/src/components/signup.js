@@ -19,7 +19,7 @@ export const Signup = () => {return (<>
       	<form className="loginForm">
 			Email:
 			<div>
-				<input type="text" onChange={event=>setMail(event.target.value)} value={mail}}>
+				<input type="text" onChange={event=>setMail(event.target.value)} value={mail} />
 			</div>
 			Username:
             	<div>
