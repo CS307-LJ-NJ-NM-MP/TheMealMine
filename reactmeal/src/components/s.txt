@@ -25,12 +25,11 @@ export const Signup = () => {
 
 	async function sendMessage(e) {
 		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/signupUser', {
+		await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
 			email: formValue.email
 		});
-		console.log(result);
 	}
 
 return (<>
