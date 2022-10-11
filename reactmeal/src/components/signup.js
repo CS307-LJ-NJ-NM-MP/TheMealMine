@@ -24,7 +24,7 @@ export const Signup = () => {
 
 	async function sendMessage(e) {
 		e.preventDefault();
-		await app.post('http://localhost:5000/addUser', {
+		await Axios.post('http://localhost:5000/addUser', {
 			user: formValue.user, 
 			pass: formValue.pass,
 			email: formValue.email

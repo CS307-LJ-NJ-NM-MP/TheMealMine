@@ -33,15 +33,9 @@ routes.route("/listings").get(async function (req, res) {
 });
 
 app.post('/addUser', (req, res) => {
-  	const matchDocument = {
-    		user_id: req.user,
-    		password: req.pass,
-    		email: req.mail
-  	};
-	
-	client.db("TheMealMine").collection("UserAccounts").insertOne(matchDocument, function (err, result) {
-     			console.log(`Added a new match with id ${result.insertedId}`);
-    	});
+	console.log(req.body);
+	const query = {user: req.body.user, pass: req.body.pass, email: req.body.email};
+	client.db("TheMealMine").collection("UserAccounts").insertOne(query, function (err, result) {});
 });
 
 routes.route("/listings/updateUser").post(function (req, res) {
