@@ -10,9 +10,17 @@ client.connect(err => {
 const express = require("express");
 	app = express(),
   	port = process.env.PORT || 5000,
-  	cors = require("cors");
+  	cors = require('cors');
 
-app.use(cors());
+const corsOptions = {
+    origin:'http://localhost:3000', 
+    credentials:true,
+    optionSuccessStatus:200
+}
+
+app.use(cors(corsOptions));
+
+app.use(express.json());
 app.listen(port, () => console.log("Backend server live on " + port));
 
 const routes = express.Router();
@@ -34,11 +42,10 @@ routes.route("/listings").get(async function (req, res) {
 
 app.post('/addUser', (req, res) => {
   const form = {
-    user: req.user,
-    pass: req.pass,
-    email: req.email
+    user: req.body.user,
+    pass: req.body.pass,
+    email: req.body.email
   };
-
   client.db("TheMealMine").collection("UserAccounts").insertOne(form, function (err, result) {});
 });
 

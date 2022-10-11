@@ -25,14 +25,9 @@ export const Signup = () => {
 	async function sendMessage(e) {
 		e.preventDefault();
 		await Axios.post('http://localhost:5000/addUser', {
-			user: formValue.user, 
+			user: formValue.user,  
 			pass: formValue.pass,
 			email: formValue.email
-		})
-		.then(function (response) {
-			console.log(response);
-		}).catch(function (error) {
-			console.log(error);
 		});
 	}
 
@@ -46,11 +41,11 @@ return (<>
 			</div>
 			Username:
             	<div>
-              		<input type="text" /*value={this.state.value} onChange={this.handleChange}*/ />
+              		<input type="text" name="user" onChange={handleChange}/>
          		</div>
 			Password:
         		<div>
-                		<input type="password" /*value={this.state.value} onChange={this.handleChange}*/ />
+                		<input type="password" name="pass" onChange={handleChange}/>
            		</div>
 			Re-enter Password:
              	<div>
