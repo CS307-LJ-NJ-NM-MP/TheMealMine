@@ -3,28 +3,23 @@ import React from "react";
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
 
-function sendMessage(e) {
+const [user, setUser] = useState("");
+const [pass, setPass] = useState("");
+const [mail, setMail] = useState("");
+
+async function sendMessage(e) {
 	e.preventDefault();
-	 Axios({
-  		method: "GET",
-    		url: "http://localhost:5000/signup",
-    		headers: {
-      		"Content-Type": "application/json"
-    		}
-  	}).then(res => {
-    		console.log(res.data.message);
-  	});
+	console.log("Sent Request");
+	await Axios.post('http://localhost:5000/addUser', {user_id: user, password: pass, email: mail});
 }
 
-//need to check how to resize input text box sizes
-export const Signup = () => {return (
-<>
+export const Signup = () => {return (<>
 	<TopNav/>
 	<div className='login'>
       	<form className="loginForm">
 			Email:
 			<div>
-				<input type="text" /*value={this.state.value} onChange={this.handleChange}*//>
+				<input type="text" onChange={event=>setMail(event.target.value)} value={mail}}>
 			</div>
 			Username:
             	<div>
