@@ -1,5 +1,6 @@
 import Axios from "axios";
 import React from "react";
+import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
 import { useState } from "react";
@@ -35,6 +36,7 @@ return (<>
 	<TopNav/>
 	<div className='login'>
       	<form className="loginForm">
+			Sign-Up<br/>
 			Email:
 			<div>
 				<input type="text" name="email" onChange={handleChange}/>
@@ -47,16 +49,13 @@ return (<>
         		<div>
                 		<input type="password" name="pass" onChange={handleChange}/>
            		</div>
-			Re-enter Password:
-             	<div>
-                        <input type="password" /*value={this.state.value} onChange={this.handleChange}*/ />
-        		</div>
 			<div>
 				<button type="submit" onClick={sendMessage}>Submit</button>
        		</div>
+			<Link to="/recovery">Forgot Password</Link><br/>
+			<Link to="/">Continue as Guest</Link>
   		</form>
 		<SideNav/>
 	</div>
-	
 </>
 );}

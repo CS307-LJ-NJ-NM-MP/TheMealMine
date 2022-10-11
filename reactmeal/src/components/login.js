@@ -34,9 +34,9 @@ export const Login = () => {
 	return (
         	<>
             	<TopNav/>
-            	<Link to="/signup">Create an Account</Link>
             	<div className="login">
                 		<form className="loginForm">
+					Login<br/>
                     		Username:
                         	<div>
                         		<input type="text" name="user" onChange={handleChange}/>
@@ -45,8 +45,12 @@ export const Login = () => {
                         	<div>
                             		<input type="text" name="pass" onChange={handleChange}/>
                         	</div>
-					<button type="submit" onClick={sendMessage}>Submit</button><br/>
-					<Link to="/recovery">Forgot Password</Link>
+					<div>
+						<button type="submit" onClick={sendMessage}>Submit</button><br/>
+					</div>
+					<Link to="/recovery">Forgot Password</Link><br/>
+					<Link to="/signup">Create an Account</Link><br/>
+					<Link to="/">Continue As Guest</Link><br/>
                 		</form>
            		</div>
 			<SideNav/>
