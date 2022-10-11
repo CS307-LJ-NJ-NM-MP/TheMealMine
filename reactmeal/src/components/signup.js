@@ -19,7 +19,7 @@ export const Signup = () => {
 				...prevState,
 				[name]: value
 			}
-		});
+		}); 
 	}
 
 	async function sendMessage(e) {
