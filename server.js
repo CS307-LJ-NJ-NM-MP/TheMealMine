@@ -41,22 +41,27 @@ routes.route("/listings").get(async function (req, res) {
 });
 
 app.post('/addUser', (req, res) => {
-  const form = {
-    user: req.body.user,
-    pass: req.body.pass,
-    email: req.body.email
-  };
-  client.db("TheMealMine").collection("UserAccounts").insertOne(form, function (err, result) {});
+	const form = {
+    		user: req.body.user,
+    		pass: req.body.pass,
+    		email: req.body.email
+ 	};
+  	client.db("TheMealMine").collection("UserAccounts")
+		.insertOne(form, function (err, result) {});
 });
-
+ 
 app.post('/getUser', (req,res) => {
 	const form = {
 		user: req.body.user,
 		pass: req.body.pass
 	};
-	//Update below command to find singular user with particular username and password
-	client.db("TheMealMine").collection("UserAccounts").find({}).limit(1).toArray(function (err,result) {});
-}
+	client.db("TheMealMine").collection("UserAccounts").findOne(form, (err,result) => {
+		if (result?.user) {
+        		res.json(result.user);
+      	}
+	});
+});
+
 routes.route("/listings/updateUser").post(function (req, res) {
   const dbConnect = dbo.getDb();
   const listingQuery = { _id: req.body.id };

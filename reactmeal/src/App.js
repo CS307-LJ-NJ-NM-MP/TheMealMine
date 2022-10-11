@@ -16,12 +16,12 @@ function App() {
   return (
     <>
       <Routes>
+		<Route path='/login' element={<Login/>} ></Route>
         	<Route path='/' element={<Home/>} ></Route>
         	<Route path='/settings' element={<Settings/>} ></Route>
         	<Route path='/bookmarks' element={<Bookmarks/>} ></Route>
         	<Route path='/addFriend' element={<Friends/>} ></Route>
         	<Route path='/feed' element={<Feed/>} ></Route>
-        	<Route path='/login' element={<Login/>} ></Route>
        	<Route path='/signup' element={<Signup/>} ></Route>
 		<Route path='/recovery' element={<Recovery/>} ></Route>
       </Routes>

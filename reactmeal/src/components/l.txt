@@ -23,10 +23,12 @@ export const Login = () => {
 
 	async function sendMessage(e) {
 		e.preventDefault();
-		await Axios.post('http://localhost:5000/getUser', {
+		console.log("sent");
+		var result = await Axios.post('http://localhost:5000/getUser', {
 			user: formValue.user,  
 			pass: formValue.pass
 		});
+		console.log(result);
 	}
 
 	return (
@@ -43,7 +45,7 @@ export const Login = () => {
                         	<div>
                             		<input type="text" name="pass" onChange={handleChange}/>
                         	</div>
-					<button onClick={sendMessage}>Submit</button><br/>
+					<button type="submit" onClick={sendMessage}>Submit</button><br/>
 					<Link to="/recovery">Forgot Password</Link>
                 		</form>
            		</div>
