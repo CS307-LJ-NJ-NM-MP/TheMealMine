@@ -78,22 +78,3 @@ routes.route("/listings/delete/:id").delete((req, res) => {
       }
     });
 });
-
-
-
-
-
-//app.get("/signup", (req, res) => {
-	//console.log("Request Sent");
-	//main();
-	//res.send({ message: "We did it!" });
-	//console.log("Request Received");
-//});
-
-//async function main() {
-	//client.connect(err => {
-	//	const collection = client.db("TheMealMine").collection("UserAccounts");
-	//	console.log("Connected to Mongo");
-  	//	client.close();
-	//});
-//}
