@@ -33,9 +33,13 @@ routes.route("/listings").get(async function (req, res) {
 });
 
 app.post('/addUser', (req, res) => {
-	console.log(req.body);
-	const query = {user: req.body.user, pass: req.body.pass, email: req.body.email};
-	client.db("TheMealMine").collection("UserAccounts").insertOne(query, function (err, result) {});
+  const form = {
+    user: req.user,
+    pass: req.pass,
+    email: req.email
+  };
+
+  client.db("TheMealMine").collection("UserAccounts").insertOne(form, function (err, result) {});
 });
 
 routes.route("/listings/updateUser").post(function (req, res) {
