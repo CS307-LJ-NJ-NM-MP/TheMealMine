@@ -1,9 +1,10 @@
 import Axios from "axios";
+import { useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
-import { useState } from "react";
+
 
 export const Signup = () => {
 	const [formValue, setFormValue] = useState({
