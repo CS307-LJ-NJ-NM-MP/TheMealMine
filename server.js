@@ -30,7 +30,9 @@ app.post('/signupUser', (req, res) => {
     		user: req.body.user,
     		pass: req.body.pass,
     		email: req.body.email,
-		status: 1
+        privacy: "Private",
+        remember: "Forget",
+		    status: 1
  	};
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
@@ -52,24 +54,43 @@ app.post('/logoutUser', (req,res) => {
 	client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-routes.route("/listings/updateUser").post(function (req, res) {
-  const dbConnect = dbo.getDb();
-  const listingQuery = { _id: req.body.id };
-  const updates = {
-    $inc: {
-      likes: 1
-    }
-  };
-
-  dbConnect
-    .collection("UserAccounts")
-    .updateOne(listingQuery, updates, function (err, _result) {
-      if (err) {
-        res.status(400).send(`Error updating likes on listing with id ${listingQuery.id}!`);
-      } else {
-        console.log("1 document updated");
+app.post('/updateSettings', (req,res) => {
+      var settingNum = req.body.setting;
+      var form; var update;
+      if(settingNum == 0){
+          form = {
+              pass: req.body.pass,
+              email: req.body.email
+          }
+          update = {$set:{"user": req.body.user}};
+      }else if(settingNum == 1){
+          form = {
+              user: req.body.user,
+              pass: req.body.pass
+          }
+          update = {$set:{"email": req.body.email}};
+      }else if(settingNum == 2){
+          form = {
+              user: req.body.user,
+              email: req.body.email
+          }
+          update = {$set:{"pass": req.body.pass}};
+      }else if(settingNum == 3){
+          form = {
+              user: req.body.user,
+              email: req.body.email,
+              pass: req.body.pass
+          }
+          update = {$set:{"privacy": req.body.privacy}};
+      }else if(settingNum == 4){
+          form = {
+              user: req.body.user,
+              email: req.body.email,
+              pass: req.body.pass
+          }
+          update = {$set:{"remember": req.body.remember}};
       }
-    });
+      client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
 routes.route("/listings/delete/:id").delete((req, res) => {
