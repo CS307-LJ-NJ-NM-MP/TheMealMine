@@ -62,7 +62,9 @@ return (<>
 	
 	<div className='login'>
       	<form className="loginForm">
-			Add To Pantry<br/>
+			{' '}
+			<span style={{fontWeight: 'Bold'}}>Add To Pantry</span>
+			<br/>
 			Ingredient Name:
 			<div>
 				<input type="text" name="email" onChange={event => setName(event.target.value)} value={name} />
