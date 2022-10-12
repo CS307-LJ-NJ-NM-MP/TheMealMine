@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
-import { SideNav } from '../sideNav'
 import { useState } from "react";
 import Axios from "axios";
 
@@ -23,7 +22,10 @@ export const Login = () => {
 
 	async function login(e) {
 		e.preventDefault();
-		console.log("sent");
+		localStorage.setItem('username',formValue.user);
+		localStorage.setItem('password',formValue.pass);
+		localStorage.setItem('email',formValue.email);
+		window.location = "/";
 		await Axios.post('http://localhost:5000/loginUser', {
 			user: formValue.user,  
 			pass: formValue.pass
@@ -32,7 +34,6 @@ export const Login = () => {
 	
 	async function logout(e) {
 		e.preventDefault();
-		console.log("sent");
 		await Axios.post('http://localhost:5000/logoutUser', {
 			user: formValue.user,
 		});
@@ -43,7 +44,7 @@ export const Login = () => {
             	<TopNav/>
             	<div className="login">
                 		<form className="loginForm">
-					Login<br/>
+							Login<br/>
                     		Username:
                         	<div>
                         		<input type="text" name="user" onChange={handleChange}/>
@@ -61,7 +62,6 @@ export const Login = () => {
 					<Link to="/">Continue As Guest</Link><br/>
                 		</form>
            		</div>
-			<SideNav/>
         	</>
 	);
 }
