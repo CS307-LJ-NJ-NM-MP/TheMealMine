@@ -3,9 +3,10 @@ import { SideNav } from '../sideNav'
 import Axios from "axios";
 import { useState } from "react";
 
-export const Settings = () => {
-    var privacy = 'Currently Private';
-    var privacyType = 0;
+export const Settings = () => {    
+    var username = localStorage.getItem('username');
+    var password = localStorage.getItem('password');
+
     const [formValue, setFormValue] = useState({
 		email: '',
 		pass: '',
@@ -107,20 +108,20 @@ export const Settings = () => {
         <>
             <TopNav/>
             <div>
-                Settings: Fill in Username, Email, and Password to change any setting.<br/>
+                Settings:<br/>
                 <div>
                     Username:
-                    <input type="text" name="user" onChange={handleChange}/>
+                    <input type="text" name="user" placeholder={username} onChange={handleChange}/>
                     <button type="submit" onClick={updateUsername}>Apply Username</button>
                 </div>
                 <div>
                     Email:
-                    <input type="text" name="email" onChange={handleChange}/>
+                    <input type="text" placeholder='Fill in' name="email" onChange={handleChange}/>
                     <button type="submit" onClick={updateEmail}>Apply Email</button>
                 </div>
                 <div>
                     Password:
-                    <input type="password" name="pass" onChange={handleChange}/>
+                    <input type="password" placeholder={password} name="pass" onChange={handleChange}/>
                     <button type="submit" onClick={updatePassword}>Apply Password</button>
                 </div>
                 <div>
