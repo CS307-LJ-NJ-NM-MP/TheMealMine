@@ -3,8 +3,6 @@ import { useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
-import { SideNav } from '../sideNav'
-
 
 export const Signup = () => {
 	const [formValue, setFormValue] = useState({
@@ -57,7 +55,6 @@ return (<>
 			<Link to="/recovery">Forgot Password</Link><br/>
 			<Link to="/">Continue as Guest</Link>
   		</form>
-		<SideNav/>
 	</div>
 </>
 );}
