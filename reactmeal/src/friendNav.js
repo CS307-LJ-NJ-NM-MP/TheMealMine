@@ -45,7 +45,7 @@ export const FriendNav = () => {
                         
                         <label >Send Friend Request:</label>
 
-                        <input 
+                        <input
                         type="text" 
                         onChange={event => setName(event.target.value)}
                         value={name}
