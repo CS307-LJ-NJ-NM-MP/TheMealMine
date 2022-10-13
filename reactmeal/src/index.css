@@ -7,6 +7,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cursive-font {
+  font-family: cursive;
+}
+
+.montserrat-font {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.dancing-script-font {
+  font-family: 'Dancing Script', sans-serif;
+}
+
+.lobster-font {
+  font-family: 'Lobster', sans-serif;
+}
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

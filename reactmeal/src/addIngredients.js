@@ -63,7 +63,9 @@ return (<>
 	<div className='login'>
       	<form className="loginForm">
 			{' '}
-			<span style={{fontWeight: 'Bold'}}>Add To Pantry</span>
+			<span className="montserrat-font">
+				Add To Pantry
+			</span>
 			<br/>
 			Ingredient Name:
 			<div>
