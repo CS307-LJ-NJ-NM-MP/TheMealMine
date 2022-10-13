@@ -8,12 +8,13 @@ export const Signup = () => {
 	const [formValue, setFormValue] = useState({
 		email: '',
 		pass: '',
-		user: ''
+		user: '',
+		image: ''
 	})
 	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
+	const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
 		setFormValue((prevState) => {
 			return {
 				...prevState,
@@ -22,16 +23,17 @@ export const Signup = () => {
 		}); 
 	}
 
-	async function sendMessage(e) {
+	async function addUser(e) {
 		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/signupUser', {
+		window.location = '/login';
+		await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
-			email: formValue.email
+			email: formValue.email,
+			image: formValue.image
 		});
-		console.log(result);
 	}
-
+	
 return (<>
 	<TopNav/>
 	<div className='login'>
@@ -49,8 +51,12 @@ return (<>
         		<div>
                 		<input type="password" name="pass" onChange={handleChange}/>
            		</div>
+			Image: 
+				<div>
+					<input type="text" placeholder="img url" name="image" onChange={handleChange}/>
+				</div>
 			<div>
-				<button type="submit" onClick={sendMessage}>Submit</button>
+				<button type="submit" onClick={addUser}>Submit</button>
        		</div>
 			<Link to="/recovery">Forgot Password</Link><br/>
 			<Link to="/">Continue as Guest</Link>

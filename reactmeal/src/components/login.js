@@ -25,20 +25,16 @@ export const Login = () => {
 			localStorage.setItem('username',formValue.user);
 			localStorage.setItem('password',formValue.pass);
 			localStorage.setItem('email',formValue.email);
-			window.location = "/";
-			await Axios.post('http://localhost:5000/loginUser', {
+			var result = await Axios.post('http://localhost:5000/loginUser', {
 				user: formValue.user,  
 				pass: formValue.pass
 			});
+			console.log(result.data);
+			localStorage.setItem('image',result.data);
+			window.location = "/";
 		}
 	}
 	
-	async function logout(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/logoutUser', {
-			user: formValue.user,
-		});
-	}
 	function recovery(e) {
 		e.preventDefault();
 		window.location = '/recovery';

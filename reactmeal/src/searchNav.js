@@ -39,19 +39,17 @@ export const SearchNav = () => {
                         </label>
                     </div>
                     <div>
-                        <input type="range" id="vol" name="vol" min="0" max="50"/>
-                        <br/>
-                        <label for="vol">Volume (between 0 and 50):</label>
+                        <input type="range" id="vol" name="vol" min="0" max="50"/><br/>
                         
                     </div>
                     
                     <div>
-                        <label for="quantity">Number of Ingredients (between 1 and 5):</label>
+                        <label for="quantity">Number of Ingredients:</label><br/>
                         <input type="number" id="quantity" name="quantity" min="1" max="5"/>
                     </div>
 
                     <div>
-                        <label for="quantity">Recipe Time (between 1 and 5):</label>
+                        <label for="quantity">Recipe Time:</label><br/>
                         <input type="number" id="quantity" name="quantity" min="1" max="5"/>
                     </div>
                     <div>

@@ -6,6 +6,7 @@ import { useState } from "react";
 export const Settings = () => {    
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
+    var picture = localStorage.getItem('image');
 
     const [formValue, setFormValue] = useState({
 		email: '',

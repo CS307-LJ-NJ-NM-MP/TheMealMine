@@ -25,6 +25,7 @@ app.post('/signupUser', (req, res) => {
     	user: req.body.user,
     	pass: req.body.pass,
     	email: req.body.email,
+        image: req.body.image,
         privacy: "Private",
         remember: "Forget",
         pantry: [],
@@ -35,13 +36,16 @@ app.post('/signupUser', (req, res) => {
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
  
-app.post('/loginUser', (req,res) => {
+app.post('/loginUser', async (req,res) => {
 	const form = {
 		user: req.body.user,
 		pass: req.body.pass
 	};
 	const update = {$set:{"status": 1}}; 
-	client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    const projection = {image: 1};
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result.image);
 });
 
 app.post('/logoutUser', (req,res) => {
