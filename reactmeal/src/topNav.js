@@ -13,7 +13,7 @@ export const TopNav = () => {
 		e.preventDefault();
 		window.location = '/login';
 	}
-	async function loginOut(e) {
+	async function logOut(e) {
 		e.preventDefault();
 		localStorage.setItem('username',"Guest");
 		localStorage.setItem('password',"Guest");
@@ -29,7 +29,7 @@ export const TopNav = () => {
 				<button onClick={home}><img src={HomeLogo} className="projLogo" alt="logo"/></button>
                 <h2><span className="cursive-font">The Meal Mine</span></h2>
                 <button onClick={login}>Log-In</button>
-				<button onClick={loginOut}>Log-Out</button>
+				<button onClick={logOut}>Log-Out</button>
             </div>
         </>
     );
