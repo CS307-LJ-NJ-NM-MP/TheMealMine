@@ -2,10 +2,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Team17:Team17@themealmine.tlnklwt.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-client.connect(err => {		
-	const collection = client.db("TheMealMine").collection("UserAccounts");
-	console.log("Connected to MongoDB");
-});
+client.connect(err => {});
 
 const express = require("express");
 	app = express(),
@@ -21,18 +18,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.listen(port, () => console.log("Backend server live on " + port));
-
-const routes = express.Router();
+app.listen(port);
 
 app.post('/signupUser', (req, res) => {
 	const form = {
-    		user: req.body.user,
-    		pass: req.body.pass,
-    		email: req.body.email,
+    	user: req.body.user,
+    	pass: req.body.pass,
+    	email: req.body.email,
         privacy: "Private",
         remember: "Forget",
-		    status: 1
+        pantry: [],
+        favoriteRecipes: [],
+        personalRecipes: [],
+		status: 1
  	};
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
@@ -93,17 +91,74 @@ app.post('/updateSettings', (req,res) => {
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-routes.route("/listings/delete/:id").delete((req, res) => {
-  const dbConnect = dbo.getDb();
-  const listingQuery = { listing_id: req.body.id };
+app.post('/getRecipes', async (req,res) => {
+    var recipeNum = req.body.recipe; var projection;
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    if(recipeNum == 0) {
+        projection = {favoriteRecipies: 1};
+    }else{
+        projection = {personalRecipies: 1};
+    }
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    if(recipeNum == 0){
+        res.send(result.favoriteRecipies);
+    }else{
+        res.send(result.personalRecipies);
+    }
+});
 
-  dbConnect
-    .collection("UserAccounts")
-    .deleteOne(listingQuery, function (err, _result) {
-      if (err) {
-        res.status(400).send(`Error deleting listing with id ${listingQuery.listing_id}!`);
-      } else {
-        console.log("1 document deleted");
-      }
-    });
+app.post('/getIngredients',async (req,res) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {pantry: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result.pantry);
+});
+
+app.post('/addRecipes', async (req,res) => {
+    const form = {
+        owner: req.body.user,
+    	name: req.body.name
+ 	}
+	client.db("TheMealMine").collection("Recipes").insertOne(form);
+    const userForm = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {personalRecipes: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(userForm,projection);
+    let list = [];
+    for(var i = 0; i < result.personalRecipes.length; i++) {
+        list.push(result.personalRecipes[i]);
+    }
+    list.push(form);
+    var update = {$push:{"personalRecipes": form}};
+    client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
+    
+});
+
+app.post('/addIngredients', async (req,res) => {
+    const form = {
+        owner: req.body.user,
+    	name: req.body.name
+ 	}
+	client.db("TheMealMine").collection("Ingredients").insertOne(form);
+    const userForm = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {pantry: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(userForm,projection);
+    let list = [];
+    for(var i = 0; i < result.pantry.length; i++) {
+        list.push(result.pantry[i]);
+    }
+    list.push(form);
+    var update = {$push:{"pantry": form}};
+    client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
 });
