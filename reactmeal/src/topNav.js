@@ -24,7 +24,7 @@ export const TopNav = () => {
 		}else{
 			localStorage.setItem('username',"Guest");
 			localStorage.setItem('password',"Guest");
-			localStorage.setItem('image','https://cdn1.vectorstock.com/i/1000x1000/66/35/blue-login-icon-vector-3876635.jpg');
+			localStorage.setItem('image','https://www.clipartmax.com/png/middle/15-153139_big-image-login-icon-with-transparent-background.png');
 			window.location = '/login';
 			await Axios.post('http://localhost:5000/logoutUser', {
 				user: username,

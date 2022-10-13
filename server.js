@@ -35,7 +35,16 @@ app.post('/signupUser', (req, res) => {
  	};
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
- 
+
+app.post('/deleteUser', async (req) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    await client.db("TheMealMine").collection("UserAccounts").deleteOne(form);
+
+});
+
 app.post('/loginUser', async (req,res) => {
 	const form = {
 		user: req.body.user,
@@ -43,9 +52,9 @@ app.post('/loginUser', async (req,res) => {
 	};
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
-    const projection = {image: 1};
+    const projection = {email: 1,image: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    res.send(result.image);
+    res.send(result);
 });
 
 app.post('/logoutUser', (req,res) => {
@@ -93,6 +102,16 @@ app.post('/updateSettings', (req,res) => {
           update = {$set:{"remember": req.body.remember}};
       }
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+});
+
+app.post('/updatePicture', (req) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass,
+        email: req.body.email
+    }
+    var update = {$set:{"image": req.body.image}};
+    client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
 app.post('/getRecipes', async (req,res) => {

@@ -7,11 +7,13 @@ export const Settings = () => {
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
     var picture = localStorage.getItem('image');
+    var email = localStorage.getItem('email');
 
     const [formValue, setFormValue] = useState({
 		email: '',
 		pass: '',
 		user: '',
+        image: '',
         privacy1: '',
         privacy2: '',
         privacy3: '',
@@ -30,6 +32,7 @@ export const Settings = () => {
 	}
     async function updateUsername(e) {
 		e.preventDefault();
+        localStorage.setItem('username',formValue.user);
 		await Axios.post('http://localhost:5000/updateSettings', {
 			user: formValue.user,
             pass: formValue.pass,
@@ -39,6 +42,7 @@ export const Settings = () => {
 	}
 	async function updateEmail(e) {
 		e.preventDefault();
+        localStorage.setItem('email',formValue.email);
 		await Axios.post('http://localhost:5000/updateSettings', {
 			email: formValue.email,
             user: formValue.user,
@@ -48,11 +52,22 @@ export const Settings = () => {
 	}
     async function updatePassword(e) {
 		e.preventDefault();
+        localStorage.setItem('password',formValue.pass);
 		await Axios.post('http://localhost:5000/updateSettings', {
 			pass: formValue.pass,
             user: formValue.user,
             email: formValue.email,
             setting: 2
+		});
+	}
+    async function updateImage(e) {
+		e.preventDefault();
+        localStorage.setItem('image',formValue.image);
+		await Axios.post('http://localhost:5000/updatePicture', {
+			pass: formValue.pass,
+            user: formValue.user,
+            email: formValue.email,
+            image: picture
 		});
 	}
     async function updatePrivacy1(e) {
@@ -97,12 +112,10 @@ export const Settings = () => {
 	}
     async function forget(e) {
 		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
+        window.location = '/login';
+		await Axios.post('http://localhost:5000/deleteUser', {
 			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            remember: "Forget",
-            setting: 4
+            pass: formValue.pass
 		});
 	}
     return (
@@ -117,13 +130,18 @@ export const Settings = () => {
                 </div>
                 <div>
                     Email:
-                    <input type="text" placeholder='Fill in' name="email" onChange={handleChange}/>
+                    <input type="text" placeholder={email} name="email" onChange={handleChange}/>
                     <button type="submit" onClick={updateEmail}>Apply Email</button>
                 </div>
                 <div>
                     Password:
                     <input type="password" placeholder={password} name="pass" onChange={handleChange}/>
                     <button type="submit" onClick={updatePassword}>Apply Password</button>
+                </div>
+                <div>
+                    Profile Picture:
+                    <input type="text" placeholder={picture} name="image" onChange={handleChange}/>
+                    <button type="submit" onClick={updateImage}>Apply Picture</button>
                 </div>
                 <div>
                     <button type="submit" onClick={updatePrivacy1}>Make Private</button>

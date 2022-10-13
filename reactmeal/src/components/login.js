@@ -24,13 +24,12 @@ export const Login = () => {
 		if(formValue.user !== '' && formValue.pass !== '') {
 			localStorage.setItem('username',formValue.user);
 			localStorage.setItem('password',formValue.pass);
-			localStorage.setItem('email',formValue.email);
 			var result = await Axios.post('http://localhost:5000/loginUser', {
 				user: formValue.user,  
 				pass: formValue.pass
 			});
-			console.log(result.data);
-			localStorage.setItem('image',result.data);
+			localStorage.setItem('email',result.data.email);
+			localStorage.setItem('image',result.data.image);
 			window.location = "/";
 		}
 	}
@@ -58,7 +57,7 @@ export const Login = () => {
                     		Username:
                         	<div><input size="15" type="text" name="user" onChange={handleChange}/></div>
                     		Password:
-                        	<div><input size="15"type="text" name="pass" onChange={handleChange}/></div>
+                        	<div><input size="15"type="password" name="pass" onChange={handleChange}/></div>
 							<div><button type="submit" onClick={login}>Login</button></div>
 							<div><button type="submit" onClick={recovery}>Forgot Password</button></div>
 							<div><button type="submit" onClick={signup}>Create An Account</button></div>
