@@ -10,31 +10,51 @@ export const SideNav = () => {
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
 
+    function settings(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/settings";
+        }
+    }
+    function friends(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/addFriend";
+        }
+    }
     async function bookmarks(e) {
         e.preventDefault();
-        var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 0
-		});
-        result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        result = await Axios.post('http://localhost:5000/getIngredients', {
-			user: username,
-            pass: password
-		});
-		window.location = "/bookmarks";
+        if(username !== "Guest" && password !== "Guest") {
+            /*var result = await Axios.post('http://localhost:5000/getRecipes', {
+		    	user: username,
+                pass: password,
+                recipe: 0
+		    });
+            result = await Axios.post('http://localhost:5000/getRecipes', {
+		    	user: username,
+                pass: password,
+                recipe: 1
+		    });
+            result = await Axios.post('http://localhost:5000/getIngredients', {
+			    user: username,
+                pass: password
+		    });*/
+		    window.location = "/bookmarks";
+        }
+    }
+    function feed(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/feed";
+        }
     }
     return (
         <>
             <div className="sidenav">
-                <Link to="/settings"><img src={Settings}></img></Link>
-                <Link to="/addFriend"><img src={AddFriend}></img></Link>
+                <button onClick={settings}><img src={Settings}/></button>
+                <button onClick={friends}><img src={AddFriend}/></button>
                 <button onClick={bookmarks}><img src={Bookmark}/></button>
-                <Link to="/feed"><img src={Feed}></img></Link>
+                <button onClick={feed}><img src={Feed}/></button>
             </div>
         </>
     );

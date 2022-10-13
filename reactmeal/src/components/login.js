@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
 import { useState } from "react";
 import Axios from "axios";
@@ -22,14 +21,16 @@ export const Login = () => {
 
 	async function login(e) {
 		e.preventDefault();
-		localStorage.setItem('username',formValue.user);
-		localStorage.setItem('password',formValue.pass);
-		localStorage.setItem('email',formValue.email);
-		window.location = "/";
-		await Axios.post('http://localhost:5000/loginUser', {
-			user: formValue.user,  
-			pass: formValue.pass
-		});
+		if(formValue.user !== '' && formValue.pass !== '') {
+			localStorage.setItem('username',formValue.user);
+			localStorage.setItem('password',formValue.pass);
+			localStorage.setItem('email',formValue.email);
+			window.location = "/";
+			await Axios.post('http://localhost:5000/loginUser', {
+				user: formValue.user,  
+				pass: formValue.pass
+			});
+		}
 	}
 	
 	async function logout(e) {
@@ -38,7 +39,20 @@ export const Login = () => {
 			user: formValue.user,
 		});
 	}
-
+	function recovery(e) {
+		e.preventDefault();
+		window.location = '/recovery';
+	}
+	function signup(e) {
+		e.preventDefault();
+		window.location = '/signup';
+	}
+	function guest(e) {
+		e.preventDefault();
+		localStorage.setItem('username',"Guest");
+		localStorage.setItem('password',"Guest");
+		window.location = "/";
+	}
 	return (
         	<>
             	<TopNav/>
@@ -46,20 +60,13 @@ export const Login = () => {
                 		<form className="loginForm">
 							Login<br/>
                     		Username:
-                        	<div>
-                        		<input type="text" name="user" onChange={handleChange}/>
-                        	</div>
+                        	<div><input size="15" type="text" name="user" onChange={handleChange}/></div>
                     		Password:
-                        	<div>
-                            		<input type="text" name="pass" onChange={handleChange}/>
-                        	</div>
-					<div>
-						<button type="submit" onClick={login}>Login</button>
-						<button type="submit" onClick={logout}>Logout</button><br/>
-					</div>
-					<Link to="/recovery">Forgot Password</Link><br/>
-					<Link to="/signup">Create an Account</Link><br/>
-					<Link to="/">Continue As Guest</Link><br/>
+                        	<div><input size="15"type="text" name="pass" onChange={handleChange}/></div>
+							<div><button type="submit" onClick={login}>Login</button></div>
+							<div><button type="submit" onClick={recovery}>Forgot Password</button></div>
+							<div><button type="submit" onClick={signup}>Create An Account</button></div>
+							<div><button type="submit" onClick={guest}>Continue As Guest</button></div>
                 		</form>
            		</div>
         	</>
