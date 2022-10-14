@@ -9,7 +9,11 @@ import { useState } from "react";
 		var pantry;
 		if((username !== null || username !== "Guest") && (password !== null || password !== "Guest")) {
 			var userPantry = localStorage.getItem('pantry');
-			pantry = userPantry.split(",");
+			if(userPantry !== null) {
+				pantry = userPantry.split(",");
+			}else{
+				pantry = [];
+			}
 		}else{
 			pantry = [];
 		}
