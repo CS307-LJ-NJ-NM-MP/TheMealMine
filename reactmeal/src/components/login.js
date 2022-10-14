@@ -47,6 +47,8 @@ export const Login = () => {
 		e.preventDefault();
 		localStorage.setItem('username',"Guest");
 		localStorage.setItem('password',"Guest");
+		localStorage.setItem('email',"Guest");
+		localStorage.setItem('pantry',"Guest");
 		window.location = "/";
 	}
 	return (
