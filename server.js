@@ -176,6 +176,17 @@ app.post('/updateSettings', (req,res) => {
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
+
+app.post('/getPantry', async (req,res) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {pantry: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    console.log(result.pantry);
+});
+
 app.post('/updatePicture', (req) => {
     const form = {
         user: req.body.user,
