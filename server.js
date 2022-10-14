@@ -62,7 +62,7 @@ app.post('/recoverPass', async (req, res) => {
         to: `${req.body.email}`,
         subject: `password reset link`,
         text:
-            'here is your password, dumbass\n\n'
+            'remember your password next time\n\n'
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
@@ -126,7 +126,6 @@ app.post('/loginUser', async (req,res) => {
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     const projection = {email: 1,image: 1,pantry: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    console.log(result);
     res.send(result);
 });
 
@@ -176,6 +175,7 @@ app.post('/updateSettings', (req,res) => {
       }
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
+
 
 app.post('/getPantry', async (req,res) => {
     const form = {
