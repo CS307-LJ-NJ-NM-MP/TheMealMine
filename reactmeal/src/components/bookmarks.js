@@ -3,7 +3,21 @@ import Axios from "axios";
 import { SideNav } from '../sideNav';
 import { useState } from "react";
 
-export const Bookmarks = () => {
+//export const Bookmarks = () => {
+    function Bookmarks() {
+    var rName = "Pesto Pasta";
+    var ingredients = ['pasta','olive oil','onion','salt','pepper',' Parmesan'];
+    var instructions = "Make sure to cook pasta well."
+    var img = ""
+
+    const [isSaved, setIsSaved] = useState(false);
+
+
+    //var isSaved = false;
+
+    const handleClick = () => setIsSaved(!isSaved);
+
+
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
 
@@ -67,15 +81,31 @@ export const Bookmarks = () => {
 		});*/
 	}
 
+    const recipeSave = () => {
+        return(
+            <>
+                
+            </>
+        );
+    }
+
     return (
         <>
             <TopNav/>
             <div id="app">
                 Favorite Recipes:<br/>
+                <div>
+                     { isSaved ? <p></p> : <p>{ rName }</p> } 
+                </div>
                 <button onClick={getFavoriteRecipes}>Display</button>
             </div>
+            <br/>
             <div>
                 Personal Recipes:
+                <div>
+                    <p>{ rName }</p><button onClick={handleClick}> { isSaved ? "Save" : "Unsave" } </button>
+                </div>
+                <br/>
                 <button onClick={addRecipes}>Add</button><br/>
                 <button onClick={getPersonalRecipes}>Display</button>
             </div>
@@ -83,3 +113,5 @@ export const Bookmarks = () => {
         </>
     );
 }
+
+export default Bookmarks;

@@ -3,7 +3,7 @@ import './App.css';
 import { Home } from './Home';
 import { Settings } from "./components/settings"
 import { Feed } from "./components/feed"
-import { Bookmarks } from "./components/bookmarks"
+import  Bookmarks  from "./components/bookmarks"
 import { Friends } from "./components/addFriend"
 import { Login } from "./components/login"
 import { Signup } from "./components/signup"
@@ -21,7 +21,7 @@ function App() {
       <Route path='/pwReset' element={<PWReset/>}></Route>
         <Route path='/' element={<Home/>} ></Route>
         <Route path='/settings' element={<Settings/>} ></Route>
-        <Route path='/bookmarks' element={<Bookmarks/>} ></Route>
+        <Route path='/bookmarks' element={<Bookmarks />} ></Route>
         <Route path='/addFriend' element={<Friends/>} ></Route>
         <Route path='/feed' element={<Feed/>} ></Route>
        	<Route path='/signup' element={<Signup/>} ></Route>
