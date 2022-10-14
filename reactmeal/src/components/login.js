@@ -59,7 +59,6 @@ export const Login = () => {
         	<>
             	<TopNav/>
             	<div className="login">
-					<button onClick={goToReset}>click</button>
                 		<form className="loginForm">
 							Login<br/>
                     		Username:

@@ -39,6 +39,7 @@ export const PWReset = () => {
             email: localStorage.getItem('email'),
             pass: formValue.pass
         });
+        alert("Password Changed");
         window.location = '/login';
     }
     return (
