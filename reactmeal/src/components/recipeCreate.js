@@ -6,12 +6,13 @@ import { useToast } from "@chakra-ui/toast";
 import  Axios  from "axios";
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
-
+var ingredients = [];
 export const RecipeAdd = () => {
+    
     const [formValue, setFormValue] = useState({
 		rName: '',
-		ingredients: [],
-        input: '',
+		add: '',
+        ingred: [],
 		instructions: '',
 		image: ''
 	})
@@ -27,16 +28,27 @@ export const RecipeAdd = () => {
 		}); 
 	}
 
-	async function addUser(e) {
+    function handleList(e) {
+        e.preventDefault();
+		ingredients.push(formValue.add);
+        console.log(ingredients);
+	}
+
+    
+
+	async function addRecipe(e) {
 		e.preventDefault();
-		//window.location = '/bookmarks';
+        formValue.ingred = ingredients;
+        ingredients = [];
         console.log(formValue);
-		await Axios.post('http://localhost:5000/signupUser', {
+		window.location = '/bookmarks';
+		/*await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
+            ingredients: formvalue.ingredients,
 			email: formValue.email,
 			image: formValue.image
-		});
+		});*/
 	}
 
     return (
@@ -48,11 +60,12 @@ export const RecipeAdd = () => {
                     		Recipe Name:
                         	<div><input size="15" type="text" name="rName" onChange={handleChange}/></div>
                     		Recipe Ingredients:
-                        	<div><input size="15"type="text" name="ingredients" onChange={handleChange}/><button type="submit" onClick={addUser}>Add</button></div>
+                        	<div><input size="15"type="text" name="add" onChange={handleChange}/><button type="submit" onClick={handleList}>Add</button></div>
                             Recipe Instructions:
                             <div><input size="15"type="text" name="instructions" onChange={handleChange}/></div>
+                            Image:
                             <div><input size="15"type="text" name="image" onChange={handleChange}/></div>
-							<div><button type="submit" onClick={addUser}>Submit</button></div>
+							<div><button type="submit" onClick={addRecipe}>Submit</button></div>
                 		</form>
            		</div>
             <SideNav/>
