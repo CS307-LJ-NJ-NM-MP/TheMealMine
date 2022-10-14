@@ -20,6 +20,15 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.listen(port);
 
+app.post('/findDatabaseItems', async (req,res) => {
+    var string = req.body.string;
+    //string = "^" + string + "*";
+    let str = String(string);
+    //console.log(str);
+    var result = await client.db("TheMealMine").collection("Ingredients").find({"name": {$regex: /^str/}});
+    console.log(result.data);
+});
+
 app.post('/signupUser', (req, res) => {
 	const form = {
     	user: req.body.user,

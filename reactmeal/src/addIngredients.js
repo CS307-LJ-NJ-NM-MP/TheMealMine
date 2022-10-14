@@ -1,8 +1,8 @@
-import { Box, Container, Text, Input, UnorderedList, ListItem, useStatStyles } from "@chakra-ui/react";
+import { Box, Button, Container, Text, Input, UnorderedList, ListItem, useStatStyles } from "@chakra-ui/react";
+import Axios from "axios";
 import React from "react";
 import { useState } from "react";
 
-//export const Pantry = () => {
 	function Pantry () {
 		var username = localStorage.getItem('username');
 		var password = localStorage.getItem('password');
@@ -17,14 +17,47 @@ import { useState } from "react";
 		}else{
 			pantry = [];
 		}
-		const [test, setTest] = useState("hello");
-		//setTest("this");
-		//console.log(test);
+		const [doRender, setDoRender] = useState("render");
+		async function handleSearch (e) {
+			e.preventDefault();
+			//database calls
+			console.log(e.target.value);
+			var result = await Axios.post('http://localhost:5000/findDatabaseItems', {
+				string: e.target.value
+			});
+			
+
+
+
+			//setDoRender(e.target.value);
+		}
 		
+		function refresh() {
+			window.location.reload(false);
+		}
 		function renderPantry(array) {
 			return array.map(name => <ListItem>{name}</ListItem>);
 		}
 		
+		const [formValue, setFormValue] = useState({
+			name: '',
+			qty: ''
+		});
+		const handleChange = (event) => {
+			let value = event.target.value;
+			let name = event.target.name;
+			setFormValue((prevState) => {
+				return {
+					...prevState,
+					[name]: value
+				}
+			}); 
+		}
+		async function addIngred(e) {
+			if(formValue.name !== null || formValue.qty !== null){
+				console.log("null");
+			}
+		}
 
 return (<> 
 	<Container align="center" maxW='xl' centerContent>
@@ -37,7 +70,7 @@ return (<>
 			borderRadius="lg"
 			borderWidth="1px"
 		>
-			<Input placeholder='Search Ingredients'/>
+			<Input onChange={handleSearch}/><Button onClick={refresh}>Refresh</Button>
 		</Box>
 		<Box d='flex'
 			justifyContent='center'
@@ -50,7 +83,7 @@ return (<>
 		>
 			<Text>My Pantry</Text>
 			<UnorderedList>{renderPantry(pantry)}</UnorderedList>
-			
+			<Input placeholder="name" onChange={handleChange}/><Input placeholder="quantity"/><Button onClick={addIngred}>Add</Button>
 		</Box>
 		<Box d='flex'
 			justifyContent='center'

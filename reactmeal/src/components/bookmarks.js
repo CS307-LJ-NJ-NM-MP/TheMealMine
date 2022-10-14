@@ -67,15 +67,6 @@ export const Bookmarks = () => {
 		});*/
 	}
 
-    async function addIngredient(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/addIngredients', {
-			user: username,
-            pass: password,
-			name: formValue.ingredients
-		});
-	}
-    
     return (
         <>
             <TopNav/>
@@ -84,16 +75,9 @@ export const Bookmarks = () => {
                 <button onClick={getFavoriteRecipes}>Display</button>
             </div>
             <div>
-                Personal Recipes:<br/>
-                <input type="text" name="recipes" placeholder="Name" onChange={handleChange}></input>
+                Personal Recipes:
                 <button onClick={addRecipes}>Add</button><br/>
                 <button onClick={getPersonalRecipes}>Display</button>
-            </div>
-            <div>
-                Pantry:<br/>
-                <input type="text" name="ingredients" placeholder="Name" onChange={handleChange}/>
-                <button onClick={addIngredient}>Add</button><br/>
-                <button onClick={getPantry}>Display</button>
             </div>
             <SideNav/>
         </>
