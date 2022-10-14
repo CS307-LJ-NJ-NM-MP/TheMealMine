@@ -124,8 +124,9 @@ app.post('/loginUser', async (req,res) => {
 	};
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
-    const projection = {email: 1,image: 1};
+    const projection = {email: 1,image: 1,pantry: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    console.log(result);
     res.send(result);
 });
 
@@ -174,6 +175,16 @@ app.post('/updateSettings', (req,res) => {
           update = {$set:{"remember": req.body.remember}};
       }
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+});
+
+app.post('/getPantry', async (req,res) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {pantry: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    console.log(result.pantry);
 });
 
 app.post('/updatePicture', (req) => {

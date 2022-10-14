@@ -31,6 +31,7 @@ export const Login = () => {
 			});
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
+			localStorage.setItem('pantry',result.data.pantry);
 			window.location = "/";
 		}
 	}
@@ -47,6 +48,8 @@ export const Login = () => {
 		e.preventDefault();
 		localStorage.setItem('username',"Guest");
 		localStorage.setItem('password',"Guest");
+		localStorage.setItem('email',"Guest");
+		localStorage.setItem('pantry',"Guest");
 		window.location = "/";
 	}
 	function goToReset() {

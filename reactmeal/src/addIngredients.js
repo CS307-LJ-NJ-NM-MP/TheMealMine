@@ -1,10 +1,33 @@
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, Text, Input, UnorderedList, ListItem, useStatStyles } from "@chakra-ui/react";
 import React from "react";
+import { useState } from "react";
 
+//export const Pantry = () => {
+	function Pantry () {
+		var username = localStorage.getItem('username');
+		var password = localStorage.getItem('password');
+		var pantry;
+		if((username !== null || username !== "Guest") && (password !== null || password !== "Guest")) {
+			var userPantry = localStorage.getItem('pantry');
+			if(userPantry !== null) {
+				pantry = userPantry.split(",");
+			}else{
+				pantry = [];
+			}
+		}else{
+			pantry = [];
+		}
+		const [test, setTest] = useState("hello");
+		//setTest("this");
+		//console.log(test);
+		
+		function renderPantry(array) {
+			return array.map(name => <ListItem>{name}</ListItem>);
+		}
+		
 
-export const Pantry = () => {	
-return (<>
-	<Container maxW='xl' centerContent>
+return (<> 
+	<Container align="center" maxW='xl' centerContent>
 		<Box d='flex'
 			justifyContent='center'
 			p={3}
@@ -14,7 +37,7 @@ return (<>
 			borderRadius="lg"
 			borderWidth="1px"
 		>
-			<Text fontSize="1xl" color="black">Search</Text>
+			<Input placeholder='Search Ingredients'/>
 		</Box>
 		<Box d='flex'
 			justifyContent='center'
@@ -25,7 +48,9 @@ return (<>
 			borderRadius="lg"
 			borderWidth="1px"
 		>
-			<Text fontSize="2xl" color="black">Pantry</Text>
+			<Text>My Pantry</Text>
+			<UnorderedList>{renderPantry(pantry)}</UnorderedList>
+			
 		</Box>
 		<Box d='flex'
 			justifyContent='center'
@@ -36,8 +61,9 @@ return (<>
 			borderRadius="lg"
 			borderWidth="1px"
 		>
-			<Text fontSize="4xl" color="black">Database</Text>
+			<Text>Database</Text>
 		</Box>
 	</Container>
 </>
 );}
+export default Pantry;
