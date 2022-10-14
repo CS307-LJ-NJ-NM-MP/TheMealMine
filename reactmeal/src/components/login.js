@@ -1,5 +1,6 @@
 import { TopNav } from '../topNav'
 import { useState } from "react";
+import { Link } from 'react';
 import Axios from "axios";
 
 export const Login = () => {
@@ -51,10 +52,14 @@ export const Login = () => {
 		localStorage.setItem('pantry',"Guest");
 		window.location = "/";
 	}
+	function goToReset() {
+		window.location = '/PWReset';
+	}
 	return (
         	<>
             	<TopNav/>
             	<div className="login">
+					<button onClick={goToReset}>click</button>
                 		<form className="loginForm">
 							Login<br/>
                     		Username:
