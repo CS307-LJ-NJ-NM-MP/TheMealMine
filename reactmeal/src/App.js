@@ -9,6 +9,7 @@ import { Login } from "./components/login"
 import { Signup } from "./components/signup"
 import { Recovery } from "./components/recovery"
 import { RecipeAdd } from "./components/recipeCreate"
+import { PWReset } from "./components/pwReset"
 
 window.$username = '';
 
