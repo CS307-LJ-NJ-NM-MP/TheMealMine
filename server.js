@@ -4,6 +4,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 client.connect(err => {});
 
+console.log("server connected");
+
 const express = require("express");
 	app = express(),
   	port = process.env.PORT || 5000,
@@ -15,18 +17,79 @@ const corsOptions = {
     optionSuccessStatus:200
 }
 
+require('dotenv').config();
+
+const nodemailer = require('nodemailer');
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
 app.listen(port);
 
-app.post('/findDatabaseItems', async (req,res) => {
-    var string = req.body.string;
-    //string = "^" + string + "*";
-    let str = String(string);
-    //console.log(str);
-    var result = await client.db("TheMealMine").collection("Ingredients").find({"name": {$regex: /^str/}});
-    console.log(result.data);
+app.post('/recoverPass', async (req, res) => {
+    if (req.body.email === '') {
+        res.status(400).send('email required');
+    }
+    /*
+    User.findOne({
+        where: {
+            email: req.body.email,
+        },
+    }).then((user => {
+        const token = crypto.randomBytes(20).toString('hex');
+        user.update({
+            resetPasswordToken: token,
+            resetPasswordExpires: Date.now() + 360000,
+        });
+    }))
+    */
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: `themealmine@gmail.com`,
+            pass: `vcznrukqedoimrqn`,
+        },
+    });
+
+
+    // var pw = client.db("TheMealMine").collection("UserAccounts").find(
+    //     {"UserAccounts.email": `${req.body.email}`},
+    //     {_id: 0, 'UserAccounts.$': 1}
+    // );
+
+    const mailOptions = {
+        from: 'themealmine@gmail.com',
+        to: `${req.body.email}`,
+        subject: `password reset link`,
+        text:
+            'remember your password next time\n\n'
+            + `http://localhost:3000/PWReset\n\n`
+            + 'this is a test\n,'
+    };
+
+    console.log('sending');
+
+    transporter.sendMail(mailOptions, (err, response) => {
+        if (err) {
+            console.error('there was an error: ', err);
+        } else {
+            console.log('here is the res: ', response);
+            res.status(200).json('recovery email sent');
+        }
+    })
+})
+
+app.post('/updatePass', async (req, res) => {
+    form = {
+        user: req.body.user,
+        email: req.body.email
+    }
+
+    var update = {$set:{"pass": req.body.pass}};
+    var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    var projection = {pass: 1};
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result);
 });
 
 app.post('/signupUser', (req, res) => {
@@ -63,7 +126,6 @@ app.post('/loginUser', async (req,res) => {
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     const projection = {email: 1,image: 1,pantry: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    console.log(result);
     res.send(result);
 });
 
@@ -113,6 +175,7 @@ app.post('/updateSettings', (req,res) => {
       }
       client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
+
 
 app.post('/getPantry', async (req,res) => {
     const form = {

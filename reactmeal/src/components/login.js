@@ -1,5 +1,6 @@
 import { TopNav } from '../topNav'
 import { useState } from "react";
+import { Link } from 'react';
 import Axios from "axios";
 
 export const Login = () => {
@@ -50,6 +51,9 @@ export const Login = () => {
 		localStorage.setItem('email',"Guest");
 		localStorage.setItem('pantry',"Guest");
 		window.location = "/";
+	}
+	function goToReset() {
+		window.location = '/PWReset';
 	}
 	return (
         	<>
