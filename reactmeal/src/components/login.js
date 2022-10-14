@@ -30,6 +30,7 @@ export const Login = () => {
 			});
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
+			localStorage.setItem('pantry',result.data.pantry);
 			window.location = "/";
 		}
 	}
