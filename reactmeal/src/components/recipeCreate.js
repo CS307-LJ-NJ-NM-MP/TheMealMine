@@ -8,18 +8,17 @@ import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 
 export const RecipeAdd = () => {
-    let ingredientList = [];
     const [formValue, setFormValue] = useState({
 		rName: '',
-        ingredients: [], 
-		instructions: ''
-
+		ingredients: [],
+        input: '',
+		instructions: '',
+		image: ''
 	})
 	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
-        //let ingredients = event.target.iList;
+	const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
 		setFormValue((prevState) => {
 			return {
 				...prevState,
@@ -28,44 +27,16 @@ export const RecipeAdd = () => {
 		}); 
 	}
 
-    const handleAdd = (event) => {
-        let name = event.target.name;
-        ingredientList.push(name);
-    }
-
-	async function login(e) {
+	async function addUser(e) {
 		e.preventDefault();
-		if(formValue.user !== '' && formValue.pass !== '') {
-			localStorage.setItem('username',formValue.user);
-			localStorage.setItem('password',formValue.pass);
-			var result = await Axios.post('http://localhost:5000/loginUser', {
-				user: formValue.user,  
-				pass: formValue.pass
-			});
-			localStorage.setItem('email',result.data.email);
-			localStorage.setItem('image',result.data.image);
-			window.location = "/";
-		}
-	}
-
-    function addIngredient(e){
-        e.preventDefault();
-
-    }
-	
-	function recovery(e) {
-		e.preventDefault();
-		window.location = '/recovery';
-	}
-	function signup(e) {
-		e.preventDefault();
-		window.location = '/signup';
-	}
-	function guest(e) {
-		e.preventDefault();
-		localStorage.setItem('username',"Guest");
-		localStorage.setItem('password',"Guest");
-		window.location = "/";
+		//window.location = '/bookmarks';
+        console.log(formValue);
+		await Axios.post('http://localhost:5000/signupUser', {
+			user: formValue.user,  
+			pass: formValue.pass,
+			email: formValue.email,
+			image: formValue.image
+		});
 	}
 
     return (
@@ -75,12 +46,13 @@ export const RecipeAdd = () => {
                 		<form className="loginForm">
 							Recipe<br/>
                     		Recipe Name:
-                        	<div><input size="15" type="text" name="user" onChange={handleChange}/></div>
+                        	<div><input size="15" type="text" name="rName" onChange={handleChange}/></div>
                     		Recipe Ingredients:
-                        	<div><input size="15"type="text" name="ingredients" onChange={handleAdd}/><button type="submit" onClick={login}>Add</button></div>
+                        	<div><input size="15"type="text" name="ingredients" onChange={handleChange}/><button type="submit" onClick={addUser}>Add</button></div>
                             Recipe Instructions:
                             <div><input size="15"type="text" name="instructions" onChange={handleChange}/></div>
-							<div><button type="submit" onClick={login}>Submit</button></div>
+                            <div><input size="15"type="text" name="image" onChange={handleChange}/></div>
+							<div><button type="submit" onClick={addUser}>Submit</button></div>
                 		</form>
            		</div>
             <SideNav/>
