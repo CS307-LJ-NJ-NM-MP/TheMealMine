@@ -124,7 +124,7 @@ app.post('/loginUser', async (req,res) => {
 	};
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
-    const projection = {email: 1,image: 1};
+    const projection = {email: 1,image: 1,pantry: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
     res.send(result);
 });
