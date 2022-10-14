@@ -129,6 +129,22 @@ app.post('/loginUser', async (req,res) => {
     res.send(result);
 });
 
+app.post('/updatePantry', async (req,res) => {
+    const form = {
+        user: req.body.user,
+    }
+    var projection = {pantry: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    console.log(result.pantry);
+    var pantry = result.pantry;
+    var list = [req.body.name,req.body.qty,req.body.image];
+    pantry.push(list);
+    var update = {$set:{"pantry": pantry}};
+    await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result.pantry);
+});
+
 app.post('/logoutUser', (req,res) => {
 	const form = {
 		user: req.body.user
@@ -184,7 +200,7 @@ app.post('/getPantry', async (req,res) => {
     }
     var projection = {pantry: 1};
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    console.log(result.pantry);
+    res.send(result.pantry);
 });
 
 app.post('/updatePicture', (req) => {
