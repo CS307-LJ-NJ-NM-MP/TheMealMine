@@ -59,11 +59,12 @@ export const Bookmarks = () => {
 
     async function addRecipes(e) {
 		e.preventDefault();
-		await Axios.post('http://localhost:5000/addRecipes', {
+        window.location = "/recipeAdd";
+		/*await Axios.post('http://localhost:5000/addRecipes', {
             user: username,
             pass: password,
 			name: formValue.recipes
-		});
+		});*/
 	}
 
     async function addIngredient(e) {
