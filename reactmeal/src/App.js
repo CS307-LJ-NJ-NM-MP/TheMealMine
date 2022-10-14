@@ -8,6 +8,7 @@ import { Friends } from "./components/addFriend"
 import { Login } from "./components/login"
 import { Signup } from "./components/signup"
 import { Recovery } from "./components/recovery"
+import { PWReset } from "./components/pwReset"
 window.$username = '';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <>
       <Routes>
 		<Route path='/login' element={<Login/>} ></Route>
+      <Route path='/pwReset' element={<PWReset/>}></Route>
         <Route path='/' element={<Home/>} ></Route>
         <Route path='/settings' element={<Settings/>} ></Route>
         <Route path='/bookmarks' element={<Bookmarks/>} ></Route>
