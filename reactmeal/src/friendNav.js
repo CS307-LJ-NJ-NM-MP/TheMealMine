@@ -60,10 +60,11 @@ export const FriendNav = () => {
                     </div>
 
                 </form>
-                   
-                   
+                    
+                    
             </div>
 
         </>
-    );
+    )
+
 }
