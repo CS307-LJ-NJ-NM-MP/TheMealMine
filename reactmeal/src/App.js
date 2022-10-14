@@ -8,6 +8,7 @@ import { Friends } from "./components/addFriend"
 import { Login } from "./components/login"
 import { Signup } from "./components/signup"
 import { Recovery } from "./components/recovery"
+import { RecipeAdd } from "./components/recipeCreate"
 window.$username = '';
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
         <Route path='/addFriend' element={<Friends/>} ></Route>
         <Route path='/feed' element={<Feed/>} ></Route>
        	<Route path='/signup' element={<Signup/>} ></Route>
-		<Route path='/recovery' element={<Recovery/>} ></Route>
+		    <Route path='/recovery' element={<Recovery/>} ></Route>
+        <Route path='/recipeAdd' element={<RecipeAdd/>} ></Route>
       </Routes>
     </>
   );
