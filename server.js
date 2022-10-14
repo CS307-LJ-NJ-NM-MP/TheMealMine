@@ -62,7 +62,7 @@ app.post('/recoverPass', async (req, res) => {
         to: `${req.body.email}`,
         subject: `password reset link`,
         text:
-            'remember your password next time, dumbass\n\n'
+            'remember your password next time\n\n'
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
