@@ -1,42 +1,55 @@
-
-
 import React, { useState } from "react";
+import Data from "../src/mockdata.json"
+
 
 export const FriendNav = () => {
-    const [name, setName] = useState("");
 
-    const FriendsList = [
-        { name: 'Dick' },
-        { name: 'Jason' },
-        { name: 'Tim' },
-        { name: 'Damian' },
-        { name:'Duke' }
-    ];
+    const dataList = Data.map((username) => (
+        <div key={username.id}>
+        <p>{username.user}</p>
+        <p>{username.email}</p>
+        </div>
+    ));
+    
 
-    const [list, setList] = useState(FriendsList);
-
-    function sendRequest() {
-        handleAdd();
-        alert("Friend Request Sent to: " + name);
-        setName("");
-    }
-
-    function handleAdd() {
-        const newList = list.concat({name});
-
-        setList(newList)
-    }
-
-    const handleSubmit = event => {
-        event.preventDefault();
-//        setName('');
-    }
     
     return (
         <>
             <div className="friendnav">
+                  <input placeholder = "Enter user here" style={{ textAlign: "center"}}/>  
+                  <></>
+            </div>
+        </>
+    );
 
-                {list.map(data => (
+
+}
+
+//     const [name, setName] = useState("");
+
+
+//     const [list, setList] = useState(FriendsList);
+
+//     function sendRequest() {
+
+//         handleAdd();
+//         alert("Friend Request Sent to: " + name);
+//         setName("");
+//     }
+
+
+//     function handleAdd() {
+//         const newList = list.concat({name});
+//         setList(newList);
+//     }
+
+
+//     const handleSubmit = event => {
+//         event.preventDefault();
+// //        setName('');
+//     }
+
+                /* {list.map(data => (
                     <p>{data.name}</p>
                 ))}
 
@@ -53,18 +66,10 @@ export const FriendNav = () => {
 
                     </div>
                     <div>
-                        <button type="button" onClick={sendRequest}>
-                            Send Friend Request
-                        </button>
+                        <input onClick={sendRequest} type="button" value="Send Friend Request" id="friendButton">
+
+                        </input>
 
                     </div>
 
-                </form>
-                    
-                    
-            </div>
-
-        </>
-    )
-
-}
+                </form> */
