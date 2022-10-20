@@ -4,20 +4,41 @@ import Data from "../src/mockdata.json"
 
 export const FriendNav = () => {
 
-    const dataList = Data.map((username) => (
+    const [tempQuery, setTempQuery] = useState("");
+    const [query, setQuery] = useState("");
+
+    const dataList = Data.filter(username => {
+        if (query === "") {
+//            return username;
+        }
+        else if (username.user.toLowerCase().includes(query.toLowerCase())) {
+            return username;
+        }
+    }).map((username) => (
         <div key={username.id}>
         <p>{username.user}</p>
-        <p>{username.email}</p>
+        {/*        <p>{username.email}</p> */}
         </div>
     ));
     
+    function sendRequest() {
+        setQuery(tempQuery);
+    }
 
     
     return (
         <>
             <div className="friendnav">
-                  <input placeholder = "Enter user here" style={{ textAlign: "center"}}/>  
-                  <></>
+                <input 
+                    placeholder = "Enter user here"
+                    style={{ textAlign: "center"}}
+                    onChange={event => setTempQuery(event.target.value)}
+                />
+                <input onClick={sendRequest} type='button' value="Find User" id="friendButton"/>
+
+            </div>
+            <div br>
+                {dataList}
             </div>
         </>
     );
