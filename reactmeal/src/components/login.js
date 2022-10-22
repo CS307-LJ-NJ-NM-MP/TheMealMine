@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from 'react';
 import Axios from "axios";
 
-export const Login = () => {
+function Login()  {
 	const [formValue, setFormValue] = useState({
 		user: '',
 		pass: ''
@@ -74,3 +74,4 @@ export const Login = () => {
         	</>
 	);
 }
+export default Login;
