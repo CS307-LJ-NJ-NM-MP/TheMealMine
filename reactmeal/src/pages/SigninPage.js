@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Box, Text, Tabs, TabList, Tab, TabPanels,TabPanel} from "@chakra-ui/react";
-import Login from "./components/Login";
-import CreateAccount from "./components/CreateAccount";
+import Login from "../components/Login";
+import CreateAccount from "../components/CreateAccount";
 
 function SigninPage() {
     return (
