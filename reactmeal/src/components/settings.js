@@ -1,163 +1,120 @@
 import { TopNav } from '../topNav'
-import { SideNav } from '../sideNav'
-import Axios from "axios";
-import { useState } from "react";
-
-export const Settings = () => {    
+import { Box, Button, Text, Container, Input, InputGroup, 
+        InputLeftAddon, Image, Center } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+//#343d46 #4f5b66 #65737e #a7adba #c0c5ce
+export function Settings() {
     var username = localStorage.getItem('username');
-    var password = localStorage.getItem('password');
-    var picture = localStorage.getItem('image');
     var email = localStorage.getItem('email');
-
-    const [formValue, setFormValue] = useState({
-		email: '',
-		pass: '',
-		user: '',
-        image: '',
-        privacy1: '',
-        privacy2: '',
-        privacy3: '',
-        remember: ''
-	})
-	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
-		setFormValue((prevState) => {
-			return {
-				...prevState,
-				[name]: value
-			}
-		}); 
-	}
-    async function updateUsername(e) {
-		e.preventDefault();
-        localStorage.setItem('username',formValue.user);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            pass: formValue.pass,
-            email: formValue.email,
-            setting: 0
-		});
-	}
-	async function updateEmail(e) {
-		e.preventDefault();
-        localStorage.setItem('email',formValue.email);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			email: formValue.email,
-            user: formValue.user,
-            pass: formValue.pass,
-            setting: 1
-		});
-	}
-    async function updatePassword(e) {
-		e.preventDefault();
-        localStorage.setItem('password',formValue.pass);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			pass: formValue.pass,
-            user: formValue.user,
-            email: formValue.email,
-            setting: 2
-		});
-	}
-    async function updateImage(e) {
-		e.preventDefault();
-        localStorage.setItem('image',formValue.image);
-		await Axios.post('http://localhost:5000/updatePicture', {
-			pass: formValue.pass,
-            user: formValue.user,
-            email: formValue.email,
-            image: picture
-		});
-	}
-    async function updatePrivacy1(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-            user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-			privacy: "Private",
-            setting: 3
-		});
-	}
-    async function updatePrivacy2(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            privacy: "Private to Friends",
-            setting: 3
-		});
-	}
-    async function updatePrivacy3(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            privacy: "Public",
-            setting: 3
-		});
-	}
-    async function remember(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            remember: "Remember",
-            setting: 4
-		});
-	}
-    async function forget(e) {
-		e.preventDefault();
-        window.location = '/login';
-		await Axios.post('http://localhost:5000/deleteUser', {
-			user: formValue.user,
-            pass: formValue.pass
-		});
-	}
-    return (
-        <>
+    var image = localStorage.getItem('image');
+    function reload(id) {
+        document.getElementById(id).innerText = "Apply Changes";
+        document.getElementById(id).contentWindow.location.reload(true);
+    }
+    return(<ChakraProvider>
+            <Container borderColor="transparent" maxW='100%' h='calc(200vh)' 
+                bgGradient='linear(to-br,#343d46 30%, #4f5b66 50%, #65737e 70%, #a7adba 95%)'>
             <TopNav/>
-            <div>
-                Settings:<br/>
-                <div>
-                    Username:
-                    <input type="text" name="user" placeholder={username} onChange={handleChange}/>
-                    <button type="submit" onClick={updateUsername}>Apply Username</button>
-                </div>
-                <div>
-                    Email:
-                    <input type="text" placeholder={email} name="email" onChange={handleChange}/>
-                    <button type="submit" onClick={updateEmail}>Apply Email</button>
-                </div>
-                <div>
-                    Password:
-                    <input type="password" placeholder={password} name="pass" onChange={handleChange}/>
-                    <button type="submit" onClick={updatePassword}>Apply Password</button>
-                </div>
-                <div>
-                    Profile Picture:
-                    <input type="text" placeholder={picture} name="image" onChange={handleChange}/>
-                    <button type="submit" onClick={updateImage}>Apply Picture</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy1}>Make Private</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy2}>Make Private to Friends</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy3}>Make Public</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={remember}>Remember Me</button>
-                    <button type="submit" onClick={forget}>Forget Me</button>
-                </div>
-            </div>
-            <SideNav/>
-        </>
-    );
+            <Center>
+            <Box boxShadow='dark-lg' color="transparent"
+                p={3} m="10px" w="95%"
+                border='2px' borderRadius='lg'>
+                <Box boxShadow='dark-lg'
+                    p={3} m="0px 0 15px 0" w='100%'
+                    borderColor="transparent"
+                    border='2px' borderRadius='lg'  
+                    align="center">
+                    <Text color='#c0c5ce'>
+                        Settings
+                    </Text>
+                </Box>
+                <Box id="Current User Information"
+                    boxShadow='dark-lg' borderColor="transparent" 
+                    p={3} m="0px 0 15px 0"   
+                    border='2px' borderRadius='lg' 
+                    align='center'>
+                    <Text color='#c0c5ce' m="0px 0 10px 0" >
+                        Current User Information
+                    </Text>
+                    <Image boxShadow="dark-lg" borderColor="transparent" 
+                        borderRadius='full' m="0px 0 5px 0"
+                        boxSize='100px' src={image}/>
+                        <Text color='#c0c5ce'>
+                            {username}
+                        </Text>
+                        <Text color='#c0c5ce'>
+                            {email}
+                        </Text>
+                </Box>
+                <Box id="Login Information" 
+                    boxShadow='dark-lg'
+                    borderColor="transparent" 
+                    p={3} m="0px 0 15px 0"   
+                    border='2px' borderRadius='lg'
+                    align="center">
+                    <Text color='#c0c5ce' m="0px 0 10px 0" 
+                        align='center'>
+                        Login Information
+                    </Text>
+                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
+                        <InputLeftAddon bg="transparent" children="Change Username:"/>
+                        <Input variant="flushed" placeholder='Enter New Username'
+                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
+                    </InputGroup>
+                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
+                        <InputLeftAddon bg="transparent" children="Change Password:"/>
+                        <Input variant="flushed" placeholder='Enter New Password'
+                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
+                    </InputGroup>
+                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
+                        <InputLeftAddon bg="transparent" children="Change Username:"/>
+                        <Input variant="flushed" placeholder='Enter New Username'
+                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
+                    </InputGroup>
+                    <Center>
+                    <Button bg='transparent' color='#c0c5ce' 
+                        w='50%' align='center'
+                        onClick={reload.bind(this,["Button"])}>
+                        Apply Changes
+                    </Button> 
+                    </Center>
+                </Box>
+                <Box id="Current User Information"
+                    boxShadow='dark-lg'
+                    borderColor="transparent"
+                    p={3} m="0px 0 15px 0"   
+                    border='2px' borderRadius='lg' 
+                    align='center'>
+                    <Text color='#c0c5ce' m="0px 0 10px 0" 
+                        align='center'>
+                        Profile Picture
+                    </Text>
+                    <InputGroup m="10px 0 10px 0" w="400px" borderColor="transparent" color="#c0c5ce">
+                        <InputLeftAddon bg="transparent" children="Change Profile Pick:"/>
+                        <Input variant="flushed" placeholder='Enter New Profile Pick URL'
+                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
+                    </InputGroup>
+                    <Center>
+                    <Button bg='transparent' color='#c0c5ce' 
+                        w='50%' align='center'
+                        onClick={reload.bind(this,["Button"])}>
+                        Apply Changes
+                    </Button> 
+                    </Center>
+                </Box>
+                <Box id="Current User Information"
+                    boxShadow='dark-lg'
+                    borderColor="transparent"
+                    p={3} m="0px 0 15px 0"   
+                    border='2px' borderRadius='lg' 
+                    align='center'>
+                    <Text color='#c0c5ce' m="0px 0 10px 0" 
+                        align='center'>
+                        Privacy Settings
+                    </Text>
+                </Box>
+            </Box>
+            </Center>
+            </Container>
+        </ChakraProvider>)
 }
