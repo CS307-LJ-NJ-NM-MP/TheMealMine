@@ -103,7 +103,9 @@ app.post('/signupUser', (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
-		status: 1
+		status: 1,
+        friendsList: [],
+        blockedList: []
  	};
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
