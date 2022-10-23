@@ -32,13 +32,18 @@ function CreateAccount() {
 	async function addUser(e) {
 		e.preventDefault();
 		console.log("Got here");
-		//window.location = '/login';
+		localStorage.setItem('username',formValue.user);
+		localStorage.setItem('password',formValue.pass);
+		localStorage.setItem('email', formValue.email);
+		localStorage.setItem('image', formValue.image);
+		window.location = "/home";
 		await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
 			email: formValue.email,
 			image: formValue.image
 		});
+		
 	}
 	
 return (<>

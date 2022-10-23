@@ -14,18 +14,18 @@ export const TopNav = () => {
 
 	function home(e) {
 		e.preventDefault();
-		window.location = '/';
+		window.location = '/home';
 	}
 	
 	async function login(e) {
 		e.preventDefault();
 		if(username === '' || username === "Guest"){
-			window.location = '/login';
+			window.location = '/';
 		}else{
 			localStorage.setItem('username',"Guest");
 			localStorage.setItem('password',"Guest");
 			localStorage.setItem('image','https://www.clipartmax.com/png/middle/15-153139_big-image-login-icon-with-transparent-background.png');
-			window.location = '/login';
+			window.location = '/';
 			await Axios.post('http://localhost:5000/logoutUser', {
 				user: username,
 				pass: password
