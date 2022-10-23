@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { TopNav } from '../topNav'
 
-export const Signup = () => {
+function CreateAccount() {
 	const [formValue, setFormValue] = useState({
 		email: '',
 		pass: '',
@@ -64,3 +64,4 @@ return (<>
 	</div>
 </>
 );}
+export default CreateAccount;
