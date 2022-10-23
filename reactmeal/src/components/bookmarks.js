@@ -16,6 +16,13 @@ import { useState } from "react";
     //var isSaved = false;
 
     const handleClick = () => setIsSaved(!isSaved);
+    const handleEdit = (e) => {
+        e.preventDefault();
+        let recipeName = rName;
+        let instruct = instructions;
+        let image = img;
+
+    }
 
 
     var username = localStorage.getItem('username');
@@ -103,7 +110,7 @@ import { useState } from "react";
             <div>
                 Personal Recipes:
                 <div>
-                    <p>{ rName }</p><button onClick={handleClick}> { isSaved ? "Save" : "Unsave" } </button>
+                    <p>{ rName }</p><button onClick={handleClick}> { isSaved ? "Save" : "Unsave" } </button> <button>Edit Recipe</button>
                 </div>
                 <br/>
                 <button onClick={addRecipes}>Add</button><br/>
