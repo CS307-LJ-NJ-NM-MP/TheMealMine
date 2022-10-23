@@ -10,7 +10,7 @@ import { Friends } from "./components/addFriend"
 import { Recovery } from "./components/recovery"
 import { RecipeAdd } from "./components/recipeCreate"
 import { PWReset } from "./components/pwReset"
-import SigninPage from './SigninPage';
+import SigninPage from './pages/SigninPage';
 
 window.$username = '';
 
