@@ -12,7 +12,6 @@ export function TopNav() {
 		image = 'https://cdn1.vectorstock.com/i/1000x1000/66/35/blue-login-icon-vector-3876635.jpg';
 	}
 	
-
 	function home(e) {
 		e.preventDefault();
 		window.location = '/home';
@@ -35,14 +34,14 @@ export function TopNav() {
 	}
    	return (<ChakraProvider>
 		<Center>
-            <HStack spacing="20px" h="70px" m="0 0 10px 0" bg="transparent">
+            <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
 				<Button bg="transparent"
 					borderColor="transparent" borderBlockEndColor="transparent" onClick={home}>
 					<Image boxShadow="dark-lg" borderColor="transparent" 
                        	borderRadius='full'
                        	boxSize="50" src={HomeLogo}/>
 				</Button>
-				<Heading align="center">The Meal Mine</Heading>
+				<Heading color="turquoise" align="center">The Meal Mine</Heading>
 				<Button bg="transparent"  
 					borderColor="transparent" borderBlockEndColor="transparent" onClick={login}>
 					<Image boxShadow="dark-lg" borderColor="transparent" 

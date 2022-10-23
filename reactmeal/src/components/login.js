@@ -4,7 +4,7 @@ import { VStack, StackDivider, Button } from '@chakra-ui/react';
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input"
 
-function Login()  {
+export function Login()  {
 	const [formValue, setFormValue] = useState({
 		user: '',
 		pass: ''
