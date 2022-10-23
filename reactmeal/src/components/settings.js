@@ -8,7 +8,7 @@ export function Settings() {
     var email = localStorage.getItem('email');
     var image = localStorage.getItem('image');
     function reload(id) {
-        document.getElementById(id).innerText = "Apply Changes";
+        document.getElementById(id).innerText = "Hi";
         document.getElementById(id).contentWindow.location.reload(true);
     }
     return(<ChakraProvider>
@@ -72,7 +72,7 @@ export function Settings() {
                             _placeholder={{ opacity: 1, color: 'inherit' }}/>
                     </InputGroup>
                     <Center>
-                    <Button bg='transparent' color='#c0c5ce' 
+                    <Button id="button" bg='transparent' color='#c0c5ce' 
                         w='50%' align='center'
                         onClick={reload.bind(this,["Button"])}>
                         Apply Changes

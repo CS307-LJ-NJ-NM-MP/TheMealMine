@@ -12,7 +12,6 @@ export function TopNav() {
 		image = 'https://cdn1.vectorstock.com/i/1000x1000/66/35/blue-login-icon-vector-3876635.jpg';
 	}
 	
-
 	function home(e) {
 		e.preventDefault();
 		window.location = '/home';
