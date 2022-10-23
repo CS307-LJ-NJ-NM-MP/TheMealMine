@@ -13,11 +13,10 @@ import SigninPage from './SigninPage';
 window.$username = '';
 
 function App() {
-  return (
-    <>
+  return (<>
       <Routes>
-		<Route path='/' element={<SigninPage />} ></Route>
-      <Route path='/pwReset' element={<PWReset/>}></Route>
+		    <Route path='/' element={<SigninPage />} ></Route>
+        <Route path='/pwReset' element={<PWReset/>}></Route>
         <Route path='/home' element={<Home/>} ></Route>
         <Route path='/settings' element={<Settings/>} ></Route>
         <Route path='/bookmarks' element={<Bookmarks />} ></Route>
