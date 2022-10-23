@@ -4,8 +4,7 @@ import { SearchNav } from './searchNav'
 import Pantry from "./addIngredients";
 
 export const Home = () => {
-    return (
-        <>
+    return (<>
             <div>
                 <TopNav/>
                 <div className="home-display">

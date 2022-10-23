@@ -6,9 +6,6 @@ import { useState } from "react";
 //export const Bookmarks = () => {
     function Bookmarks() {
     var rName = "Pesto Pasta";
-    var ingredients = ['pasta','olive oil','onion','salt','pepper',' Parmesan'];
-    var instructions = "Make sure to cook pasta well."
-    var img = ""
 
     const [isSaved, setIsSaved] = useState(false);
 

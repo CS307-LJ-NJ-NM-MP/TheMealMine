@@ -1,11 +1,14 @@
 import React from "react";
-import Login from "./components/login"
-import { Container, Box, Text, Tabs, TabList, Tab, TabPanels,TabPanel} from "@chakra-ui/react";
-
+import loginBackground from "./imgs/loginBackground.jpg"
+import { Container, Box, Center, Tabs, TabList, Tab, TabPanels,TabPanel} from "@chakra-ui/react";
+import Login from "./components/login";
 import CreateAccount from "./components/CreateAccount";
 
-export function SigninPage() {
+function SigninPage() {
     return (
+        //<div>Hello</div>
+            //With chakra UI you can write inline css styles
+            //Import fonts and stuff into App.css though
             <Container maxW='xl' centerContent>
                 <Box d= 'flex'
                     justifyContent='center'
@@ -24,7 +27,6 @@ export function SigninPage() {
                             <Tab width="50%">Login</Tab>
                             <Tab width="50%">Create Account</Tab>
                         </TabList>
-
                          <TabPanels>
                              <TabPanel>
                                 <Login />
@@ -35,7 +37,7 @@ export function SigninPage() {
                          </TabPanels>
                     </Tabs>
                 </Box>
-
+                </Center>
             </Container>
             
     );
