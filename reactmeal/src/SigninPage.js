@@ -4,24 +4,13 @@ import { Container, Box, Center, Tabs, TabList, Tab, TabPanels,TabPanel} from "@
 import Login from "./components/login";
 import CreateAccount from "./components/CreateAccount";
 
-function SigninPage() {
+export function SigninPage() {
     return (
-        //<div>Hello</div>
-            //With chakra UI you can write inline css styles
-            //Import fonts and stuff into App.css though
-            <Container maxW='xl' centerContent>
-                <Box d= 'flex'
-                    justifyContent='center'
-                    p={3}
-                    bg={"LightGray"}
-                    w="100%"
-                    m="40px 0 15px 0"
-                    borderRadius="lg"
-                    borderWidth="1px"
-                    >
-                    <Text fontSize="4xl" fontFamily="sans" color="black">Login Page</Text>
-                </Box>
-                <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
+            <Container maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground} 
+                align="center">
+                <Center>
+                <Box m="10% 0 0 0" bg="white" w="40%" p={4} borderRadius="lg" borderWidth="1px">
                     <Tabs variant="soft-rounded" >
                         <TabList mb="lem">
                             <Tab width="50%">Login</Tab>
@@ -38,7 +27,7 @@ function SigninPage() {
                     </Tabs>
                 </Box>
                 </Center>
-            </Container>
-            
+            </Container>     
     );
 }
+export default SigninPage;

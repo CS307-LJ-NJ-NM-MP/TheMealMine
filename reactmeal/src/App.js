@@ -5,11 +5,11 @@ import { Settings } from "./components/settings"
 import { Feed } from "./components/feed"
 import  Bookmarks  from "./components/bookmarks"
 import { Friends } from "./components/addFriend"
-//import { Login } from "./components/login"
-//import { Signup } from "./components/signup"
+import { Login } from "./components/login"
 import { Recovery } from "./components/recovery"
 import { RecipeAdd } from "./components/recipeCreate"
 import { PWReset } from "./components/pwReset"
+import { SigninPage } from "./SigninPage"
 
 function App() {
   return (<>
