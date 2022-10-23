@@ -12,7 +12,7 @@ function SigninPage() {
                 <Box d= 'flex'
                     justifyContent='center'
                     p={3}
-                    bg={"grey"}
+                    bg={"LightGray"}
                     w="100%"
                     m="40px 0 15px 0"
                     borderRadius="lg"

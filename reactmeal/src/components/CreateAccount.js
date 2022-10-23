@@ -1,8 +1,9 @@
 import Axios from "axios";
 import { useState } from "react";
 import React from "react";
-import { Link } from "react-router-dom";
-import { TopNav } from '../topNav'
+import { FormControl, FormLabel } from "@chakra-ui/form-control";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/input"
+import { VStack, StackDivider, Button } from '@chakra-ui/react'
 
 function CreateAccount() {
 	const [formValue, setFormValue] = useState({
@@ -11,6 +12,11 @@ function CreateAccount() {
 		user: '',
 		image: ''
 	})
+	const [comfirmPassword, setConfirmPassword] = useState();
+	//ConfirmPassword to be used to compare before submitting
+	const [show, setShow] = useState(false);
+
+    const handleClick = () => setShow(!show);
 	
 	const handleChange = (e) => {
 		let value = e.target.value;
@@ -25,7 +31,8 @@ function CreateAccount() {
 
 	async function addUser(e) {
 		e.preventDefault();
-		window.location = '/login';
+		console.log("Got here");
+		//window.location = '/login';
 		await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
@@ -35,33 +42,80 @@ function CreateAccount() {
 	}
 	
 return (<>
-	<TopNav/>
-	<div className='login'>
-      	<form className="loginForm">
-			Sign-Up<br/>
-			Email:
-			<div>
-				<input type="text" name="email" onChange={handleChange}/>
-			</div>
-			Username:
-            	<div>
-              		<input type="text" name="user" onChange={handleChange}/>
-         		</div>
-			Password:
-        		<div>
-                		<input type="password" name="pass" onChange={handleChange}/>
-           		</div>
-			Image: 
-				<div>
-					<input type="text" placeholder="img url" name="image" onChange={handleChange}/>
-				</div>
-			<div>
-				<button type="submit" onClick={addUser}>Submit</button>
-       		</div>
-			<Link to="/recovery">Forgot Password</Link><br/>
-			<Link to="/">Continue as Guest</Link>
-  		</form>
-	</div>
+	<VStack
+            divider={<StackDivider borderColor='gray.200' />}
+            spacing="5px"
+            align='stretch'
+            color='black'
+    > 
+		
+        <FormControl isRequired>
+            <FormLabel>Email</FormLabel>
+            <Input 
+				name="email"
+                placeholder='Enter your email'
+                onChange={handleChange}
+            />    
+        </FormControl>  
+        <FormControl name="user" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input 
+				name="user"
+                placeholder='Enter your username'
+                onChange={handleChange}
+            />    
+        </FormControl>
+        <FormControl isRequired>
+            <FormLabel>Password</FormLabel>
+            <InputGroup size="md">
+                <Input 
+					name="pass"
+                    type={show ? "text " : "password"}
+                    placeholder='Enter your password'
+                    onChange={handleChange}
+                /> 
+                <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                        { show ? "Hide" : "Show" }
+                    </Button>
+                
+                </InputRightElement>
+            </InputGroup>
+        </FormControl>
+        <FormControl id="password" isRequired>
+            <FormLabel>Confirm Password</FormLabel>
+            <InputGroup size="md">
+                <Input 
+                    type={show ? "text " : "password"}
+                    placeholder='Confirm password'
+                    onChange={ (e)=> setConfirmPassword(e.target.value)}
+                /> 
+                <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleClick}>
+                        { show ? "Hide" : "Show" }
+                    </Button>
+                
+                </InputRightElement>
+            </InputGroup>
+        </FormControl>
+        <FormControl isRequired>
+            <FormLabel>Upload your picture</FormLabel>
+            <Input 
+				name="image"
+                type="text"
+                p={1.5}
+                onChange={ handleChange }
+            />    
+        </FormControl> 
+        
+        <Button colorScheme="blue"
+                width="100%"
+                style={{ marginTop : 15}}
+                onClick={addUser}>
+            Sign Me Up!!!
+        </Button>
+        
+        </VStack>
 </>
 );}
 export default CreateAccount;
