@@ -26,23 +26,31 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.listen(port);
 
+app.post('/findUser', async(req, res) => {
+
+    if (req.body.user === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        user: req.body.user
+    };
+    const projection = {user: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    console.log("here is user: " + form.user)
+    console.log("result: " + result)
+    if (result == null) {
+        console.log("error");
+    }
+    else {
+        console.log("success");
+    }
+    res.send(result);
+});
+
 app.post('/recoverPass', async (req, res) => {
     if (req.body.email === '') {
         res.status(400).send('email required');
     }
-    /*
-    User.findOne({
-        where: {
-            email: req.body.email,
-        },
-    }).then((user => {
-        const token = crypto.randomBytes(20).toString('hex');
-        user.update({
-            resetPasswordToken: token,
-            resetPasswordExpires: Date.now() + 360000,
-        });
-    }))
-    */
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -116,6 +124,8 @@ app.post('/deleteUser', async (req) => {
     await client.db("TheMealMine").collection("UserAccounts").deleteOne(form);
 
 });
+
+
 
 app.post('/loginUser', async (req,res) => {
 	const form = {
