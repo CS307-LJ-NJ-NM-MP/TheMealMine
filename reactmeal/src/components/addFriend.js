@@ -1,8 +1,6 @@
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
-import { SearchNav } from '../searchNav';
-import { FriendNav } from '../friendNav';
-import { ReactDOM } from 'react-dom/client';
+import { FriendNav } from '../friendNav'
 
 export const Friends = () => {
 
