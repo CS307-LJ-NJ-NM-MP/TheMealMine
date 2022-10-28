@@ -27,14 +27,12 @@ app.use(express.json());
 app.listen(port);
 
 app.post('/findUser', async(req, res) => {
-
     if (req.body.user === '') {
         res.status(400).send('query required');
     }
     const form = {
         user: req.body.user
     };
-    const projection = {user: 1};
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     console.log("here is user: " + form.user)
     console.log("result: " + result)
@@ -58,13 +56,6 @@ app.post('/recoverPass', async (req, res) => {
             pass: `vcznrukqedoimrqn`,
         },
     });
-
-
-    // var pw = client.db("TheMealMine").collection("UserAccounts").find(
-    //     {"UserAccounts.email": `${req.body.email}`},
-    //     {_id: 0, 'UserAccounts.$': 1}
-    // );
-
     const mailOptions = {
         from: 'themealmine@gmail.com',
         to: `${req.body.email}`,
@@ -74,9 +65,7 @@ app.post('/recoverPass', async (req, res) => {
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
-
     console.log('sending');
-
     transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
             console.error('there was an error: ', err);
@@ -92,7 +81,6 @@ app.post('/updatePass', async (req, res) => {
         user: req.body.user,
         email: req.body.email
     }
-
     var update = {$set:{"pass": req.body.pass}};
     var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     var projection = {pass: 1};
@@ -111,7 +99,8 @@ app.post('/signupUser', (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
-		status: 1
+		status: 1,
+        ranking: 0
  	};
 	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
 });
@@ -122,10 +111,7 @@ app.post('/deleteUser', async (req) => {
         pass: req.body.pass
     }
     await client.db("TheMealMine").collection("UserAccounts").deleteOne(form);
-
 });
-
-
 
 app.post('/loginUser', async (req,res) => {
 	const form = {
@@ -163,45 +149,17 @@ app.post('/logoutUser', (req,res) => {
 	client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-app.post('/updateSettings', (req,res) => {
-      var settingNum = req.body.setting;
-      var form; var update;
-      if(settingNum == 0){
-          form = {
-              pass: req.body.pass,
-              email: req.body.email
-          }
-          update = {$set:{"user": req.body.user}};
-      }else if(settingNum == 1){
-          form = {
-              user: req.body.user,
-              pass: req.body.pass
-          }
-          update = {$set:{"email": req.body.email}};
-      }else if(settingNum == 2){
-          form = {
-              user: req.body.user,
-              email: req.body.email
-          }
-          update = {$set:{"pass": req.body.pass}};
-      }else if(settingNum == 3){
-          form = {
-              user: req.body.user,
-              email: req.body.email,
-              pass: req.body.pass
-          }
-          update = {$set:{"privacy": req.body.privacy}};
-      }else if(settingNum == 4){
-          form = {
-              user: req.body.user,
-              email: req.body.email,
-              pass: req.body.pass
-          }
-          update = {$set:{"remember": req.body.remember}};
-      }
-      client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+app.post('/updateSettings', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    const settingNum = req.body.settingNum;
+    if(settingNum === 0){
+        const update = {$set:{"user": req.body.user}};
+        await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+        var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+        res.send(result);
+    }
 });
-
 
 app.post('/getPantry', async (req,res) => {
     const form = {

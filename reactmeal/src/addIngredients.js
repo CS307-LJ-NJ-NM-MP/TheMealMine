@@ -3,7 +3,7 @@ import Axios from "axios";
 import React from "react";
 import { useState } from "react";
 
-	function Pantry () {
+function Pantry () {
 		var username = localStorage.getItem('username');
 		var password = localStorage.getItem('password');
 		var pantry;
