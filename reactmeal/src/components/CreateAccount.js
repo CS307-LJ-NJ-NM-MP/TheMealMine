@@ -35,7 +35,8 @@ function CreateAccount() {
 		localStorage.setItem('username',formValue.user);
 		localStorage.setItem('password',formValue.pass);
 		localStorage.setItem('email', formValue.email);
-		localStorage.setItem('image', formValue.image);
+        localStorage.setItem('ranking',0);
+        localStorage.setItem('image', formValue.image);
 		window.location = "/home";
 		await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  

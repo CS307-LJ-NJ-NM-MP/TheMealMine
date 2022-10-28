@@ -13,37 +13,13 @@ import { useState } from "react";
     //var isSaved = false;
 
     const handleClick = () => setIsSaved(!isSaved);
-    const handleEdit = (e) => {
-        e.preventDefault();
-        let recipeName = rName;
-        let instruct = instructions;
-        let image = img;
-
-    }
-
-
+    
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
 
     if(username == null || password == null){
         window.location = "/";
     }
-
-    const [formValue, setFormValue] = useState({
-		recipes: '',
-        ingredients: ''
-	})
-	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
-		setFormValue((prevState) => {
-			return {
-				...prevState,
-				[name]: value
-			}
-		}); 
-	}
 
     async function getFavoriteRecipes(e) {
 		e.preventDefault();
@@ -65,16 +41,6 @@ import { useState } from "react";
         console.log(result.data);
 	}
 
-    async function getPantry(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        console.log(result.data);
-	}
-
     async function addRecipes(e) {
 		e.preventDefault();
         window.location = "/recipeAdd";
@@ -84,14 +50,6 @@ import { useState } from "react";
 			name: formValue.recipes
 		});*/
 	}
-
-    const recipeSave = () => {
-        return(
-            <>
-                
-            </>
-        );
-    }
 
     return (
         <>

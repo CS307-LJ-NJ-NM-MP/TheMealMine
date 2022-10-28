@@ -34,15 +34,16 @@ export function Login()  {
 				user: formValue.user,  
 				pass: formValue.pass
 			});
+			console.log(result.data._id);
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
+			localStorage.setItem('id',result.data._id);
 			console.log("got here2");
 			localStorage.setItem('pantry',result.data.pantry);
+			localStorage.setItem('ranking',result.data.ranking)
 			console.log("got here1");
 			window.location = "/home";
-		} else {
-			//Toast here
-		}
+		} 
 	}
 	
 	function recovery(e) {
@@ -98,8 +99,7 @@ export function Login()  {
             	Continue as Guest
         	</Button>
 			<Button onClick={recovery}> Forgot Password </Button>
-		</VStack>
-        	
+		</VStack>	
 	);
 }
 export default Login;

@@ -1,8 +1,6 @@
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
-import { SearchNav } from '../searchNav';
-import { FriendNav } from '../friendNav';
-import { ReactDOM } from 'react-dom/client';
+import { FriendNav } from '../friendNav'
 
 export const Friends = () => {
 
@@ -11,10 +9,16 @@ export const Friends = () => {
         <>
             <div>
             <TopNav/>
-
-            Friends List:
             <SideNav/>
-            <FriendNav/>
+            </div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                Search for users here:<br/>
+            <FriendNav/><br/>
+
             </div>
         </>
     );

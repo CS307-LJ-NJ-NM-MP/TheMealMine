@@ -1,16 +1,39 @@
 import { TopNav } from '../topNav'
+import { useState } from "react";
+import Axios from "axios";
 import loginBackground from "../imgs/settingsBackground.jpg"
 import { Box, Button, VStack, Container, Input, Image, Center, Tabs, TabList, Tab,
         TabPanels, TabPanel, Checkbox, FormLabel} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
 export function Settings() {
+    var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
     var email = localStorage.getItem('email');
+    var ranking = localStorage.getItem('ranking');
     var image = localStorage.getItem('image');
-    function reload(id) {
-        document.getElementById(id).innerText = "Hi";
-        document.getElementById(id).contentWindow.location.reload(true);
-    }
+    const [formValue, setFormValue] = useState({
+		user: '',
+		email: '',
+        oldPass: '',
+        newPass: '',
+        image: '',
+        privacy: '',
+        remember: ''
+	})
+    const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
+		setFormValue((prevState) => {
+			return {
+				...prevState,
+				[name]: value
+			}
+		}); 
+	}
+    async function update(e) {
+		//make switches based on which is null or not, then 
+        //send individual calls to update settings based on switch
+	}
     return(<ChakraProvider>
             <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
                 backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground}>
@@ -35,37 +58,36 @@ export function Settings() {
                          <TabPanels>
                              <TabPanel>
                                 <VStack>
-                                    <Image src={image} borderRadius='full'boxSize='200px'/>
-                                    <FormLabel>{username}</FormLabel>
-                                    <FormLabel>{email}</FormLabel>
-                                    <FormLabel>Ranking: 1234</FormLabel>
+                                    <Image id="image1" src={image} borderRadius='full'boxSize='200px'/>
+                                    <FormLabel id="userLabel1" >{username}</FormLabel>
+                                    <FormLabel id="emailLabel1">{email}</FormLabel>
+                                    <FormLabel>Ranking: {ranking}</FormLabel>
                                 </VStack>
                             </TabPanel>
                             <TabPanel>
                                 <VStack spacing="10px">
-                                    <FormLabel>{username}</FormLabel>
-                                    <Input variant="flushed" placeholder='Enter New Username' w="50%"/>
-                                    <FormLabel>{email}</FormLabel>
-                                    <Input variant="flushed" placeholder='Enter New Email' w="50%"/>
-                                    <Input variant="flushed" placeholder='Enter New Password' w="50%"/>
-                                    <Input variant="flushed" placeholder='Confirm New Password' w="50%"/>
-                                    <Button w="40%">Apply Changes</Button>
+                                    <FormLabel id="userLabel2">{username}</FormLabel>
+                                    <Input variant="flushed" id="user" name="user" placeholder='Enter New Username' w="50%" onChange={handleChange}/>
+                                    <FormLabel id="emailLabel2">{email}</FormLabel>
+                                    <Input variant="flushed" id="email" name="email" placeholder='Enter New Email' w="50%" onChange={handleChange}/>
+                                    <Input id="newPass" type="password" variant="flushed" name="newPass" placeholder='Enter New Password' w="50%" onChange={handleChange}/>
+                                    <Input id="oldPass" type="password" variant="flushed" name="oldPass" placeholder='Confirm With Old Password' w="50%" onChange={handleChange}/>
+                                    <Button type="submit" w="40%" onClick={update}>Apply Changes</Button>
                                 </VStack>
                             </TabPanel>
                             <TabPanel>
-                                    <Image src={image} borderRadius='full'boxSize='200px'/><br/>
-                                    <Input variant="flushed" placeholder='Enter New Profile Pick URL'
-                                        _placeholder={{ opacity: 1, color: 'inherit' }}
-                                        w="50%" m="0 0 30px 0"/>
+                                    <Image id="image2" src={image} borderRadius='full'boxSize='200px'/><br/>
+                                    <Input id="image" name="image" variant="flushed" placeholder='Enter New Profile Pick URL'
+                                        w="50%" onChange={handleChange}/>
                                     <Center>
-                                        <Button w='40%' onClick={reload.bind(this,["Button"])}>
-                                            Apply Changes
-                                        </Button> 
+                                        <Button type="submit" w='40%' onClick={update}>Apply Changes</Button> 
                                     </Center>
                             </TabPanel>
                             <TabPanel>
                                 <VStack>
-                                    <Checkbox>Private</Checkbox>
+                                <Checkbox id="p">
+                                    Private
+                                </Checkbox>
                                     <Checkbox>Private to Friends</Checkbox>
                                     <Checkbox>Public</Checkbox>
                                 </VStack>
