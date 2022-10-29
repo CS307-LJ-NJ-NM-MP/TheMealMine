@@ -36,9 +36,8 @@ function Login()  {
 			});
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
-			console.log("got here2");
 			localStorage.setItem('pantry',result.data.pantry);
-			console.log("got here1");
+			localStorage.setItem('friendsList', result.data.friendsList);
 			window.location = "/home";
 		} else {
 			//Toast here
@@ -55,6 +54,7 @@ function Login()  {
 		localStorage.setItem('password',"Guest");
 		localStorage.setItem('email',"Guest");
 		localStorage.setItem('pantry',"Guest");
+		localStorage.setItem('friendsList', "Guest");
 		window.location = "/home";
 	}
 	function goToReset() {
