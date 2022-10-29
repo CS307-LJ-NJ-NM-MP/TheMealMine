@@ -5,6 +5,7 @@ import Axios from "axios";
 export const FriendNav = () => {
 
     const [query, setQuery] = useState("");
+    const [textOut, setTextOut] = useState("");
 
     function sendRequest(e) {
 //        handleChange();
@@ -31,7 +32,7 @@ export const FriendNav = () => {
         console.log("sending");
 		if(formValue.user !== '') {
             console.log("valid: " + formValue.user);
-			var result = await Axios.post('http://localhost:5000/findUser', {
+			var result = await Axios.post('http://localhost:5000/findUserReg', {
 				user: formValue.user,  
 			})
             .then(response => {
@@ -39,10 +40,11 @@ export const FriendNav = () => {
                 console.log("other result: " + result)
 //                console.log("response: " + response);
                 if (response.data !== "") {
-                    console.log("form value: " + formValue.user)
-                    setQuery(formValue.user);
+                    console.log("form value: " + response.data.user)
+                    setQuery(response.data.user);
                     console.log("final query: " + query)
-                    alert("User " + formValue.user + " found");
+//                    alert("Users " + response.data.user + " found");
+                    setTextOut("" + response.data.user)
                     setQuery("");
                 }
                 else {
@@ -73,7 +75,7 @@ export const FriendNav = () => {
                     onChange={handleChange('user')}
                 />
                 <input onClick={sendRequest} type='button' value="Find User" id="friendButton"/>
-
+                {textOut}
             </div>
         </>
     );
