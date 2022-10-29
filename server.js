@@ -45,6 +45,34 @@ app.post('/findUser', async(req, res) => {
     res.send(result);
 });
 
+app.post('/findUserReg', async(req, res) => {
+
+    if (req.body.user === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        user: req.body.user
+    };
+    const projection = {user: 1};
+    var string = "" + form.user;
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne({
+        user: {
+            $regex : string 
+        }
+    });
+    if (result == null || result.user === undefined) {
+        console.log("error");
+        res.send(null);
+    }
+    else {
+        console.log("success");
+        console.log("here is user: " + form.user)
+        console.log("result: " + result.user)
+        res.send(result);
+    }
+
+});
+
 app.post('/recoverPass', async (req, res) => {
     if (req.body.email === '') {
         res.status(400).send('email required');
