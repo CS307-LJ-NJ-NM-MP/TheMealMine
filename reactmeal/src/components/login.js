@@ -29,20 +29,18 @@ export function Login()  {
 		if(formValue.user !== '' && formValue.pass !== '') {
 			localStorage.setItem('username',formValue.user);
 			localStorage.setItem('password',formValue.pass);
-			console.log("here");
 			var result = await Axios.post('http://localhost:5000/loginUser', {
 				user: formValue.user,  
 				pass: formValue.pass
 			});
+			console.log(result.data.email);
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
-			console.log("got here2");
+			localStorage.setItem('id',result.data._id);
 			localStorage.setItem('pantry',result.data.pantry);
-			console.log("got here1");
+			localStorage.setItem('ranking',result.data.ranking);
 			window.location = "/home";
-		} else {
-			//Toast here
-		}
+		} 
 	}
 	
 	function recovery(e) {
@@ -98,8 +96,7 @@ export function Login()  {
             	Continue as Guest
         	</Button>
 			<Button onClick={recovery}> Forgot Password </Button>
-		</VStack>
-        	
+		</VStack>	
 	);
 }
 export default Login;
