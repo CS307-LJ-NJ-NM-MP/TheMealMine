@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-import Axios from "axios";
 import Settings from "./imgs/settings.png"
 import AddFriend from "./imgs/addFriend.png"
 import Bookmark from "./imgs/bookmark.png"

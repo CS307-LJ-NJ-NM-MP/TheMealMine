@@ -1,120 +1,298 @@
 import { TopNav } from '../topNav'
-import { Box, Button, Text, Container, Input, InputGroup, 
-        InputLeftAddon, Image, Center } from '@chakra-ui/react'
+import { useState } from "react";
+import Axios from "axios";
+import loginBackground from "../imgs/settingsBackground.jpg"
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+        TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
-//#343d46 #4f5b66 #65737e #a7adba #c0c5ce
 export function Settings() {
+    var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
     var email = localStorage.getItem('email');
+    var ranking = localStorage.getItem('ranking');
     var image = localStorage.getItem('image');
-    function reload(id) {
-        document.getElementById(id).innerText = "Apply Changes";
-        document.getElementById(id).contentWindow.location.reload(true);
+    var privacySetting = "Private";
+    var information = "Forget";
+    const [formValue, setFormValue] = useState({
+		user: '',
+		email: '',
+        oldPass: '',
+        newPass: '',
+        image: '',
+        privacy: '',
+        remember: ''
+	})
+    async function privateChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Private";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        privacySetting = "Private";
+        formValue.privacy = '';
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
     }
+    async function publicChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Public";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        privacySetting = "Public";
+        formValue.privacy = '';
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+    }
+    async function rememberChange(e) {
+        e.preventDefault();
+        formValue.remember = "Remember";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        information = "Remember";
+        formValue.remember = '';
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
+    }
+    async function forgetChange(e) {
+        e.preventDefault();
+        formValue.remember = "Forget";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        information = "Forget";
+        formValue.remember = '';
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
+    }
+    const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
+		setFormValue((prevState) => {
+			return {
+				...prevState,
+				[name]: value
+			}
+		}); 
+	}
+    async function update(e) {
+		e.preventDefault();
+            console.log(formValue.email);
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        }    
+	}
     return(<ChakraProvider>
-            <Container borderColor="transparent" maxW='100%' h='calc(200vh)' 
-                bgGradient='linear(to-br,#343d46 30%, #4f5b66 50%, #65737e 70%, #a7adba 95%)'>
+            <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground}>
             <TopNav/>
             <Center>
-            <Box boxShadow='dark-lg' color="transparent"
-                p={3} m="10px" w="95%"
-                border='2px' borderRadius='lg'>
-                <Box boxShadow='dark-lg'
-                    p={3} m="0px 0 15px 0" w='100%'
-                    borderColor="transparent"
-                    border='2px' borderRadius='lg'  
-                    align="center">
-                    <Text color='#c0c5ce'>
-                        Settings
-                    </Text>
+            <Box bg="whiteAlpha.700"
+                p={3} m="50px" w="60%"
+                borderRadius='lg' align="center">
+                <Box bg="white" borderRadius='lg' 
+                    p={3} m="0 0 10px 0" w="90%">
+                    Settings
                 </Box>
-                <Box id="Current User Information"
-                    boxShadow='dark-lg' borderColor="transparent" 
-                    p={3} m="0px 0 15px 0"   
-                    border='2px' borderRadius='lg' 
-                    align='center'>
-                    <Text color='#c0c5ce' m="0px 0 10px 0" >
-                        Current User Information
-                    </Text>
-                    <Image boxShadow="dark-lg" borderColor="transparent" 
-                        borderRadius='full' m="0px 0 5px 0"
-                        boxSize='100px' src={image}/>
-                        <Text color='#c0c5ce'>
-                            {username}
-                        </Text>
-                        <Text color='#c0c5ce'>
-                            {email}
-                        </Text>
-                </Box>
-                <Box id="Login Information" 
-                    boxShadow='dark-lg'
-                    borderColor="transparent" 
-                    p={3} m="0px 0 15px 0"   
-                    border='2px' borderRadius='lg'
-                    align="center">
-                    <Text color='#c0c5ce' m="0px 0 10px 0" 
-                        align='center'>
-                        Login Information
-                    </Text>
-                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
-                        <InputLeftAddon bg="transparent" children="Change Username:"/>
-                        <Input variant="flushed" placeholder='Enter New Username'
-                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
-                    </InputGroup>
-                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
-                        <InputLeftAddon bg="transparent" children="Change Password:"/>
-                        <Input variant="flushed" placeholder='Enter New Password'
-                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
-                    </InputGroup>
-                    <InputGroup m="10px 0 10px 0" w="350px" borderColor="transparent" color="#c0c5ce">
-                        <InputLeftAddon bg="transparent" children="Change Username:"/>
-                        <Input variant="flushed" placeholder='Enter New Username'
-                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
-                    </InputGroup>
-                    <Center>
-                    <Button bg='transparent' color='#c0c5ce' 
-                        w='50%' align='center'
-                        onClick={reload.bind(this,["Button"])}>
-                        Apply Changes
-                    </Button> 
-                    </Center>
-                </Box>
-                <Box id="Current User Information"
-                    boxShadow='dark-lg'
-                    borderColor="transparent"
-                    p={3} m="0px 0 15px 0"   
-                    border='2px' borderRadius='lg' 
-                    align='center'>
-                    <Text color='#c0c5ce' m="0px 0 10px 0" 
-                        align='center'>
-                        Profile Picture
-                    </Text>
-                    <InputGroup m="10px 0 10px 0" w="400px" borderColor="transparent" color="#c0c5ce">
-                        <InputLeftAddon bg="transparent" children="Change Profile Pick:"/>
-                        <Input variant="flushed" placeholder='Enter New Profile Pick URL'
-                            _placeholder={{ opacity: 1, color: 'inherit' }}/>
-                    </InputGroup>
-                    <Center>
-                    <Button bg='transparent' color='#c0c5ce' 
-                        w='50%' align='center'
-                        onClick={reload.bind(this,["Button"])}>
-                        Apply Changes
-                    </Button> 
-                    </Center>
-                </Box>
-                <Box id="Current User Information"
-                    boxShadow='dark-lg'
-                    borderColor="transparent"
-                    p={3} m="0px 0 15px 0"   
-                    border='2px' borderRadius='lg' 
-                    align='center'>
-                    <Text color='#c0c5ce' m="0px 0 10px 0" 
-                        align='center'>
-                        Privacy Settings
-                    </Text>
-                </Box>
+                    <Tabs bg="white" borderRadius='lg' 
+                        p={3} w="95%" align="center">
+                        <TabList>
+                            <Tab>Current User Information</Tab>
+                            <Tab>Login Information</Tab>
+                            <Tab>Profile Picture</Tab>
+                            <Tab>Privacy</Tab>
+                            <Tab>App</Tab>
+                        </TabList>
+                         <TabPanels>
+                             <TabPanel>
+                                <VStack>
+                                    <Image id="image1" src={image} borderRadius='full'boxSize='200px'/>
+                                    <FormLabel id="userLabel1" >{username}</FormLabel>
+                                    <FormLabel id="emailLabel1">{email}</FormLabel>
+                                    <FormLabel>Ranking: {ranking}</FormLabel>
+                                </VStack>
+                            </TabPanel>
+                            <TabPanel>
+                                <VStack spacing="10px">
+                                    <FormLabel id="userLabel2">{username}</FormLabel>
+                                    <Input variant="flushed" id="user" name="user" placeholder='Enter New Username' w="50%" onChange={handleChange}/>
+                                    <FormLabel id="emailLabel2">{email}</FormLabel>
+                                    <Input variant="flushed" id="email" name="email" placeholder='Enter New Email' w="50%" onChange={handleChange}/>
+                                    <Input id="newPass" type="password" variant="flushed" name="newPass" placeholder='Enter New Password' w="50%" onChange={handleChange}/>
+                                    <Input id="oldPass" type="password" variant="flushed" name="oldPass" placeholder='Confirm With Old Password' w="50%" onChange={handleChange}/>
+                                    <Button type="submit" w="40%" onClick={update}>Apply Changes</Button>
+                                </VStack>
+                            </TabPanel>
+                            <TabPanel>
+                                    <Image id="image2" src={image} borderRadius='full'boxSize='200px'/><br/>
+                                    <Input id="image" name="image" variant="flushed" placeholder='Enter New Profile Pick URL'
+                                        w="50%" onChange={handleChange}/>
+                                    <Center>
+                                        <Button type="submit" w='40%' onClick={update}>Apply Changes</Button> 
+                                    </Center>
+                            </TabPanel>
+                            <TabPanel>
+                                <Center>
+                                    <VStack>
+                                        <Text id="privacyLabel">Current Status: {privacySetting}</Text>
+                                        <Button id="private" onClick={privateChange}>Private</Button>
+                                        <Button id="public" onClick={publicChange}>Public</Button>
+                                    </VStack>
+                                </Center>
+                            </TabPanel>
+                            <TabPanel>
+                                <VStack>
+                                    <Text id="informationLabel">Current Status: {information}</Text>
+                                    <Button id="remember" onClick={rememberChange}>Remember</Button>
+                                    <Button id="forget" onClick={forgetChange}>Forget</Button>   
+                                </VStack> 
+                            </TabPanel>
+                         </TabPanels>
+                    </Tabs>
             </Box>
             </Center>
-            </Container>
-        </ChakraProvider>)
+        </Container>
+    </ChakraProvider>)
 }
