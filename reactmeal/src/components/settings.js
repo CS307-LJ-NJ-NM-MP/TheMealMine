@@ -2,11 +2,9 @@ import { TopNav } from '../topNav'
 import { useState } from "react";
 import Axios from "axios";
 import loginBackground from "../imgs/settingsBackground.jpg"
-import { Box, Button, VStack, Text, HStack, Container, Input, Image, Center, Tabs, TabList, Tab,
-        TabPanels, TabPanel, Checkbox, FormLabel} from '@chakra-ui/react'
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+        TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
-import { buildQueries } from '@testing-library/react';
 export function Settings() {
     var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
@@ -21,22 +19,163 @@ export function Settings() {
         oldPass: '',
         newPass: '',
         image: '',
-        privacy: ''
+        privacy: '',
+        remember: ''
 	})
-    async function privateChange() {
+    async function privateChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Private";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
         privacySetting = "Private";
+        formValue.privacy = '';
         document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
     }
-    function publicChange() {
+    async function publicChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Public";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
         privacySetting = "Public";
+        formValue.privacy = '';
         document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
     }
-    async function rememberChange() {
+    async function rememberChange(e) {
+        e.preventDefault();
+        formValue.remember = "Remember";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
         information = "Remember";
+        formValue.remember = '';
         document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
     }
-    async function forgetChange() {
+    async function forgetChange(e) {
+        e.preventDefault();
+        formValue.remember = "Forget";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
         information = "Forget";
+        formValue.remember = '';
         document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
     }
     const handleChange = (e) => {
@@ -49,7 +188,6 @@ export function Settings() {
 			}
 		}); 
 	}
-
     async function update(e) {
 		e.preventDefault();
             console.log(formValue.email);
@@ -60,7 +198,8 @@ export function Settings() {
             image: formValue.image,
             oldPass: formValue.oldPass,
             newPass: formValue.newPass,
-            privacy: formValue.privacy
+            privacy: formValue.privacy,
+            remember: formValue.remember
 		}); 
         console.log(result);
         if(result !== null){
@@ -154,6 +293,6 @@ export function Settings() {
                     </Tabs>
             </Box>
             </Center>
-            </Container>
-        </ChakraProvider>)
+        </Container>
+    </ChakraProvider>)
 }

@@ -197,13 +197,19 @@ app.post('/updateSettings', async (req,res) => {
         result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
         
         if(result.pass === req.body.oldPass){
-            console.log(result.pass);
             const update = {$set:{"pass": req.body.newPass}};
             result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
         }
     }
+    if(req.body.privacy !== '') {
+        const update = {$set:{"privacy": req.body.privacy}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
+    if(req.body.remember !== '') {
+        const update = {$set:{"remember": req.body.remember}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log(result.pass);
     res.send(result);
 });
 
