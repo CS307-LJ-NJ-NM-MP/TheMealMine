@@ -66,7 +66,7 @@ app.post('/recoverPass', async (req, res) => {
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
-
+ 
     console.log('sending');
 
     transporter.sendMail(mailOptions, (err, response) => {
@@ -203,6 +203,16 @@ app.post('/getPantry', async (req,res) => {
     var projection = {pantry: 1};
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
     res.send(result.pantry);
+});
+
+app.post('/getFriendsList', async (req,res) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {friendsList: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result.friendsList);
 });
 
 app.post('/updatePicture', (req) => {
