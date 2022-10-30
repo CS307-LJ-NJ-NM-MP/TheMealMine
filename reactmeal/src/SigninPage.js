@@ -5,8 +5,7 @@ import Login from "./components/login";
 import CreateAccount from "./components/CreateAccount";
 
 export function SigninPage() {
-    return (
-            <Container maxW='100%' h='calc(100vh)' 
+    return (<Container maxW='100%' h='calc(100vh)' 
                 backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground} 
                 align="center">
                 <Center>
@@ -27,9 +26,7 @@ export function SigninPage() {
                     </Tabs>
                 </Box>
                 </Center>
-            </Container>
-            
+            </Container>     
     );
-
 }
 export default SigninPage;

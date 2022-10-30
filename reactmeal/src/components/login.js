@@ -96,7 +96,8 @@ export function Login()  {
             	Continue as Guest
         	</Button>
 			<Button onClick={recovery}> Forgot Password </Button>
-		</VStack>	
+		</VStack>
+        	
 	);
 }
 export default Login;

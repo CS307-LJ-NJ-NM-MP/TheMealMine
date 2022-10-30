@@ -6,224 +6,13 @@ import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabLi
         TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
 export function Settings() {
-    var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
     var email = localStorage.getItem('email');
-    var ranking = localStorage.getItem('ranking');
     var image = localStorage.getItem('image');
-    var privacySetting = "Private";
-    var information = "Forget";
-    const [formValue, setFormValue] = useState({
-		user: '',
-		email: '',
-        oldPass: '',
-        newPass: '',
-        image: '',
-        privacy: '',
-        remember: ''
-	})
-    async function privateChange(e) {
-        e.preventDefault();
-        formValue.privacy = "Private";
-        var result = await Axios.post('http://localhost:5000/updateSettings', {
-			_id: id,
-            user: formValue.user,
-            email: formValue.email,
-            image: formValue.image,
-            oldPass: formValue.oldPass,
-            newPass: formValue.newPass,
-            privacy: formValue.privacy,
-            remember: formValue.remember
-		}); 
-        console.log(result);
-        if(result !== null){
-            username = result.data.user;
-            document.getElementById("userLabel1").innerHTML = username;
-            document.getElementById("userLabel2").innerHTML = username;
-            document.getElementById("user").value = '';
-            formValue.user = '';
-            email = result.data.email;
-            document.getElementById("emailLabel1").innerHTML = email;
-            document.getElementById("emailLabel2").innerHTML = email;
-            document.getElementById("email").value = '';
-            formValue.email = '';
-            image = result.data.image;
-            document.getElementById("image1").src = image;
-            document.getElementById("image2").src = image;
-            document.getElementById("image").value = '';
-            formValue.email = '';
-            document.getElementById("newPass").value = '';
-            formValue.newPass = '';
-            document.getElementById("oldPass").value = '';
-            formValue.oldPass = '';
-        } 
-        privacySetting = "Private";
-        formValue.privacy = '';
-        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+    function reload(id) {
+        document.getElementById(id).innerText = "Apply Changes";
+        document.getElementById(id).contentWindow.location.reload(true);
     }
-    async function publicChange(e) {
-        e.preventDefault();
-        formValue.privacy = "Public";
-        var result = await Axios.post('http://localhost:5000/updateSettings', {
-			_id: id,
-            user: formValue.user,
-            email: formValue.email,
-            image: formValue.image,
-            oldPass: formValue.oldPass,
-            newPass: formValue.newPass,
-            privacy: formValue.privacy,
-            remember: formValue.remember
-		}); 
-        console.log(result);
-        if(result !== null){
-            username = result.data.user;
-            document.getElementById("userLabel1").innerHTML = username;
-            document.getElementById("userLabel2").innerHTML = username;
-            document.getElementById("user").value = '';
-            formValue.user = '';
-            email = result.data.email;
-            document.getElementById("emailLabel1").innerHTML = email;
-            document.getElementById("emailLabel2").innerHTML = email;
-            document.getElementById("email").value = '';
-            formValue.email = '';
-            image = result.data.image;
-            document.getElementById("image1").src = image;
-            document.getElementById("image2").src = image;
-            document.getElementById("image").value = '';
-            formValue.email = '';
-            document.getElementById("newPass").value = '';
-            formValue.newPass = '';
-            document.getElementById("oldPass").value = '';
-            formValue.oldPass = '';
-        } 
-        privacySetting = "Public";
-        formValue.privacy = '';
-        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
-    }
-    async function rememberChange(e) {
-        e.preventDefault();
-        formValue.remember = "Remember";
-        var result = await Axios.post('http://localhost:5000/updateSettings', {
-			_id: id,
-            user: formValue.user,
-            email: formValue.email,
-            image: formValue.image,
-            oldPass: formValue.oldPass,
-            newPass: formValue.newPass,
-            privacy: formValue.privacy,
-            remember: formValue.remember
-		}); 
-        console.log(result);
-        if(result !== null){
-            username = result.data.user;
-            document.getElementById("userLabel1").innerHTML = username;
-            document.getElementById("userLabel2").innerHTML = username;
-            document.getElementById("user").value = '';
-            formValue.user = '';
-            email = result.data.email;
-            document.getElementById("emailLabel1").innerHTML = email;
-            document.getElementById("emailLabel2").innerHTML = email;
-            document.getElementById("email").value = '';
-            formValue.email = '';
-            image = result.data.image;
-            document.getElementById("image1").src = image;
-            document.getElementById("image2").src = image;
-            document.getElementById("image").value = '';
-            formValue.email = '';
-            document.getElementById("newPass").value = '';
-            formValue.newPass = '';
-            document.getElementById("oldPass").value = '';
-            formValue.oldPass = '';
-        } 
-        information = "Remember";
-        formValue.remember = '';
-        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
-    }
-    async function forgetChange(e) {
-        e.preventDefault();
-        formValue.remember = "Forget";
-        var result = await Axios.post('http://localhost:5000/updateSettings', {
-			_id: id,
-            user: formValue.user,
-            email: formValue.email,
-            image: formValue.image,
-            oldPass: formValue.oldPass,
-            newPass: formValue.newPass,
-            privacy: formValue.privacy,
-            remember: formValue.remember
-		}); 
-        console.log(result);
-        if(result !== null){
-            username = result.data.user;
-            document.getElementById("userLabel1").innerHTML = username;
-            document.getElementById("userLabel2").innerHTML = username;
-            document.getElementById("user").value = '';
-            formValue.user = '';
-            email = result.data.email;
-            document.getElementById("emailLabel1").innerHTML = email;
-            document.getElementById("emailLabel2").innerHTML = email;
-            document.getElementById("email").value = '';
-            formValue.email = '';
-            image = result.data.image;
-            document.getElementById("image1").src = image;
-            document.getElementById("image2").src = image;
-            document.getElementById("image").value = '';
-            formValue.email = '';
-            document.getElementById("newPass").value = '';
-            formValue.newPass = '';
-            document.getElementById("oldPass").value = '';
-            formValue.oldPass = '';
-        } 
-        information = "Forget";
-        formValue.remember = '';
-        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
-    }
-    const handleChange = (e) => {
-		let value = e.target.value;
-		let name = e.target.name;
-		setFormValue((prevState) => {
-			return {
-				...prevState,
-				[name]: value
-			}
-		}); 
-	}
-    async function update(e) {
-		e.preventDefault();
-            console.log(formValue.email);
-        var result = await Axios.post('http://localhost:5000/updateSettings', {
-			_id: id,
-            user: formValue.user,
-            email: formValue.email,
-            image: formValue.image,
-            oldPass: formValue.oldPass,
-            newPass: formValue.newPass,
-            privacy: formValue.privacy,
-            remember: formValue.remember
-		}); 
-        console.log(result);
-        if(result !== null){
-            username = result.data.user;
-            document.getElementById("userLabel1").innerHTML = username;
-            document.getElementById("userLabel2").innerHTML = username;
-            document.getElementById("user").value = '';
-            formValue.user = '';
-            email = result.data.email;
-            document.getElementById("emailLabel1").innerHTML = email;
-            document.getElementById("emailLabel2").innerHTML = email;
-            document.getElementById("email").value = '';
-            formValue.email = '';
-            image = result.data.image;
-            document.getElementById("image1").src = image;
-            document.getElementById("image2").src = image;
-            document.getElementById("image").value = '';
-            formValue.email = '';
-            document.getElementById("newPass").value = '';
-            formValue.newPass = '';
-            document.getElementById("oldPass").value = '';
-            formValue.oldPass = '';
-        }    
-	}
     return(<ChakraProvider>
             <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
                 backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground}>
@@ -248,39 +37,40 @@ export function Settings() {
                          <TabPanels>
                              <TabPanel>
                                 <VStack>
-                                    <Image id="image1" src={image} borderRadius='full'boxSize='200px'/>
-                                    <FormLabel id="userLabel1" >{username}</FormLabel>
-                                    <FormLabel id="emailLabel1">{email}</FormLabel>
-                                    <FormLabel>Ranking: {ranking}</FormLabel>
+                                    <Image src={image} borderRadius='full'boxSize='200px'/>
+                                    <FormLabel>{username}</FormLabel>
+                                    <FormLabel>{email}</FormLabel>
+                                    <FormLabel>Ranking: 1234</FormLabel>
                                 </VStack>
                             </TabPanel>
                             <TabPanel>
                                 <VStack spacing="10px">
-                                    <FormLabel id="userLabel2">{username}</FormLabel>
-                                    <Input variant="flushed" id="user" name="user" placeholder='Enter New Username' w="50%" onChange={handleChange}/>
-                                    <FormLabel id="emailLabel2">{email}</FormLabel>
-                                    <Input variant="flushed" id="email" name="email" placeholder='Enter New Email' w="50%" onChange={handleChange}/>
-                                    <Input id="newPass" type="password" variant="flushed" name="newPass" placeholder='Enter New Password' w="50%" onChange={handleChange}/>
-                                    <Input id="oldPass" type="password" variant="flushed" name="oldPass" placeholder='Confirm With Old Password' w="50%" onChange={handleChange}/>
-                                    <Button type="submit" w="40%" onClick={update}>Apply Changes</Button>
+                                    <FormLabel>{username}</FormLabel>
+                                    <Input variant="flushed" placeholder='Enter New Username' w="50%"/>
+                                    <FormLabel>{email}</FormLabel>
+                                    <Input variant="flushed" placeholder='Enter New Email' w="50%"/>
+                                    <Input variant="flushed" placeholder='Enter New Password' w="50%"/>
+                                    <Input variant="flushed" placeholder='Confirm New Password' w="50%"/>
+                                    <Button w="40%">Apply Changes</Button>
                                 </VStack>
                             </TabPanel>
                             <TabPanel>
-                                    <Image id="image2" src={image} borderRadius='full'boxSize='200px'/><br/>
-                                    <Input id="image" name="image" variant="flushed" placeholder='Enter New Profile Pick URL'
-                                        w="50%" onChange={handleChange}/>
+                                    <Image src={image} borderRadius='full'boxSize='200px'/><br/>
+                                    <Input variant="flushed" placeholder='Enter New Profile Pick URL'
+                                        _placeholder={{ opacity: 1, color: 'inherit' }}
+                                        w="50%" m="0 0 30px 0"/>
                                     <Center>
-                                        <Button type="submit" w='40%' onClick={update}>Apply Changes</Button> 
+                                        <Button w='40%' onClick={reload.bind(this,["Button"])}>
+                                            Apply Changes
+                                        </Button> 
                                     </Center>
                             </TabPanel>
                             <TabPanel>
-                                <Center>
-                                    <VStack>
-                                        <Text id="privacyLabel">Current Status: {privacySetting}</Text>
-                                        <Button id="private" onClick={privateChange}>Private</Button>
-                                        <Button id="public" onClick={publicChange}>Public</Button>
-                                    </VStack>
-                                </Center>
+                                <VStack>
+                                    <Checkbox>Private</Checkbox>
+                                    <Checkbox>Private to Friends</Checkbox>
+                                    <Checkbox>Public</Checkbox>
+                                </VStack>
                             </TabPanel>
                             <TabPanel>
                                 <VStack>
