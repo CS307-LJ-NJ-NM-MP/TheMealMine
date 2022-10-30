@@ -8,6 +8,9 @@ function FriendsPage() {
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
     var friendsList;
+    //const [friendsListForm, setFriendsListForm] = useState({
+      //  friendsList: '',
+    //});
     //const friendsList = JSON.parse(localStorage.getItem(friendsList));
     
     //&& instead of || ?
@@ -15,7 +18,7 @@ function FriendsPage() {
     if((username !== null || username !== "Guest") && (password !== null || password !== "Guest")) {
 			var userFriendsList = localStorage.getItem('friendsList');
 			if(userFriendsList !== null) {
-			    friendsList = userFriendsList.split(",,");
+			    friendsList = userFriendsList.split(",");
                 console.log({friendsList});
 			} else {
 				friendsList = [];
@@ -37,11 +40,12 @@ function FriendsPage() {
                 <Stack>
                     <Input name="searchBar" placeholder="Search for user" />
                     <Box>
-                    <ul>
+                    
                         {friendsList.map((friend =>
-                        <li key={friend.user}>{friend.user}</li>))}
+                        
+                            <Button key={friend}>{friend}</Button>))}
 
-                    </ul>
+                    
                     
                     </Box>
                 </Stack>
