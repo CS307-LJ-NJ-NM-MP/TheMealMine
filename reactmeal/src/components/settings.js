@@ -2,35 +2,42 @@ import { TopNav } from '../topNav'
 import { useState } from "react";
 import Axios from "axios";
 import loginBackground from "../imgs/settingsBackground.jpg"
-import { Box, Button, VStack, HStack, Container, Input, Image, Center, Tabs, TabList, Tab,
+import { Box, Button, VStack, Text, HStack, Container, Input, Image, Center, Tabs, TabList, Tab,
         TabPanels, TabPanel, Checkbox, FormLabel} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
+import { buildQueries } from '@testing-library/react';
 export function Settings() {
     var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
     var email = localStorage.getItem('email');
     var ranking = localStorage.getItem('ranking');
     var image = localStorage.getItem('image');
+    var privacySetting = "Private";
+    var information = "Forget";
     const [formValue, setFormValue] = useState({
 		user: '',
 		email: '',
         oldPass: '',
         newPass: '',
         image: '',
-        private: '',
-        public: ''
+        privacy: ''
 	})
-
-    async function handlePrivate(e) {
-        e.preventDefault();
-        formValue.private = 1;
-        formValue.public = 0;
+    async function privateChange() {
+        privacySetting = "Private";
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
     }
-
-    async function handlePublic(e) {
-        e.preventDefault();
-        formValue.public = 1;
-        formValue.private = 0;
+    function publicChange() {
+        privacySetting = "Public";
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+    }
+    async function rememberChange() {
+        information = "Remember";
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
+    }
+    async function forgetChange() {
+        information = "Forget";
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
     }
     const handleChange = (e) => {
 		let value = e.target.value;
@@ -52,7 +59,8 @@ export function Settings() {
             email: formValue.email,
             image: formValue.image,
             oldPass: formValue.oldPass,
-            newPass: formValue.newPass
+            newPass: formValue.newPass,
+            privacy: formValue.privacy
 		}); 
         console.log(result);
         if(result !== null){
@@ -128,14 +136,19 @@ export function Settings() {
                             </TabPanel>
                             <TabPanel>
                                 <Center>
-                                    <HStack>
-                                        <Checkbox id="private" name="private" onChange={handlePrivate}>Private to Friends</Checkbox>
-                                        <Checkbox id="public" name="public" onChange={handlePublic}>Public</Checkbox>
-                                    </HStack>
+                                    <VStack>
+                                        <Text id="privacyLabel">Current Status: {privacySetting}</Text>
+                                        <Button id="private" onClick={privateChange}>Private</Button>
+                                        <Button id="public" onClick={publicChange}>Public</Button>
+                                    </VStack>
                                 </Center>
                             </TabPanel>
                             <TabPanel>
-                                <Checkbox>Remember Me</Checkbox>
+                                <VStack>
+                                    <Text id="informationLabel">Current Status: {information}</Text>
+                                    <Button id="remember" onClick={rememberChange}>Remember</Button>
+                                    <Button id="forget" onClick={forgetChange}>Forget</Button>   
+                                </VStack> 
                             </TabPanel>
                          </TabPanels>
                     </Tabs>
