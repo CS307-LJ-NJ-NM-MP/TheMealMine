@@ -9,7 +9,7 @@ export const FriendNav = () => {
 
     function sendRequest(e) {
 //        handleChange();
-        findTheUser(e);
+        findUser(e);
         console.log("here is new string" + query)
         setQuery("");
     }
@@ -32,7 +32,7 @@ export const FriendNav = () => {
         console.log("sending");
 		if(formValue.user !== '') {
             console.log("valid: " + formValue.user);
-			var result = await Axios.post('http://localhost:5000/findTheUserReg', {
+			var result = await Axios.post('http://localhost:5000/findUserReg', {
 				user: formValue.user,  
 			})
             .then(response => {
