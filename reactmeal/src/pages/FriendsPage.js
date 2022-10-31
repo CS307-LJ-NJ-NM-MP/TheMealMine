@@ -38,11 +38,10 @@ function FriendsPage() {
     function DisplayAllFriends() {
         return (
             <Box>
-                <Text>Hello</Text>
-            <li>
+            <ul>
             { friendsList.map( (name) => (
                 FriendDisplay(name)
-            ))}</li>
+            ))}</ul>
             </Box>
         );
     }
@@ -60,7 +59,7 @@ function FriendsPage() {
             <Box>
                 <Stack>
                     <Input name="searchBar" placeholder="Search for user" />
-                    <br/>
+                    
                     <Text>My Friends</Text>
                     <VStack>
                             <DisplayAllFriends />
