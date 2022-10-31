@@ -1,114 +1,97 @@
-import { TopNav } from '../topNav';
-import Axios from "axios";
-import { SideNav } from '../sideNav';
+import { TopNav } from '../topNav'
 import { useState } from "react";
+import Axios from "axios";
+import { Textarea } from '@chakra-ui/react'
+import recipesBackground from "../imgs/recipesBackground.jpg"
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+        TabPanel, FormLabel, HStack, Modal, ModalOverlay, ModalContent,
+        ModalHeader, ModalCloseButton, useDisclosure, ModalBody, ModalFooter} from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
 
-//export const Bookmarks = () => {
-    function Bookmarks() {
-    var rName = "Pesto Pasta";
-
-    const [isSaved, setIsSaved] = useState(false);
-
-
-    //var isSaved = false;
-
-    const handleClick = () => setIsSaved(!isSaved);
-
-
-    var username = localStorage.getItem('username');
-    var password = localStorage.getItem('password');
-
-    if(username == null || password == null){
-        window.location = "/";
-    }
-
-    const [formValue, setFormValue] = useState({
-		recipes: '',
-        ingredients: ''
-	})
-	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
-		setFormValue((prevState) => {
-			return {
-				...prevState,
-				[name]: value
-			}
-		}); 
-	}
-
-    async function getFavoriteRecipes(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 0
-		});
-        console.log(result.data);
-	}
-    
-    async function getPersonalRecipes(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        console.log(result.data);
-	}
-
-    async function getPantry(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        console.log(result.data);
-	}
-
-    async function addRecipes(e) {
-		e.preventDefault();
-        window.location = "/recipeAdd";
-		/*await Axios.post('http://localhost:5000/addRecipes', {
-            user: username,
-            pass: password,
-			name: formValue.recipes
-		});*/
-	}
-
-    const recipeSave = () => {
-        return(
-            <>
-                
-            </>
-        );
-    }
-
-    return (
-        <>
+export function Bookmarks() {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    return (<ChakraProvider>
+        <Container>
             <TopNav/>
-            <div id="app">
-                Favorite Recipes:<br/>
-                <div>
-                     { isSaved ? <p></p> : <p>{ rName }</p> } 
-                </div>
-                <button onClick={getFavoriteRecipes}>Display</button>
-            </div>
-            <br/>
-            <div>
-                Personal Recipes:
-                <div>
-                    <p>{ rName }</p><button onClick={handleClick}> { isSaved ? "Save" : "Unsave" } </button>
-                </div>
-                <br/>
-                <button onClick={addRecipes}>Add</button><br/>
-                <button onClick={getPersonalRecipes}>Display</button>
-            </div>
-            <SideNav/>
-        </>
-    );
+            <Center>
+                <VStack>
+                    <Text>Favorite Recipes</Text>
+                    <VStack>
+                        <HStack>
+                            <Box bg="blackAlpha.300" borderRadius="lg" 
+                                onClick={onOpen}>
+                                <HStack m="5px 10px 5px 10px">
+                                    <Image borderRadius='lg' width='75px' src={recipesBackground}/>
+                                    <VStack>
+                                        <Text>Mac n Cheese</Text>
+                                        <Text>Nate</Text>
+                                        <Text>Likes: 3</Text>
+                                    </VStack>
+                                </HStack>
+                            </Box>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                        </HStack>
+                        <HStack>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                        </HStack>
+                    </VStack><br/>
+                    <FormLabel>
+                        Contributed Recipes
+                    </FormLabel>
+                    <VStack>
+                        <HStack>
+                            <Box bg="blackAlpha.300" borderRadius="lg" 
+                                onClick={onOpen}>
+                                <HStack m="5px 10px 5px 10px">
+                                    <Image borderRadius='lg' width='75px' src={recipesBackground}/>
+                                    <VStack>
+                                        <Text>Mac n Cheese</Text>
+                                        <Text>Nate</Text>
+                                        <Text>Likes: 3</Text>
+                                    </VStack>
+                                </HStack>
+                            </Box>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                        </HStack>
+                        <HStack>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                            <Text>Recipe 1</Text>
+                        </HStack>
+                    </VStack><br/>
+                    <Button onClick={onOpen}>Add Contribution</Button>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <Center>
+                                <VStack spacing='5%' m="0 0 20px 0">
+                                    <ModalHeader>Enter New Recipe Information</ModalHeader>
+                                    <Input w="100%" variant="flushed" placeholder='Enter Title'/>
+                                    <Input w="100%" variant="flushed" placeholder='Enter Image'/>
+                                    <Textarea w="100%" variant="flushed" placeholder='Enter Instructions'/>
+                                    <Textarea w="100%" variant="flushed" placeholder='Enter Ingredients'/>
+                                    <Textarea w="100%" variant="flushed" placeholder='Enter Special Tools'/>
+                                    <Button w="100%" borderRadius="lg" onClick={onClose}>Add</Button>
+                                </VStack>
+                            </Center>
+                        </ModalContent>
+                    </Modal>
+                </VStack>
+            </Center>
+        </Container>
+    </ChakraProvider>);
 }
 
 export default Bookmarks;
