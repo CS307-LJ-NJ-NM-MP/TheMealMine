@@ -63,12 +63,6 @@ function FriendsPage() {
                     <br/>
                     <Text>My Friends</Text>
                     <VStack>
-                        {friendsList.map((friend =>
-                            <Button key={friend}>{friend}</Button>))}                
-                    </VStack>
-                    
-                    
-                    <VStack>
                             <DisplayAllFriends />
                     </VStack>
                 </Stack>
