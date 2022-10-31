@@ -36,18 +36,12 @@ export function TopNav() {
    	return (<ChakraProvider>
 		<Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
-				<Button bg="transparent"
-					borderColor="transparent" borderBlockEndColor="transparent" onClick={home}>
-					<Image boxShadow="dark-lg" borderColor="transparent" 
-                       	borderRadius='full'
-                       	boxSize="50" src={HomeLogo}/>
+				<Button bg="transparent" boxSize="-webkit-fit-content" borderRadius="full" onClick={home}>
+					<Image borderRadius='full' boxSize="50" src={HomeLogo}/>
 				</Button>
 				<Heading color="turquoise" align="center">The Meal Mine</Heading>
-				<Button bg="transparent"  
-					borderColor="transparent" borderBlockEndColor="transparent" onClick={login}>
-					<Image boxShadow="dark-lg" borderColor="transparent" 
-                       	borderRadius='full'
-                       	boxSize="50" src={image}/>
+				<Button bg="transparent" boxSize="-webkit-fit-content" borderRadius="full" onClick={login}>
+					<Image borderRadius='full'boxSize="50" src={image}/>
 				</Button>
 			</HStack>
 		</Center>
