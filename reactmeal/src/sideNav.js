@@ -26,14 +26,20 @@ export const SideNav = () => {
             var result = await Axios.post('http://localhost:5000/getRecipes', {
                 _id: id
 		    }); 
+            let favResult = [];
+            let personalResult = [];
+            favResult.push(result.data.favResult.image);
+            favResult.push(result.data.favResult.name);
+            favResult.push(result.data.favResult.owner);
+            favResult.push(result.data.favResult.favorites);
             let favoriteRecipes = [];
+            favoriteRecipes.push(favResult);
+            personalResult.push(result.data.personalResult.image);
+            personalResult.push(result.data.personalResult.name);
+            personalResult.push(result.data.personalResult.owner);
+            personalResult.push(result.data.personalResult.favorites);
             let contributedRecipes = [];
-            for(var i = 0; i < result.data.favoriteRecipes.length; i++){
-                favoriteRecipes.push(result.data.favoriteRecipes[i]);
-            }
-            for(var i = 0; i < result.data.contributedRecipes.length; i++){
-                contributedRecipes.push(result.data.contributedRecipes[i]);
-            }
+            contributedRecipes.push(personalResult);
             localStorage.setItem('favoriteRecipes',favoriteRecipes);
             localStorage.setItem('contributedRecipes',contributedRecipes);
             window.location = "/bookmarks";

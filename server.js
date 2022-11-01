@@ -46,18 +46,18 @@ app.post('/findUser', async(req, res) => {
 });
 
 app.post('/getRecipes', async(req,res) => {
-    let contributedRecipes = [
-        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
-        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
-        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
-        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
-        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3]
-    ];
-    const form = {
-        favoriteRecipes: contributedRecipes,
-        contributedRecipes: contributedRecipes
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    const favForm = {_id: new ObjectId(result.favoriteRecipes[0])}
+    var favResult = await client.db("TheMealMine").collection("Recipes").findOne(favForm);
+    const personalForm = {_id: new ObjectId(result.personalRecipes[0])}
+    var personalResult = await client.db("TheMealMine").collection("Recipes").findOne(personalForm);
+    const resultForm = {
+        favResult: favResult,
+        personalResult: personalResult
     }
-    res.send(form);
+    res.send(resultForm); 
 });
 
 app.post('/findUserReg', async(req, res) => {

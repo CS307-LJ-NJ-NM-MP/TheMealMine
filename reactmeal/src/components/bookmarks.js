@@ -14,7 +14,6 @@ export function Bookmarks() {
     var id = localStorage.getItem('id');
     let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
     let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
-    console.log(favoriteRecipes);
     let stack1 = [];
     let stack2 = [];
     for(var i = 0; i < favoriteRecipes.length/5/5; i++){
