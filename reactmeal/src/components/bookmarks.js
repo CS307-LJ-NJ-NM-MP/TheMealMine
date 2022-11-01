@@ -45,6 +45,16 @@ export function Bookmarks() {
             instructions: formValue.instructions,
             ingredients: formValue.ingredients
 		});
+        Axios.post('http://localhost:5000/addToFeeds', {
+            _id: id,
+            recipeId: result.data.insertedId,
+            owner: username,
+            name: formValue.name,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients,
+            favorites: 0
+        });
         var result2 = await Axios.post('http://localhost:5000/addRecipeToUser', {
             _id: id,
             recipeId: result.data.insertedId,
@@ -56,7 +66,6 @@ export function Bookmarks() {
             favorites: 0
         });
         contributedRecipes = [];
-        console.log(result2.data);
         for(var i = 0; i < result2.data.personalRecipes.length; i++){
             let temp = [];
             temp.push(result2.data.personalRecipes[i][4]);
@@ -65,7 +74,6 @@ export function Bookmarks() {
             temp.push(result2.data.personalRecipes[i][1]);
             contributedRecipes.push(temp);
         }
-        console.log(contributedRecipes);
         localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
     }

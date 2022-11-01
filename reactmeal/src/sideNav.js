@@ -26,25 +26,26 @@ export const SideNav = () => {
             var result = await Axios.post('http://localhost:5000/getRecipes', {
                 _id: id
 		    }); 
-            console.log(result);
-            let favResult = [];
-            let personalResult = [];
-            if(result.data.favResult !== null){
-                favResult.push(result.data.favResult.image);
-                favResult.push(result.data.favResult.name);
-                favResult.push(result.data.favResult.owner);
-                favResult.push(result.data.favResult.favorites);
-            }
-            if(result.data.personalResult !== null){
-                personalResult.push(result.data.personalResult.image);
-                personalResult.push(result.data.personalResult.name);
-                personalResult.push(result.data.personalResult.owner);
-                personalResult.push(result.data.personalResult.favorites);
-            }
             let favoriteRecipes = [];
-            favoriteRecipes.push(favResult);
+            for(var i = 0; i < result.data.favoriteRecipes.length; i++){
+                let temp = [];
+                temp.push(result.data.favoriteRecipes[i][4]);
+                temp.push(result.data.favoriteRecipes[i][3]);
+                temp.push(result.data.favoriteRecipes[i][2]);
+                temp.push(result.data.favoriteRecipes[i][1]);
+                favoriteRecipes.push(temp);
+            }
             let contributedRecipes = [];
-            contributedRecipes.push(personalResult);
+            for(var i = 0; i < result.data.personalRecipes.length; i++){
+                let temp = [];
+                temp.push(result.data.personalRecipes[i][4]);
+                temp.push(result.data.personalRecipes[i][3]);
+                temp.push(result.data.personalRecipes[i][2]);
+                temp.push(result.data.personalRecipes[i][1]);
+                contributedRecipes.push(temp);
+            }
+            console.log(favoriteRecipes);
+            console.log(contributedRecipes);
             localStorage.setItem('favoriteRecipes',favoriteRecipes);
             localStorage.setItem('contributedRecipes',contributedRecipes);
             window.location = "/bookmarks";

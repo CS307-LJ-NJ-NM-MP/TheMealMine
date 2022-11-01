@@ -49,15 +49,7 @@ app.post('/getRecipes', async(req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    const favForm = {_id: new ObjectId(result.favoriteRecipes[0])}
-    var favResult = await client.db("TheMealMine").collection("Recipes").findOne(favForm);
-    const personalForm = {_id: new ObjectId(result.personalRecipes[0])}
-    var personalResult = await client.db("TheMealMine").collection("Recipes").findOne(personalForm);
-    const resultForm = {
-        favResult: favResult,
-        personalResult: personalResult
-    }
-    res.send(resultForm); 
+    res.send(result);
 });
 
 app.post('/getRecipe', async(req,res) => {
@@ -359,6 +351,31 @@ app.post('/addRecipeToUser', async (req,res) => {
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     res.send(result);
+});
+
+app.post('/addToFeeds', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    let friends = result.friends;
+    for(var i = 0; i < friends.length; i++) {
+        var ObjectId = require('mongodb').ObjectId;
+        const form2 = {_id: new ObjectId(friends[i])}
+        result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
+        let temp = [];
+        temp.push(req.body.recipeId);
+        temp.push(req.body.favorites);
+        temp.push(req.body.owner);
+        temp.push(req.body.name);
+        temp.push(req.body.image);
+        temp.push(req.body.instructions);
+        temp.push(req.body.ingredients);
+        let feed = result.feed;
+        feed.push(temp);
+        var update = {$set:{"feed": feed}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
+        console.log(result);
+    }
 });
 
 app.post('/addIngredients', async (req,res) => {
