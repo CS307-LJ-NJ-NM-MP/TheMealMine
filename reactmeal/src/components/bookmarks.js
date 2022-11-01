@@ -1,6 +1,6 @@
 import { TopNav } from '../topNav'
 import ReactDOM from 'react-dom';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "axios";
 import { list, Textarea } from '@chakra-ui/react'
 import recipesBackground from "../imgs/recipesBackground.jpg"
@@ -11,50 +11,38 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render } from '@testing-library/react';
 
 export function Bookmarks() {
-    let favoriteRecipes = [
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3]
-    ];
-    let contributedRecipes = [
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3],
-        [recipesBackground,"Mac n Cheese","Nate",3]
-    ];
+    var id = localStorage.getItem('id');
+    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
+    let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
+    console.log(favoriteRecipes);
     let stack1 = [];
     let stack2 = [];
-    for(var i = 0; i < favoriteRecipes.length/5; i++){
+    for(var i = 0; i < favoriteRecipes.length/5/5; i++){
         let temp = [];
-        for(var j = 0; j < 5; j++) {
-            var recipe = favoriteRecipes[j];
+        for(var j = 0; j < favoriteRecipes.length; j+=4) {
             let element = 
                     <HStack spacing="10px">
-                        <Image w="75px" h="75px" borderRadius="full" src={recipe[0]}/>
+                        <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
                         <VStack>
-                            <Text w="100px">{recipe[1]}</Text>
-                            <Text w="100px">{recipe[2]}</Text>
-                            <Text w="100px">Likes: {recipe[3]}</Text>
+                            <Text w="100px">{favoriteRecipes[j+1]}</Text>
+                            <Text w="100px">{favoriteRecipes[j+2]}</Text>
+                            <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
                         </VStack>
                     </HStack>;
             temp.push(element);
         }
         stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
     }
-    for(var i = 0; i < contributedRecipes.length/5; i++){
+    for(var i = 0; i < contributedRecipes.length/5/5; i++){
         let temp = [];
-        for(var j = 0; j < 5; j++) {
-            var recipe = contributedRecipes[j];
+        for(var j = 0; j < contributedRecipes.length; j+=4) {
             let element = 
                     <HStack spacing="10px">
-                        <Image w="75px" h="75px" borderRadius="full" src={recipe[0]}/>
+                        <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
                         <VStack>
-                            <Text w="100px">{recipe[1]}</Text>
-                            <Text w="100px">{recipe[2]}</Text>
-                            <Text w="100px">Likes: {recipe[3]}</Text>
+                            <Text w="100px">{contributedRecipes[j+1]}</Text>
+                            <Text w="100px">{contributedRecipes[j+2]}</Text>
+                            <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
                         </VStack>
                     </HStack>;
             temp.push(element);

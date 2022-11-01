@@ -45,6 +45,21 @@ app.post('/findUser', async(req, res) => {
     res.send(result);
 });
 
+app.post('/getRecipes', async(req,res) => {
+    let contributedRecipes = [
+        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
+        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
+        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
+        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3],
+        ["https://target.scene7.com/is/image/Target/GUEST_268812f5-e600-4020-a0d4-14d5b1e19e4a?wid=400&hei=400&qlt=80&fmt=pjpeg","Mac n Cheese","Nate",3]
+    ];
+    const form = {
+        favoriteRecipes: contributedRecipes,
+        contributedRecipes: contributedRecipes
+    }
+    res.send(form);
+});
+
 app.post('/findUserReg', async(req, res) => {
 
     if (req.body.user === '') {
