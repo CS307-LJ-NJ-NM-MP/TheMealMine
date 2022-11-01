@@ -26,18 +26,23 @@ export const SideNav = () => {
             var result = await Axios.post('http://localhost:5000/getRecipes', {
                 _id: id
 		    }); 
+            console.log(result);
             let favResult = [];
             let personalResult = [];
-            favResult.push(result.data.favResult.image);
-            favResult.push(result.data.favResult.name);
-            favResult.push(result.data.favResult.owner);
-            favResult.push(result.data.favResult.favorites);
+            if(result.data.favResult !== null){
+                favResult.push(result.data.favResult.image);
+                favResult.push(result.data.favResult.name);
+                favResult.push(result.data.favResult.owner);
+                favResult.push(result.data.favResult.favorites);
+            }
+            if(result.data.personalResult !== null){
+                personalResult.push(result.data.personalResult.image);
+                personalResult.push(result.data.personalResult.name);
+                personalResult.push(result.data.personalResult.owner);
+                personalResult.push(result.data.personalResult.favorites);
+            }
             let favoriteRecipes = [];
             favoriteRecipes.push(favResult);
-            personalResult.push(result.data.personalResult.image);
-            personalResult.push(result.data.personalResult.name);
-            personalResult.push(result.data.personalResult.owner);
-            personalResult.push(result.data.personalResult.favorites);
             let contributedRecipes = [];
             contributedRecipes.push(personalResult);
             localStorage.setItem('favoriteRecipes',favoriteRecipes);
