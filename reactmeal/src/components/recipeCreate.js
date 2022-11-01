@@ -12,8 +12,8 @@ export const RecipeAdd = () => {
     const [formValue, setFormValue] = useState({
 		rName: '',
 		add: '',
-        ingred: [],
 		instructions: '',
+		ingred: [],
 		image: ''
 	})
 	
@@ -40,15 +40,14 @@ export const RecipeAdd = () => {
 		e.preventDefault();
         formValue.ingred = ingredients;
         ingredients = [];
-        console.log(formValue);
 		window.location = '/bookmarks';
-		/*await Axios.post('http://localhost:5000/signupUser', {
-			user: formValue.user,  
-			pass: formValue.pass,
-            ingredients: formvalue.ingredients,
-			email: formValue.email,
+		await Axios.post('http://localhost:5000/addRecipe', {
+			name: formValue.rName,
+			user: formValue.user,
+           	ingredients: formValue.ingredients,
+			instructions: formValue.instructions,
 			image: formValue.image
-		});*/
+		});
 	}
 
     return (
@@ -72,5 +71,3 @@ export const RecipeAdd = () => {
         </>
     );
 }
-
-//{ show ? "Hide" : "Show" }

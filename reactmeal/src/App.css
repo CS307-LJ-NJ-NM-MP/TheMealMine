@@ -2,16 +2,6 @@
   text-align: center;
 }
 
-.topnav{
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-}
-
-.topnav > * {
-  color: #61dafb;
-}
-
 .sidenav{
   display: flex;
   flex-direction: column;

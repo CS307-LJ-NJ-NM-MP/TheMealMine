@@ -11,16 +11,10 @@ export const Friends = () => {
         <>
             <div>
             <TopNav/>
-            <SideNav/>
-            </div>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                Search for users here:<br/>
-            <FriendNav/><br/>
 
+            Friends List:
+            <SideNav/>
+            <FriendNav/>
             </div>
         </>
     );

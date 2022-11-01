@@ -1,28 +1,186 @@
 import { TopNav } from '../topNav'
-import { SideNav } from '../sideNav'
-import Axios from "axios";
 import { useState } from "react";
-
-export const Settings = () => {    
+import Axios from "axios";
+import loginBackground from "../imgs/settingsBackground.jpg"
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+        TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+export function Settings() {
+    var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
-    var password = localStorage.getItem('password');
-    var picture = localStorage.getItem('image');
     var email = localStorage.getItem('email');
-
+    var ranking = localStorage.getItem('ranking');
+    var image = localStorage.getItem('image');
+    var privacySetting = "Private";
+    var information = "Forget";
     const [formValue, setFormValue] = useState({
-		email: '',
-		pass: '',
 		user: '',
+		email: '',
+        oldPass: '',
+        newPass: '',
         image: '',
-        privacy1: '',
-        privacy2: '',
-        privacy3: '',
+        privacy: '',
         remember: ''
 	})
-	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
+    async function privateChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Private";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        privacySetting = "Private";
+        formValue.privacy = '';
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+    }
+    async function publicChange(e) {
+        e.preventDefault();
+        formValue.privacy = "Public";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        privacySetting = "Public";
+        formValue.privacy = '';
+        document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+    }
+    async function rememberChange(e) {
+        e.preventDefault();
+        formValue.remember = "Remember";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        information = "Remember";
+        formValue.remember = '';
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
+    }
+    async function forgetChange(e) {
+        e.preventDefault();
+        formValue.remember = "Forget";
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
+            user: formValue.user,
+            email: formValue.email,
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        } 
+        information = "Forget";
+        formValue.remember = '';
+        document.getElementById("informationLabel").innerHTML = "Current Status: " + information;
+    }
+    const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
 		setFormValue((prevState) => {
 			return {
 				...prevState,
@@ -30,134 +188,111 @@ export const Settings = () => {
 			}
 		}); 
 	}
-    async function updateUsername(e) {
+    async function update(e) {
 		e.preventDefault();
-        localStorage.setItem('username',formValue.user);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            pass: formValue.pass,
-            email: formValue.email,
-            setting: 0
-		});
-	}
-	async function updateEmail(e) {
-		e.preventDefault();
-        localStorage.setItem('email',formValue.email);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			email: formValue.email,
-            user: formValue.user,
-            pass: formValue.pass,
-            setting: 1
-		});
-	}
-    async function updatePassword(e) {
-		e.preventDefault();
-        localStorage.setItem('password',formValue.pass);
-		await Axios.post('http://localhost:5000/updateSettings', {
-			pass: formValue.pass,
+            console.log(formValue.email);
+        var result = await Axios.post('http://localhost:5000/updateSettings', {
+			_id: id,
             user: formValue.user,
             email: formValue.email,
-            setting: 2
-		});
+            image: formValue.image,
+            oldPass: formValue.oldPass,
+            newPass: formValue.newPass,
+            privacy: formValue.privacy,
+            remember: formValue.remember
+		}); 
+        console.log(result);
+        if(result !== null){
+            username = result.data.user;
+            document.getElementById("userLabel1").innerHTML = username;
+            document.getElementById("userLabel2").innerHTML = username;
+            document.getElementById("user").value = '';
+            formValue.user = '';
+            email = result.data.email;
+            document.getElementById("emailLabel1").innerHTML = email;
+            document.getElementById("emailLabel2").innerHTML = email;
+            document.getElementById("email").value = '';
+            formValue.email = '';
+            image = result.data.image;
+            document.getElementById("image1").src = image;
+            document.getElementById("image2").src = image;
+            document.getElementById("image").value = '';
+            formValue.email = '';
+            document.getElementById("newPass").value = '';
+            formValue.newPass = '';
+            document.getElementById("oldPass").value = '';
+            formValue.oldPass = '';
+        }    
 	}
-    async function updateImage(e) {
-		e.preventDefault();
-        localStorage.setItem('image',formValue.image);
-		await Axios.post('http://localhost:5000/updatePicture', {
-			pass: formValue.pass,
-            user: formValue.user,
-            email: formValue.email,
-            image: picture
-		});
-	}
-    async function updatePrivacy1(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-            user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-			privacy: "Private",
-            setting: 3
-		});
-	}
-    async function updatePrivacy2(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            privacy: "Private to Friends",
-            setting: 3
-		});
-	}
-    async function updatePrivacy3(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            privacy: "Public",
-            setting: 3
-		});
-	}
-    async function remember(e) {
-		e.preventDefault();
-		await Axios.post('http://localhost:5000/updateSettings', {
-			user: formValue.user,
-            email: formValue.email,
-            pass: formValue.pass,
-            remember: "Remember",
-            setting: 4
-		});
-	}
-    async function forget(e) {
-		e.preventDefault();
-        window.location = '/login';
-		await Axios.post('http://localhost:5000/deleteUser', {
-			user: formValue.user,
-            pass: formValue.pass
-		});
-	}
-    return (
-        <>
+    return(<ChakraProvider>
+            <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground}>
             <TopNav/>
-            <div>
-                Settings:<br/>
-                <div>
-                    Username:
-                    <input type="text" name="user" placeholder={username} onChange={handleChange}/>
-                    <button type="submit" onClick={updateUsername}>Apply Username</button>
-                </div>
-                <div>
-                    Email:
-                    <input type="text" placeholder={email} name="email" onChange={handleChange}/>
-                    <button type="submit" onClick={updateEmail}>Apply Email</button>
-                </div>
-                <div>
-                    Password:
-                    <input type="password" placeholder={password} name="pass" onChange={handleChange}/>
-                    <button type="submit" onClick={updatePassword}>Apply Password</button>
-                </div>
-                <div>
-                    Profile Picture:
-                    <input type="text" placeholder={picture} name="image" onChange={handleChange}/>
-                    <button type="submit" onClick={updateImage}>Apply Picture</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy1}>Make Private</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy2}>Make Private to Friends</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={updatePrivacy3}>Make Public</button>
-                </div>
-                <div>
-                    <button type="submit" onClick={remember}>Remember Me</button>
-                    <button type="submit" onClick={forget}>Forget Me</button>
-                </div>
-            </div>
-            <SideNav/>
-        </>
-    );
+            <Center>
+            <Box bg="whiteAlpha.700"
+                p={3} m="50px" w="60%"
+                borderRadius='lg' align="center">
+                <Box bg="white" borderRadius='lg' 
+                    p={3} m="0 0 10px 0" w="90%">
+                    Settings
+                </Box>
+                    <Tabs bg="white" borderRadius='lg' 
+                        p={3} w="95%" align="center">
+                        <TabList>
+                            <Tab>Current User Information</Tab>
+                            <Tab>Login Information</Tab>
+                            <Tab>Profile Picture</Tab>
+                            <Tab>Privacy</Tab>
+                            <Tab>App</Tab>
+                        </TabList>
+                         <TabPanels>
+                             <TabPanel>
+                                <VStack>
+                                    <Image id="image1" src={image} borderRadius='full'boxSize='200px'/>
+                                    <FormLabel id="userLabel1" >{username}</FormLabel>
+                                    <FormLabel id="emailLabel1">{email}</FormLabel>
+                                    <FormLabel>Ranking: {ranking}</FormLabel>
+                                </VStack>
+                            </TabPanel>
+                            <TabPanel>
+                                <VStack spacing="10px">
+                                    <FormLabel id="userLabel2">{username}</FormLabel>
+                                    <Input variant="flushed" id="user" name="user" placeholder='Enter New Username' w="50%" onChange={handleChange}/>
+                                    <FormLabel id="emailLabel2">{email}</FormLabel>
+                                    <Input variant="flushed" id="email" name="email" placeholder='Enter New Email' w="50%" onChange={handleChange}/>
+                                    <Input id="newPass" type="password" variant="flushed" name="newPass" placeholder='Enter New Password' w="50%" onChange={handleChange}/>
+                                    <Input id="oldPass" type="password" variant="flushed" name="oldPass" placeholder='Confirm With Old Password' w="50%" onChange={handleChange}/>
+                                    <Button type="submit" w="40%" onClick={update}>Apply Changes</Button>
+                                </VStack>
+                            </TabPanel>
+                            <TabPanel>
+                                    <Image id="image2" src={image} borderRadius='full'boxSize='200px'/><br/>
+                                    <Input id="image" name="image" variant="flushed" placeholder='Enter New Profile Pick URL'
+                                        w="50%" onChange={handleChange}/>
+                                    <Center>
+                                        <Button type="submit" w='40%' onClick={update}>Apply Changes</Button> 
+                                    </Center>
+                            </TabPanel>
+                            <TabPanel>
+                                <Center>
+                                    <VStack>
+                                        <Text id="privacyLabel">Current Status: {privacySetting}</Text>
+                                        <Button id="private" onClick={privateChange}>Private</Button>
+                                        <Button id="public" onClick={publicChange}>Public</Button>
+                                    </VStack>
+                                </Center>
+                            </TabPanel>
+                            <TabPanel>
+                                <VStack>
+                                    <Text id="informationLabel">Current Status: {information}</Text>
+                                    <Button id="remember" onClick={rememberChange}>Remember</Button>
+                                    <Button id="forget" onClick={forgetChange}>Forget</Button>   
+                                </VStack> 
+                            </TabPanel>
+                         </TabPanels>
+                    </Tabs>
+            </Box>
+            </Center>
+        </Container>
+    </ChakraProvider>)
 }
