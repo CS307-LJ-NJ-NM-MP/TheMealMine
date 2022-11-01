@@ -73,6 +73,50 @@ app.post('/findUserReg', async(req, res) => {
 
 });
 
+app.post('/findTheUserReg', async(req, res) => {
+
+    if (req.body.user === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        user: req.body.user
+    };
+    const projection = {user: 1};
+    var string = "" + form.user;
+    var list = []
+    var result = await client.db("TheMealMine").collection("UserAccounts").find({
+        user: {
+            $regex : string 
+        }
+    }).toArray(function(err, docs) {
+        console.log("printing")
+        docs.forEach(function(doc) {
+            console.log("Doc from array ");
+            var newString = "" + doc.user
+            console.log("document: " + doc.user)
+            console.log("string " + newString)
+            var length = list.push(newString)
+            console.log("length " + length)
+            console.log("list " + list)
+
+        }
+        )
+        console.log("new length" + list.length)
+        if (list.length == 0) {
+            console.log("error, bad result");
+            res.send(null);
+        }
+        else {
+            console.log("success");
+            console.log("result here: " + list)
+            res.send(list);
+        }
+    });
+    console.log("result is here: " + list.length);
+
+
+});
+
 app.post('/recoverPass', async (req, res) => {
     if (req.body.email === '') {
         res.status(400).send('email required');
