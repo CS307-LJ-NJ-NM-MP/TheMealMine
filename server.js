@@ -60,6 +60,13 @@ app.post('/getRecipes', async(req,res) => {
     res.send(resultForm); 
 });
 
+app.post('/getRecipe', async(req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var recipe = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    res.send(recipe);
+});
+
 app.post('/findUserReg', async(req, res) => {
 
     if (req.body.user === '') {
@@ -323,25 +330,35 @@ app.post('/getIngredients',async (req,res) => {
 });
 
 app.post('/addRecipes', async (req,res) => {
-    const form = {
-        owner: req.body.user,
-    	name: req.body.name
- 	}
-	client.db("TheMealMine").collection("Recipes").insertOne(form);
-    const userForm = {
-        user: req.body.user,
-        pass: req.body.pass
+    const recipe = {
+        name: req.body.name,
+        owner: req.body._id,
+        image: req.body.image,
+        instructions: req.body.instructions,
+        ingredients: req.body.ingredients,
+        likes: 0
     }
-    var projection = {personalRecipes: 1};
-    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(userForm,projection);
-    let list = [];
-    for(var i = 0; i < result.personalRecipes.length; i++) {
-        list.push(result.personalRecipes[i]);
-    }
-    list.push(form);
-    var update = {$push:{"personalRecipes": form}};
-    client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
-    
+    var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
+    res.send(result);   
+});
+app.post('/addRecipeToUser', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    let personalRecipes = result.personalRecipes;
+    let temp = [];
+    temp.push(req.body.recipeId);
+    temp.push(req.body.favorites);
+    temp.push(req.body.owner);
+    temp.push(req.body.name);
+    temp.push(req.body.image);
+    temp.push(req.body.instructions);
+    temp.push(req.body.ingredients);
+    personalRecipes.push(temp);
+    var update = {$set:{"personalRecipes": personalRecipes}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
 });
 
 app.post('/addIngredients', async (req,res) => {

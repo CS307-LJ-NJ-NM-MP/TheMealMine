@@ -9,13 +9,66 @@ import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabLi
         ModalHeader, ModalCloseButton, useDisclosure, ModalBody, ModalFooter} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
 import { render } from '@testing-library/react';
+import { useAnimationFrame } from 'framer-motion';
 
 export function Bookmarks() {
+    const {isOpen, onOpen, onClose} = useDisclosure();
     var id = localStorage.getItem('id');
+    var username = localStorage.getItem('username');
     let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
     let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
     let stack1 = [];
     let stack2 = [];
+    const [formValue, setFormValue] = useState({
+		name: '',
+        image: '',
+        instructions: '',
+        ingredients: ''
+	})
+    const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
+		setFormValue((prevState) => {
+			return {
+				...prevState,
+				[name]: value
+			}
+		}); 
+	}
+    async function addRecipe(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/addRecipes', {
+			_id: id,
+            name: formValue.name,
+            owner: username,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients
+		});
+        var result2 = await Axios.post('http://localhost:5000/addRecipeToUser', {
+            _id: id,
+            recipeId: result.data.insertedId,
+            owner: username,
+            name: formValue.name,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients,
+            favorites: 0
+        });
+        contributedRecipes = [];
+        console.log(result2.data);
+        for(var i = 0; i < result2.data.personalRecipes.length; i++){
+            let temp = [];
+            temp.push(result2.data.personalRecipes[i][4]);
+            temp.push(result2.data.personalRecipes[i][3]);
+            temp.push(result2.data.personalRecipes[i][2]);
+            temp.push(result2.data.personalRecipes[i][1]);
+            contributedRecipes.push(temp);
+        }
+        console.log(contributedRecipes);
+        localStorage.setItem('contributedRecipes',contributedRecipes);
+        window.location.reload(false);
+    }
     if(favoriteRecipes[0] !== '') {
         for(var i = 0; i < favoriteRecipes.length/5/5; i++){
             let temp = [];
@@ -52,7 +105,6 @@ export function Bookmarks() {
             stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
     }
-    const {isOpen, onOpen, onClose} = useDisclosure();
     return (<ChakraProvider>
         <Container>
             <TopNav/>
@@ -77,12 +129,11 @@ export function Bookmarks() {
                             <Center>
                                 <VStack spacing='5%' m="0 0 20px 0">
                                     <ModalHeader>Enter New Recipe Information</ModalHeader>
-                                    <Input w="100%" variant="flushed" placeholder='Enter Title'/>
-                                    <Input w="100%" variant="flushed" placeholder='Enter Image'/>
-                                    <Textarea w="100%" variant="flushed" placeholder='Enter Instructions'/>
-                                    <Textarea w="100%" variant="flushed" placeholder='Enter Ingredients'/>
-                                    <Textarea w="100%" variant="flushed" placeholder='Enter Special Tools'/>
-                                    <Button w="100%" borderRadius="lg" onClick={onClose}>Add</Button>
+                                    <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
+                                    <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
+                                    <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
+                                    <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
+                                    <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
                                 </VStack>
                             </Center>
                         </ModalContent>
