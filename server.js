@@ -85,25 +85,37 @@ app.post('/findTheUserReg', async(req, res) => {
     };
     const projection = {user: 1};
     var string = "" + form.user;
+    var list = []
     var result = await client.db("TheMealMine").collection("UserAccounts").find({
         user: {
             $regex : string 
         }
+    }).toArray(function(err, docs) {
+        console.log("printing")
+        docs.forEach(function(doc) {
+            console.log("Doc from array ");
+            var newString = "" + doc.user
+            console.log("document: " + doc.user)
+            console.log("string " + newString)
+            var length = list.push(newString)
+            console.log("length " + length)
+            console.log("list " + list)
+
+        }
+        )
+        console.log("new length" + list.length)
+        if (list.length == 0) {
+            console.log("error, bad result");
+            res.send(null);
+        }
+        else {
+            console.log("success");
+            console.log("result here: " + list)
+            res.send(list);
+        }
     });
-    while (result.hasNext) {
-        console.log("resulting data" + result.readBufferedDocuments())
-        result = result.next()
-    }
-    if (result == null || result.user === undefined) {
-        console.log("error");
-        res.send(null);
-    }
-    else {
-        console.log("success");
-        console.log("here is user: " + form.user)
-        console.log("result: " + result.user)
-        res.send(result);
-    }
+    console.log("result is here: " + list.length);
+
 
 });
 

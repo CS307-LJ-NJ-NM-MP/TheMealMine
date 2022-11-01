@@ -9,7 +9,7 @@ export const FriendNav = () => {
 
     function sendRequest(e) {
 //        handleChange();
-        findUser(e);
+        findTheUser(e);
         console.log("here is new string" + query)
         setQuery("");
     }
@@ -32,30 +32,26 @@ export const FriendNav = () => {
         console.log("sending");
 		if(formValue.user !== '') {
             console.log("valid: " + formValue.user);
-			var result = await Axios.post('http://localhost:5000/findUserReg', {
+			var result = await Axios.post('http://localhost:5000/findTheUserReg', {
 				user: formValue.user,  
 			})
             .then(response => {
                 console.log("result: " + response.data);
-                console.log("other result: " + result)
-//                console.log("response: " + response);
-                if (response.data !== "") {
-                    console.log("form value: " + response.data.user)
-                    setQuery(response.data.user);
-                    console.log("final query: " + query)
-//                    alert("Users " + response.data.user + " found");
-                    setTextOut("" + response.data.user)
+                if (response.data.length != 0) {
+                    setQuery(response.data);
+                    setTextOut("" + response.data)
                     setQuery("");
                 }
                 else {
-                    alert("error, user not valid")
-                    setQuery("");
+                     alert("error, user not valid")
+                     setQuery("");
+                     setTextOut("");
                 }
 
             })
             .catch(error => {
                 console.log(error.data)
-                alert("error");
+                alert("errors out the ass");
             });
 		}
         else {
