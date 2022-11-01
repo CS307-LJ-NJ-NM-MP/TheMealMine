@@ -38,9 +38,9 @@ export function Login()  {
 			localStorage.setItem('image',result.data.image);
 			localStorage.setItem('id', result.data._id);
 			localStorage.setItem('pantry',result.data.pantry);
-			
 			localStorage.setItem('ranking', result.data.pantry);
 			localStorage.setItem('friendsList', result.data.friendsList);
+			localStorage.setItem('blockedList',result.data.blockedList);
 			window.location = "/home";
 		} 
 	}
@@ -56,6 +56,7 @@ export function Login()  {
 		localStorage.setItem('email',"Guest");
 		localStorage.setItem('pantry',"Guest");
 		localStorage.setItem('friendsList', "Guest");
+		localStorage.setItem('blockedList', "Guest");
 		window.location = "/home";
 	}
 	function goToReset() {
