@@ -11,48 +11,75 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render } from '@testing-library/react';
 
 export function Bookmarks() {
-    //const root = ReactDOM.createRoot(document.getElementById('root'));
     let favoriteRecipes = [
-        <Text>Recipe 1</Text>,
-        <Text>Recipe 2</Text>,
-        <Text>Recipe 3</Text>,
-        <Text>Recipe 4</Text>,
-        <Text>Recipe 5</Text>
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3]
+    ];
+    let contributedRecipes = [
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3],
+        [recipesBackground,"Mac n Cheese","Nate",3]
     ];
     let stack1 = [];
+    let stack2 = [];
     for(var i = 0; i < favoriteRecipes.length/5; i++){
         let temp = [];
         for(var j = 0; j < 5; j++) {
-            temp.push(favoriteRecipes[j]);
+            var recipe = favoriteRecipes[j];
+            let element = 
+                    <HStack spacing="10px">
+                        <Image w="75px" h="75px" borderRadius="full" src={recipe[0]}/>
+                        <VStack>
+                            <Text w="100px">{recipe[1]}</Text>
+                            <Text w="100px">{recipe[2]}</Text>
+                            <Text w="100px">Likes: {recipe[3]}</Text>
+                        </VStack>
+                    </HStack>;
+            temp.push(element);
         }
-        stack1.push(<HStack>{temp}</HStack>)
+        stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
     }
-    /*<Box bg="blackAlpha.300" borderRadius="lg" 
-                                onClick={onOpen}>
-                                <HStack m="5px 10px 5px 10px">
-                                    <Image borderRadius='lg' width='75px' src={recipesBackground}/>
-                                    <VStack>
-                                        <Text>Mac n Cheese</Text>
-                                        <Text>Nate</Text>
-                                        <Text>Likes: 3</Text>
-                                    </VStack>
-                                </HStack>
-                            </Box>*/
+    for(var i = 0; i < contributedRecipes.length/5; i++){
+        let temp = [];
+        for(var j = 0; j < 5; j++) {
+            var recipe = contributedRecipes[j];
+            let element = 
+                    <HStack spacing="10px">
+                        <Image w="75px" h="75px" borderRadius="full" src={recipe[0]}/>
+                        <VStack>
+                            <Text w="100px">{recipe[1]}</Text>
+                            <Text w="100px">{recipe[2]}</Text>
+                            <Text w="100px">Likes: {recipe[3]}</Text>
+                        </VStack>
+                    </HStack>;
+            temp.push(element);
+        }
+        stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
+    }
     const {isOpen, onOpen, onClose} = useDisclosure();
     return (<ChakraProvider>
         <Container>
             <TopNav/>
-            <Center>
-                <VStack m="10px 0 10px 0">
+                <Center>
                     <VStack>
                         <FormLabel>Favorite Recipes</FormLabel>
                         {stack1}
-                    </VStack><br/>
+                    </VStack>
+                </Center><br/>
+                <Center>
                     <VStack>
                         <FormLabel>Contributed Recipes</FormLabel>
-                        {stack1}
-                    </VStack><br/>
+                        {stack2}
+                    </VStack>
+                </Center><br/>
+                <Center>
                     <Button onClick={onOpen}>Add Contribution</Button>
+                </Center>
                     <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay/>
                         <ModalContent>
@@ -69,8 +96,6 @@ export function Bookmarks() {
                             </Center>
                         </ModalContent>
                     </Modal>
-                </VStack>
-            </Center>
         </Container>
     </ChakraProvider>);
 }
