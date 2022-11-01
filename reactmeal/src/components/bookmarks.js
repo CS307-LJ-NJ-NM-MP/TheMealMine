@@ -16,37 +16,41 @@ export function Bookmarks() {
     let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
     let stack1 = [];
     let stack2 = [];
-    for(var i = 0; i < favoriteRecipes.length/5/5; i++){
-        let temp = [];
-        for(var j = 0; j < favoriteRecipes.length; j+=4) {
-            let element = 
-                    <HStack spacing="10px">
-                        <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
-                        <VStack>
-                            <Text w="100px">{favoriteRecipes[j+1]}</Text>
-                            <Text w="100px">{favoriteRecipes[j+2]}</Text>
-                            <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
-                        </VStack>
-                    </HStack>;
-            temp.push(element);
+    if(favoriteRecipes[0] !== '') {
+        for(var i = 0; i < favoriteRecipes.length/5/5; i++){
+            let temp = [];
+            for(var j = 0; j < favoriteRecipes.length; j+=4) {
+                let element = 
+                        <HStack spacing="10px">
+                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
+                            <VStack>
+                                <Text w="100px">{favoriteRecipes[j+1]}</Text>
+                                <Text w="100px">{favoriteRecipes[j+2]}</Text>
+                                <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
+                            </VStack>
+                        </HStack>;
+                temp.push(element);
+            }
+            stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
-        stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
     }
-    for(var i = 0; i < contributedRecipes.length/5/5; i++){
-        let temp = [];
-        for(var j = 0; j < contributedRecipes.length; j+=4) {
-            let element = 
-                    <HStack spacing="10px">
-                        <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
-                        <VStack>
-                            <Text w="100px">{contributedRecipes[j+1]}</Text>
-                            <Text w="100px">{contributedRecipes[j+2]}</Text>
-                            <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
-                        </VStack>
-                    </HStack>;
-            temp.push(element);
+    if(contributedRecipes[0] !== ''){
+        for(var i = 0; i < contributedRecipes.length/5/5; i++){
+            let temp = [];
+            for(var j = 0; j < contributedRecipes.length; j+=4) {
+                let element = 
+                        <HStack spacing="10px">
+                            <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
+                            <VStack>
+                                <Text w="100px">{contributedRecipes[j+1]}</Text>
+                                <Text w="100px">{contributedRecipes[j+2]}</Text>
+                                <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
+                            </VStack>
+                        </HStack>;
+                temp.push(element);
+            }
+            stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
-        stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
     }
     const {isOpen, onOpen, onClose} = useDisclosure();
     return (<ChakraProvider>

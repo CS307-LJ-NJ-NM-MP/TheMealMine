@@ -175,7 +175,7 @@ app.post('/updatePass', async (req, res) => {
     res.send(result);
 });
 
-app.post('/signupUser', (req, res) => {
+app.post('/signupUser', async (req, res) => {
 	const form = {
     	user: req.body.user,
     	pass: req.body.pass,
@@ -189,7 +189,8 @@ app.post('/signupUser', (req, res) => {
 		status: 1,
         ranking: 0
  	};
-	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
+	var result = await client.db("TheMealMine").collection("UserAccounts").insertOne(form);
+    res.send(result);
 });
 
 app.post('/deleteUser', async (req) => {
