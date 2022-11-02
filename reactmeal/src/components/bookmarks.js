@@ -80,6 +80,7 @@ export function Bookmarks() {
             contributedRecipes.push(temp);
         }
         console.log(contributedRecipes);
+        localStorage.setItem('ranking',result2.data.ranking);
         localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
     }
