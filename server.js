@@ -295,7 +295,7 @@ app.post('/addRecipes', async (req,res) => {
     client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
     
 });
-
+ 
 app.post('/addIngredients', async (req,res) => {
     const form = {
         owner: req.body.user,
@@ -315,4 +315,26 @@ app.post('/addIngredients', async (req,res) => {
     list.push(form);
     var update = {$push:{"pantry": form}};
     client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
+});
+
+app.post('/unfollow', async (req, res) => {
+    console.log("received request to unfollow " + req.body.name);
+    var result;
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'friendsList': req.body.name} },
+        {new: true}
+    );
+    if (result === null) {
+        console.log("opps");
+    }
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user},
+    );
+    //console.log(result);
+    res.send(result);
+
+
+    
+    
 });

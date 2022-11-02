@@ -9,7 +9,9 @@ import Axios from "axios";
 function FriendsPage() {
     var username = localStorage.getItem('username');
     var password = localStorage.getItem('password');
+    const [doRender, setDoRender] = useState("");
     var friendsList;
+    //const [friendsList, setFriendsList] = useState([]);
     var blockedList;
     //var tempName = localStorage.setItem('tempName', "guest");
     console.log("New Refresh");
@@ -25,6 +27,7 @@ function FriendsPage() {
             var usersBlockedList = localStorage.getItem('blockedList');
 			if(userFriendsList !== null) {
 			    friendsList = userFriendsList.split(",");
+                //setFriendsList(userFriendsList.split(","));
                 console.log({friendsList});
 			} else {
 				friendsList = [];
@@ -36,7 +39,8 @@ function FriendsPage() {
                 blockedList = [];
             }
 	} else {
-		friendsList = [];
+        
+        friendsList = [];
         blockedList = [];
 	}
     const handleUnfollow = (name) => {
@@ -52,9 +56,15 @@ function FriendsPage() {
 				user: username,
 				name: nameToUnfollow
 			});
-        window.location.reload(true);
+        //console.log("Getting new friendsList " + result.friendsList[0] +  " hello");
+        //localStorage.setItem('friendsList', result.friendsList);
+        localStorage.setItem('friendsList', result.data.friendsList);
+        console.log("Here");
+        console.log("New friendsList: " + localStorage.getItem('friendsList'));
+        setDoRender(e.target.value);
+   
     }
-    const handleUnblock = (name) => {
+    const handleUnblock =  (name) => {
 
     }
     const handleBlock = (name) => {
@@ -66,7 +76,7 @@ function FriendsPage() {
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
             <Button value={name} align="right" color="blue" 
-                onClick={unfollow(e, name)}>
+                onClick={unfollow}>
                     Unfollow</Button>
             <Button align="right" color="blue">Block</Button>
         </HStack>
