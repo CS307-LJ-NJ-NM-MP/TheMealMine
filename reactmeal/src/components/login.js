@@ -38,13 +38,14 @@ export function Login()  {
 			localStorage.setItem('image',result.data.image);
 			localStorage.setItem('id', result.data._id);
 			localStorage.setItem('pantry',result.data.pantry);
-			localStorage.setItem('ranking', result.data.pantry);
+			localStorage.setItem('ranking', result.data.ranking);
 			localStorage.setItem('friendsList', result.data.friendsList);
 			localStorage.setItem('blockedList',result.data.blockedList);
+			localStorage.setItem('contribution',result.data.contributions);
 			window.location = "/home";
 		} 
 	}
-	
+
 	function recovery(e) {
 		e.preventDefault();
 		window.location = '/recovery';

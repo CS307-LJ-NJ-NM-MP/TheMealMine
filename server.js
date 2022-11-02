@@ -34,15 +34,21 @@ app.post('/findUser', async(req, res) => {
         user: req.body.user
     };
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log("here is user: " + form.user)
-    console.log("result: " + result)
-    if (result == null) {
-        console.log("error");
-    }
-    else {
-        console.log("success");
-    }
     res.send(result);
+});
+
+app.post('/getRecipes', async(req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
+});
+
+app.post('/getRecipe', async(req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var recipe = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    res.send(recipe);
 });
 
 app.post('/findUserReg', async(req, res) => {
@@ -61,16 +67,43 @@ app.post('/findUserReg', async(req, res) => {
         }
     });
     if (result == null || result.user === undefined) {
-        console.log("error");
         res.send(null);
     }
     else {
-        console.log("success");
-        console.log("here is user: " + form.user)
-        console.log("result: " + result.user)
         res.send(result);
     }
 
+});
+
+app.post('/findTheUserReg', async(req, res) => {
+
+    if (req.body.user === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        user: req.body.user
+    };
+    const projection = {user: 1};
+    var string = "" + form.user;
+    var list = []
+    await client.db("TheMealMine").collection("UserAccounts").find({
+        user: {
+            $regex : string 
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            var newString = "" + doc.user
+            list.push(newString)
+
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
 });
 
 app.post('/recoverPass', async (req, res) => {
@@ -93,12 +126,10 @@ app.post('/recoverPass', async (req, res) => {
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
-    console.log('sending');
     transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
             console.error('there was an error: ', err);
         } else {
-            console.log('here is the res: ', response);
             res.status(200).json('recovery email sent');
         }
     })
@@ -116,7 +147,7 @@ app.post('/updatePass', async (req, res) => {
     res.send(result);
 });
 
-app.post('/signupUser', (req, res) => {
+app.post('/signupUser', async (req, res) => {
 	const form = {
     	user: req.body.user,
     	pass: req.body.pass,
@@ -127,12 +158,16 @@ app.post('/signupUser', (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
+        friends: [],
+        feed: [],
 		status: 1,
         friendsList: [],
         blockedList: [],
-        ranking: 0
+        ranking: 0,
+        contributions: 0
  	};
-	client.db("TheMealMine").collection("UserAccounts").insertOne(form);
+	var result = await client.db("TheMealMine").collection("UserAccounts").insertOne(form);
+    res.send(result);
 });
 
 app.post('/deleteUser', async (req) => {
@@ -151,7 +186,6 @@ app.post('/loginUser', async (req,res) => {
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log(result);
     res.send(result);
 });
 
@@ -161,7 +195,6 @@ app.post('/updatePantry', async (req,res) => {
     }
     var projection = {pantry: 1};
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    console.log(result.pantry);
     var pantry = result.pantry;
     var list = [req.body.name,req.body.qty,req.body.image];
     pantry.push(list);
@@ -245,25 +278,6 @@ app.post('/updatePicture', (req) => {
     client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-app.post('/getRecipes', async (req,res) => {
-    var recipeNum = req.body.recipe; var projection;
-    const form = {
-        user: req.body.user,
-        pass: req.body.pass
-    }
-    if(recipeNum == 0) {
-        projection = {favoriteRecipies: 1};
-    }else{
-        projection = {personalRecipies: 1};
-    }
-    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    if(recipeNum == 0){
-        res.send(result.favoriteRecipies);
-    }else{
-        res.send(result.personalRecipies);
-    }
-});
-
 app.post('/getIngredients',async (req,res) => {
     const form = {
         user: req.body.user,
@@ -275,25 +289,68 @@ app.post('/getIngredients',async (req,res) => {
 });
 
 app.post('/addRecipes', async (req,res) => {
-    const form = {
-        owner: req.body.user,
-    	name: req.body.name
- 	}
-	client.db("TheMealMine").collection("Recipes").insertOne(form);
-    const userForm = {
-        user: req.body.user,
-        pass: req.body.pass
+    const recipe = {
+        name: req.body.name,
+        owner: req.body._id,
+        image: req.body.image,
+        instructions: req.body.instructions,
+        ingredients: req.body.ingredients,
+        description: req.body.description,
+        likes: 0
     }
-    var projection = {personalRecipes: 1};
-    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(userForm,projection);
-    let list = [];
-    for(var i = 0; i < result.personalRecipes.length; i++) {
-        list.push(result.personalRecipes[i]);
+    var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
+    res.send(result);   
+});
+app.post('/addRecipeToUser', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    let personalRecipes = result.personalRecipes;
+    var ranking = result.ranking+1;
+    var contributions = result.contributions+1;
+    let temp = [];
+    temp.push(req.body.recipeId);
+    temp.push(req.body.favorites);
+    temp.push(req.body.owner);
+    temp.push(req.body.name);
+    temp.push(req.body.image);
+    temp.push(req.body.instructions);
+    temp.push(req.body.description);
+    temp.push(req.body.ingredients);
+    personalRecipes.push(temp);
+    var update = {$set:{"personalRecipes": personalRecipes}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    update = {$set:{"ranking": ranking}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    update = {$set:{"contributions": contributions}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
+});
+
+app.post('/addToFeeds', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    let friends = result.friends;
+    for(var i = 0; i < friends.length; i++) {
+        var ObjectId = require('mongodb').ObjectId;
+        const form2 = {_id: new ObjectId(friends[i])}
+        result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
+        let temp = [];
+        temp.push(req.body.recipeId);
+        temp.push(req.body.favorites);
+        temp.push(req.body.owner);
+        temp.push(req.body.name);
+        temp.push(req.body.image);
+        temp.push(req.body.instructions);
+        temp.push(req.body.description);
+        temp.push(req.body.ingredients);
+        let feed = result.feed;
+        feed.push(temp);
+        var update = {$set:{"feed": feed}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
     }
-    list.push(form);
-    var update = {$push:{"personalRecipes": form}};
-    client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
-    
 });
  
 app.post('/addIngredients', async (req,res) => {

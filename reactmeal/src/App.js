@@ -9,6 +9,7 @@ import { RecipeAdd } from "./components/recipeCreate"
 import { PWReset } from "./components/pwReset"
 import SigninPage from './pages/SigninPage';
 import FriendsPage from './pages/FriendsPage';
+import { Notifications } from './components/notifications';
 
 window.$username = '';
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/feed' element={<Feed/>} ></Route>
 		    <Route path='/recovery' element={<Recovery/>} ></Route>
         <Route path='/recipeAdd' element={<RecipeAdd/>} ></Route>
+        <Route path='/notifications' element={<Notifications/>} ></Route>
       </Routes>
     </>
   );
