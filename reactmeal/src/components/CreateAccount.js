@@ -36,15 +36,18 @@ function CreateAccount() {
 		localStorage.setItem('password',formValue.pass);
 		localStorage.setItem('email', formValue.email);
 		localStorage.setItem('image', formValue.image);
-		window.location = "/home";
-		await Axios.post('http://localhost:5000/signupUser', {
+		
+		var result = await Axios.post('http://localhost:5000/signupUser', {
 			user: formValue.user,  
 			pass: formValue.pass,
 			email: formValue.email,
 			image: formValue.image
 		});
-		
-	}
+		localStorage.setItem('id',result.data.insertedId);
+        localStorage.setItem('ranking',0);
+        localStorage.setItem('contribution',0);
+        window.location = "/home";
+    }
 	
 return (<>
 	<VStack

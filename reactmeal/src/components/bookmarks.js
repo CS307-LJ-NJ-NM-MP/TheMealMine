@@ -1,35 +1,34 @@
-import { TopNav } from '../topNav';
+import { TopNav } from '../topNav'
+import ReactDOM from 'react-dom';
+import { useEffect, useState } from "react";
 import Axios from "axios";
-import { SideNav } from '../sideNav';
-import { useState } from "react";
+import { list, Textarea } from '@chakra-ui/react'
+import recipesBackground from "../imgs/recipesBackground.jpg"
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+        TabPanel, FormLabel, HStack, Modal, ModalOverlay, ModalContent,
+        ModalHeader, ModalCloseButton, useDisclosure, ModalBody, ModalFooter} from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+import { render } from '@testing-library/react';
+import { useAnimationFrame } from 'framer-motion';
 
-//export const Bookmarks = () => {
-    function Bookmarks() {
-    var rName = "Pesto Pasta";
-
-    const [isSaved, setIsSaved] = useState(false);
-
-
-    //var isSaved = false;
-
-    const handleClick = () => setIsSaved(!isSaved);
-
-
+export function Bookmarks() {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
-    var password = localStorage.getItem('password');
-
-    if(username == null || password == null){
-        window.location = "/";
-    }
-
+    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
+    let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
+    let stack1 = [];
+    let stack2 = [];
     const [formValue, setFormValue] = useState({
-		recipes: '',
-        ingredients: ''
+		name: '',
+        image: '',
+        instructions: '',
+        ingredients: '',
+        description: ''
 	})
-	
-	const handleChange = (event) => {
-		let value = event.target.value;
-		let name = event.target.name;
+    const handleChange = (e) => {
+		let value = e.target.value;
+		let name = e.target.name;
 		setFormValue((prevState) => {
 			return {
 				...prevState,
@@ -37,78 +36,131 @@ import { useState } from "react";
 			}
 		}); 
 	}
-
-    async function getFavoriteRecipes(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 0
+    async function addRecipe(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/addRecipes', {
+			_id: id,
+            name: formValue.name,
+            owner: username,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients,
+            description: formValue.description
 		});
-        console.log(result.data);
-	}
-    
-    async function getPersonalRecipes(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        console.log(result.data);
-	}
-
-    async function getPantry(e) {
-		e.preventDefault();
-		var result = await Axios.post('http://localhost:5000/getRecipes', {
-			user: username,
-            pass: password,
-            recipe: 1
-		});
-        console.log(result.data);
-	}
-
-    async function addRecipes(e) {
-		e.preventDefault();
-        window.location = "/recipeAdd";
-		/*await Axios.post('http://localhost:5000/addRecipes', {
-            user: username,
-            pass: password,
-			name: formValue.recipes
-		});*/
-	}
-
-    const recipeSave = () => {
-        return(
-            <>
-                
-            </>
-        );
+        Axios.post('http://localhost:5000/addToFeeds', {
+            _id: id,
+            recipeId: result.data.insertedId,
+            owner: username,
+            name: formValue.name,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients,
+            description: formValue.description,
+            favorites: 0
+        });
+        var result2 = await Axios.post('http://localhost:5000/addRecipeToUser', {
+            _id: id,
+            recipeId: result.data.insertedId,
+            owner: username,
+            name: formValue.name,
+            image: formValue.image,
+            instructions: formValue.instructions,
+            ingredients: formValue.ingredients,
+            description: formValue.description,
+            favorites: 0
+        });
+        contributedRecipes = [];
+        for(var i = 0; i < result2.data.personalRecipes.length; i++){
+            let temp = [];
+            temp.push(result2.data.personalRecipes[i][4]);
+            temp.push(result2.data.personalRecipes[i][3]);
+            temp.push(result2.data.personalRecipes[i][2]);
+            temp.push(result2.data.personalRecipes[i][1]);
+            temp.push(result2.data.personalRecipes[i][6]);
+            contributedRecipes.push(temp);
+        }
+        console.log(contributedRecipes);
+        localStorage.setItem('ranking',result2.data.ranking);
+        localStorage.setItem('contributedRecipes',contributedRecipes);
+        window.location.reload(false);
     }
-
-    return (
-        <>
+    if(favoriteRecipes[0] !== '') {
+        for(var i = 0; i < favoriteRecipes.length/5/5; i++){
+            let temp = [];
+            for(var j = 0; j < favoriteRecipes.length; j+=5) {
+                let element = 
+                        <HStack spacing="10px">
+                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
+                            <VStack>
+                                <Text w="100px">{favoriteRecipes[j+1]}</Text>
+                                <Text w="100px">{favoriteRecipes[j+2]}</Text>
+                                <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
+                                <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
+                            </VStack>
+                        </HStack>;
+                temp.push(element);
+            }
+            stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
+        }
+    }
+    if(contributedRecipes[0] !== ''){
+        var len = contributedRecipes.length;
+        for(var i = 0; i < len; i+=25){
+            let temp = [];
+            for(var j = i; j < i+25; j+=5) {
+                if(contributedRecipes[j] === undefined){break;}
+                console.log(contributedRecipes[j]);
+                let element = 
+                        <HStack spacing="10px">
+                            <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
+                            <VStack>
+                                <Text w="100px">{contributedRecipes[j+1]}</Text>
+                                <Text w="100px">{contributedRecipes[j+2]}</Text>
+                                <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
+                                <Text w="100px">Description: {contributedRecipes[j+4]}</Text>
+                            </VStack>
+                        </HStack>;
+                temp.push(element);
+            }
+            stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
+        }
+    }
+    return (<ChakraProvider>
+        <Container>
             <TopNav/>
-            <div id="app">
-                Favorite Recipes:<br/>
-                <div>
-                     { isSaved ? <p></p> : <p>{ rName }</p> } 
-                </div>
-                <button onClick={getFavoriteRecipes}>Display</button>
-            </div>
-            <br/>
-            <div>
-                Personal Recipes:
-                <div>
-                    <p>{ rName }</p><button onClick={handleClick}> { isSaved ? "Save" : "Unsave" } </button>
-                </div>
-                <br/>
-                <button onClick={addRecipes}>Add</button><br/>
-                <button onClick={getPersonalRecipes}>Display</button>
-            </div>
-            <SideNav/>
-        </>
-    );
+                <Center>
+                    <VStack>
+                        <FormLabel>Favorite Recipes</FormLabel>
+                        {stack1}
+                    </VStack>
+                </Center><br/>
+                <Center>
+                    <VStack>
+                        <FormLabel>Contributed Recipes</FormLabel>
+                        {stack2}
+                    </VStack>
+                </Center><br/>
+                <Center>
+                    <Button onClick={onOpen}>Add Contribution</Button>
+                </Center>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay/>
+                        <ModalContent>
+                            <Center>
+                                <VStack spacing='5%' m="0 0 20px 0">
+                                    <ModalHeader>Enter New Recipe Information</ModalHeader>
+                                    <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
+                                    <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
+                                    <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
+                                    <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
+                                    <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
+                                    <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
+                                </VStack>
+                            </Center>
+                        </ModalContent>
+                    </Modal>
+        </Container>
+    </ChakraProvider>);
 }
 
 export default Bookmarks;
