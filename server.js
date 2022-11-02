@@ -294,6 +294,8 @@ app.post('/addRecipeToUser', async (req,res) => {
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     let personalRecipes = result.personalRecipes;
+    var ranking = result.ranking+1;
+    var contributions = result.contributions+1;
     let temp = [];
     temp.push(req.body.recipeId);
     temp.push(req.body.favorites);
@@ -305,6 +307,10 @@ app.post('/addRecipeToUser', async (req,res) => {
     temp.push(req.body.ingredients);
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    update = {$set:{"ranking": ranking}};
+    result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    update = {$set:{"contributions": contributions}};
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     res.send(result);
