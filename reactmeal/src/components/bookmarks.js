@@ -1,15 +1,11 @@
 import { TopNav } from '../topNav'
-import ReactDOM from 'react-dom';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Axios from "axios";
-import { list, Textarea } from '@chakra-ui/react'
-import recipesBackground from "../imgs/recipesBackground.jpg"
-import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
-        TabPanel, FormLabel, HStack, Modal, ModalOverlay, ModalContent,
-        ModalHeader, ModalCloseButton, useDisclosure, ModalBody, ModalFooter} from '@chakra-ui/react'
+import { Textarea } from '@chakra-ui/react'
+import { Button, VStack, Text, Container, Input, Image, Center,
+        FormLabel, HStack, Modal, ModalOverlay, ModalContent,
+        ModalHeader, useDisclosure} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
-import { render } from '@testing-library/react';
-import { useAnimationFrame } from 'framer-motion';
 
 export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -105,9 +101,9 @@ export function Bookmarks() {
     }
     if(contributedRecipes[0] !== ''){
         var len = contributedRecipes.length;
-        for(var i = 0; i < len; i+=25){
+        for(i = 0; i < len; i+=25){
             let temp = [];
-            for(var j = i; j < i+25; j+=5) {
+            for(j = i; j < i+25; j+=5) {
                 if(contributedRecipes[j] === undefined){break;}
                 console.log(contributedRecipes[j]);
                 let element = 

@@ -56,9 +56,6 @@ export function Login()  {
 		localStorage.setItem('pantry',"Guest");
 		window.location = "/home";
 	}
-	function goToReset() {
-		window.location = '/PWReset';
-	}
 	return (
         <VStack
 			id="loginForm"

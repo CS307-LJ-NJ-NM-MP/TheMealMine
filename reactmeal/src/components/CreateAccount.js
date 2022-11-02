@@ -12,7 +12,7 @@ function CreateAccount() {
 		user: '',
 		image: ''
 	})
-	const [comfirmPassword, setConfirmPassword] = useState();
+	const [setConfirmPassword] = useState();
 	//ConfirmPassword to be used to compare before submitting
 	const [show, setShow] = useState(false);
 
