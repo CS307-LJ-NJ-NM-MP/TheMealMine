@@ -39,10 +39,11 @@ export function Login()  {
 			localStorage.setItem('id',result.data._id);
 			localStorage.setItem('pantry',result.data.pantry);
 			localStorage.setItem('ranking',result.data.ranking);
+			localStorage.setItem('contribution',result.data.contributions);
 			window.location = "/home";
 		} 
 	}
-	
+
 	function recovery(e) {
 		e.preventDefault();
 		window.location = '/recovery';

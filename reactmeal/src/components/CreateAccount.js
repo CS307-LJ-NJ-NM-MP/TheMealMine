@@ -44,6 +44,8 @@ function CreateAccount() {
 			image: formValue.image
 		});
 		localStorage.setItem('id',result.data.insertedId);
+        localStorage.setItem('ranking',0);
+        localStorage.setItem('contribution',0);
         window.location = "/home";
     }
 	

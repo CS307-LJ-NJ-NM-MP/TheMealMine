@@ -34,14 +34,6 @@ app.post('/findUser', async(req, res) => {
         user: req.body.user
     };
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log("here is user: " + form.user)
-    console.log("result: " + result)
-    if (result == null) {
-        console.log("error");
-    }
-    else {
-        console.log("success");
-    }
     res.send(result);
 });
 
@@ -75,13 +67,9 @@ app.post('/findUserReg', async(req, res) => {
         }
     });
     if (result == null || result.user === undefined) {
-        console.log("error");
         res.send(null);
     }
     else {
-        console.log("success");
-        console.log("here is user: " + form.user)
-        console.log("result: " + result.user)
         res.send(result);
     }
 
@@ -98,37 +86,24 @@ app.post('/findTheUserReg', async(req, res) => {
     const projection = {user: 1};
     var string = "" + form.user;
     var list = []
-    var result = await client.db("TheMealMine").collection("UserAccounts").find({
+    await client.db("TheMealMine").collection("UserAccounts").find({
         user: {
             $regex : string 
         }
     }).toArray(function(err, docs) {
-        console.log("printing")
         docs.forEach(function(doc) {
-            console.log("Doc from array ");
             var newString = "" + doc.user
-            console.log("document: " + doc.user)
-            console.log("string " + newString)
-            var length = list.push(newString)
-            console.log("length " + length)
-            console.log("list " + list)
+            list.push(newString)
 
         }
         )
-        console.log("new length" + list.length)
         if (list.length == 0) {
-            console.log("error, bad result");
             res.send(null);
         }
         else {
-            console.log("success");
-            console.log("result here: " + list)
             res.send(list);
         }
     });
-    console.log("result is here: " + list.length);
-
-
 });
 
 app.post('/recoverPass', async (req, res) => {
@@ -151,12 +126,10 @@ app.post('/recoverPass', async (req, res) => {
             + `http://localhost:3000/PWReset\n\n`
             + 'this is a test\n,'
     };
-    console.log('sending');
     transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
             console.error('there was an error: ', err);
         } else {
-            console.log('here is the res: ', response);
             res.status(200).json('recovery email sent');
         }
     })
@@ -185,8 +158,11 @@ app.post('/signupUser', async (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
+        friends: [],
+        feed: [],
 		status: 1,
-        ranking: 0
+        ranking: 0,
+        contributions: 0
  	};
 	var result = await client.db("TheMealMine").collection("UserAccounts").insertOne(form);
     res.send(result);
@@ -208,7 +184,6 @@ app.post('/loginUser', async (req,res) => {
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log(result);
     res.send(result);
 });
 
@@ -218,7 +193,6 @@ app.post('/updatePantry', async (req,res) => {
     }
     var projection = {pantry: 1};
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    console.log(result.pantry);
     var pantry = result.pantry;
     var list = [req.body.name,req.body.qty,req.body.image];
     pantry.push(list);
@@ -313,7 +287,6 @@ app.post('/addRecipes', async (req,res) => {
         likes: 0
     }
     var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
-    console.log(result);
     res.send(result);   
 });
 app.post('/addRecipeToUser', async (req,res) => {
