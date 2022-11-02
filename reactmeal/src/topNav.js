@@ -1,6 +1,16 @@
 import HomeLogo from "./imgs/homeLogo.png"
 import Axios from 'axios';
 import { ChakraProvider, Button, Image, Center, Heading, HStack } from "@chakra-ui/react";
+import {
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuItemOption,
+	MenuGroup,
+	MenuOptionGroup,
+	MenuDivider,
+  } from '@chakra-ui/react'
 
 export function TopNav() {
 	var username = localStorage.getItem('username');
@@ -33,6 +43,39 @@ export function TopNav() {
 			});
 		}
 	}
+
+	function settings(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/settings";
+        }
+    }
+    function friends(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/addFriend";
+        }
+    }
+    async function bookmarks(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest") {
+            window.location = "/bookmarks";
+        }
+    }
+    function feed(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/feed";
+        }
+    }
+	function notis(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/notifications";
+        }
+    }
+
+
    	return (<ChakraProvider>
 		<Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
@@ -43,6 +86,22 @@ export function TopNav() {
 				<Button bg="transparent" boxSize="-webkit-fit-content" borderRadius="full" onClick={login}>
 					<Image borderRadius='full'boxSize="50" src={image}/>
 				</Button>
+				<Menu>
+					{({ isOpen }) => (
+						<>
+						<MenuButton isActive={isOpen} as={Button} >
+							{isOpen ? 'Close' : 'Open'}
+						</MenuButton>
+						<MenuList>
+							<MenuItem onClick={settings} >Settings</MenuItem>
+							<MenuItem onClick={friends}>Friends</MenuItem>
+							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
+							<MenuItem onClick={feed}>Feed</MenuItem>
+							<MenuItem onClick={notis}>Notifications</MenuItem>
+						</MenuList>
+						</>
+					)}
+				</Menu>
 			</HStack>
 		</Center>
     </ChakraProvider>)
