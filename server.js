@@ -328,9 +328,11 @@ app.post('/addRecipes', async (req,res) => {
         image: req.body.image,
         instructions: req.body.instructions,
         ingredients: req.body.ingredients,
+        description: req.body.description,
         likes: 0
     }
     var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
+    console.log(result);
     res.send(result);   
 });
 app.post('/addRecipeToUser', async (req,res) => {
@@ -345,6 +347,7 @@ app.post('/addRecipeToUser', async (req,res) => {
     temp.push(req.body.name);
     temp.push(req.body.image);
     temp.push(req.body.instructions);
+    temp.push(req.body.description);
     temp.push(req.body.ingredients);
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
@@ -369,12 +372,12 @@ app.post('/addToFeeds', async (req,res) => {
         temp.push(req.body.name);
         temp.push(req.body.image);
         temp.push(req.body.instructions);
+        temp.push(req.body.description);
         temp.push(req.body.ingredients);
         let feed = result.feed;
         feed.push(temp);
         var update = {$set:{"feed": feed}};
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
-        console.log(result);
     }
 });
 

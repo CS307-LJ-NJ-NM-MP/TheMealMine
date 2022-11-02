@@ -33,15 +33,18 @@ export const SideNav = () => {
                 temp.push(result.data.favoriteRecipes[i][3]);
                 temp.push(result.data.favoriteRecipes[i][2]);
                 temp.push(result.data.favoriteRecipes[i][1]);
+                temp.push(result.data.favoriteRecipes[i][6]);
                 favoriteRecipes.push(temp);
             }
             let contributedRecipes = [];
+            console.log(contributedRecipes);
             for(var i = 0; i < result.data.personalRecipes.length; i++){
                 let temp = [];
                 temp.push(result.data.personalRecipes[i][4]);
                 temp.push(result.data.personalRecipes[i][3]);
                 temp.push(result.data.personalRecipes[i][2]);
                 temp.push(result.data.personalRecipes[i][1]);
+                temp.push(result.data.personalRecipes[i][6]);
                 contributedRecipes.push(temp);
             }
             console.log(favoriteRecipes);

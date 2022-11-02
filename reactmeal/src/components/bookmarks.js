@@ -23,7 +23,8 @@ export function Bookmarks() {
 		name: '',
         image: '',
         instructions: '',
-        ingredients: ''
+        ingredients: '',
+        description: ''
 	})
     const handleChange = (e) => {
 		let value = e.target.value;
@@ -43,7 +44,8 @@ export function Bookmarks() {
             owner: username,
             image: formValue.image,
             instructions: formValue.instructions,
-            ingredients: formValue.ingredients
+            ingredients: formValue.ingredients,
+            description: formValue.description
 		});
         Axios.post('http://localhost:5000/addToFeeds', {
             _id: id,
@@ -53,6 +55,7 @@ export function Bookmarks() {
             image: formValue.image,
             instructions: formValue.instructions,
             ingredients: formValue.ingredients,
+            description: formValue.description,
             favorites: 0
         });
         var result2 = await Axios.post('http://localhost:5000/addRecipeToUser', {
@@ -63,6 +66,7 @@ export function Bookmarks() {
             image: formValue.image,
             instructions: formValue.instructions,
             ingredients: formValue.ingredients,
+            description: formValue.description,
             favorites: 0
         });
         contributedRecipes = [];
@@ -72,15 +76,17 @@ export function Bookmarks() {
             temp.push(result2.data.personalRecipes[i][3]);
             temp.push(result2.data.personalRecipes[i][2]);
             temp.push(result2.data.personalRecipes[i][1]);
+            temp.push(result2.data.personalRecipes[i][6]);
             contributedRecipes.push(temp);
         }
+        console.log(contributedRecipes);
         localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
     }
     if(favoriteRecipes[0] !== '') {
         for(var i = 0; i < favoriteRecipes.length/5/5; i++){
             let temp = [];
-            for(var j = 0; j < favoriteRecipes.length; j+=4) {
+            for(var j = 0; j < favoriteRecipes.length; j+=5) {
                 let element = 
                         <HStack spacing="10px">
                             <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
@@ -88,6 +94,7 @@ export function Bookmarks() {
                                 <Text w="100px">{favoriteRecipes[j+1]}</Text>
                                 <Text w="100px">{favoriteRecipes[j+2]}</Text>
                                 <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
+                                <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
                             </VStack>
                         </HStack>;
                 temp.push(element);
@@ -96,9 +103,12 @@ export function Bookmarks() {
         }
     }
     if(contributedRecipes[0] !== ''){
-        for(var i = 0; i < contributedRecipes.length/5/5; i++){
+        var len = contributedRecipes.length;
+        for(var i = 0; i < len; i+=25){
             let temp = [];
-            for(var j = 0; j < contributedRecipes.length; j+=4) {
+            for(var j = i; j < i+25; j+=5) {
+                if(contributedRecipes[j] === undefined){break;}
+                console.log(contributedRecipes[j]);
                 let element = 
                         <HStack spacing="10px">
                             <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
@@ -106,6 +116,7 @@ export function Bookmarks() {
                                 <Text w="100px">{contributedRecipes[j+1]}</Text>
                                 <Text w="100px">{contributedRecipes[j+2]}</Text>
                                 <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
+                                <Text w="100px">Description: {contributedRecipes[j+4]}</Text>
                             </VStack>
                         </HStack>;
                 temp.push(element);
@@ -141,6 +152,7 @@ export function Bookmarks() {
                                     <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
                                     <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
                                     <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
+                                    <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
                                     <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
                                 </VStack>
                             </Center>
