@@ -3,7 +3,6 @@ import { Box, Container, Text, Stack, Input, Button, HStack, VStack } from "@cha
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { useState } from "react";
-import e from "cors";
 import Axios from "axios";
 
 function FriendsPage() {
@@ -38,16 +37,10 @@ function FriendsPage() {
             } else {
                 blockedList = [];
             }
-	} else {
-        
+	} else {        
         friendsList = [];
         blockedList = [];
-	}
-    const handleUnfollow = (name) => {
-        //Send request to server to update mongo and remove that person from their friendslist
-
-    }
-    
+	}  
     async function unfollow(e) {
         e.preventDefault();
         const nameToUnfollow = e.target.value;
@@ -55,20 +48,34 @@ function FriendsPage() {
         var result = await Axios.post('http://localhost:5000/unfollow', {
 				user: username,
 				name: nameToUnfollow
-			});
-        //console.log("Getting new friendsList " + result.friendsList[0] +  " hello");
-        //localStorage.setItem('friendsList', result.friendsList);
+		});
         localStorage.setItem('friendsList', result.data.friendsList);
-        console.log("Here");
         console.log("New friendsList: " + localStorage.getItem('friendsList'));
         setDoRender(e.target.value);
    
     }
-    const handleUnblock =  (name) => {
-
+    async function unblock(e) {
+        e.preventDefault();
+        //console.log("Unfollowing: " + nameToUnfollow);
+        var result = await Axios.post('http://localhost:5000/unblock', {
+				user: username,
+				name: e.target.value
+		});
+        //console.log("Getting new friendsList " + result.friendsList[0] +  " hello");
+        //localStorage.setItem('friendsList', result.friendsList);
+        localStorage.setItem('blockedList', result.data.blockedList);
+        console.log("New blockedList: " + localStorage.getItem('blockedList'));
+        setDoRender(e.target.value);
     }
-    const handleBlock = (name) => {
-    
+    async function block(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/blockUser', {
+				user: username,
+				name: e.target.value
+		});
+        localStorage.setItem('friendsList', result.data.friendsList);
+        localStorage.setItem('blockedList', result.data.blockedList);
+        setDoRender(e.target.value);
     }
 
     const FriendDisplay = (name) => {
@@ -78,7 +85,8 @@ function FriendsPage() {
             <Button value={name} align="right" color="blue" 
                 onClick={unfollow}>
                     Unfollow</Button>
-            <Button align="right" color="blue">Block</Button>
+            <Button value={name} align="right" color="blue"
+            onClick={block}>Block</Button>
         </HStack>
         );
     }
@@ -96,7 +104,7 @@ function FriendsPage() {
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
-            <Button align="right" color="blue">Unblock</Button>
+            <Button value={name} align="right" color="blue" onClick={unblock}>Unblock</Button>
         </HStack>
         )
     }
@@ -104,7 +112,7 @@ function FriendsPage() {
         return (
             <Box>
             <ul>
-            {   
+            {
                 blockedList.map( (name) => (
                 BlockedDisplay(name)
             ))}</ul>

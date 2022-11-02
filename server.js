@@ -332,9 +332,46 @@ app.post('/unfollow', async (req, res) => {
         { user: req.body.user},
     );
     //console.log(result);
-    res.send(result);
-
-
-    
-    
+    res.send(result);    
+});
+app.post('/unblock', async (req, res) => {
+    console.log("received request to unblock " + req.body.name);
+    var result;
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'blockedList': req.body.name} },
+        {new: true}
+    );
+    if (result === null) {
+        console.log("opps");
+    }
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //console.log(result);
+    res.send(result);    
+});
+/* blocking a user needs a req with a user field, and name, where user
+is the account who is blocking name. returns documents of user. 
+Will remove friend from friendlist*/
+app.post('/blockUser', async (req, res) => {
+    console.log("received request to block " + req.body.name);
+    var result;
+    //Remove from friendList
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'friendsList': req.body.name} },
+        {new: true}
+    );
+    //Insert name into users blocked list
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user },
+        { $push: {'blockedList': req.body.name}},
+    );
+    //Find the new document
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
 });
