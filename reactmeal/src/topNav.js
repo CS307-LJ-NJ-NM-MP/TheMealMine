@@ -53,7 +53,7 @@ export function TopNav() {
     function friends(e) {
         e.preventDefault();
         if(username !== "Guest" && password !== "Guest"){
-            window.location = "/addFriend";
+            window.location = "/friends";
         }
     }
     async function bookmarks(e) {
