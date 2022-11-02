@@ -292,25 +292,6 @@ app.post('/updatePicture', (req) => {
     client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-app.post('/getRecipes', async (req,res) => {
-    var recipeNum = req.body.recipe; var projection;
-    const form = {
-        user: req.body.user,
-        pass: req.body.pass
-    }
-    if(recipeNum == 0) {
-        projection = {favoriteRecipies: 1};
-    }else{
-        projection = {personalRecipies: 1};
-    }
-    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-    if(recipeNum == 0){
-        res.send(result.favoriteRecipies);
-    }else{
-        res.send(result.personalRecipies);
-    }
-});
-
 app.post('/getIngredients',async (req,res) => {
     const form = {
         user: req.body.user,
