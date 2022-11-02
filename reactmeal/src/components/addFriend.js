@@ -6,15 +6,23 @@ import { ReactDOM } from 'react-dom/client';
 
 export const Friends = () => {
 
+
     return (
+        
         
         <>
             <div>
             <TopNav/>
-
-            Friends List:
             <SideNav/>
-            <FriendNav/>
+            </div>
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                Search for users here:<br/>
+            <FriendNav/><br/>
+
             </div>
         </>
     );
