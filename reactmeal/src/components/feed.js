@@ -27,11 +27,12 @@ export const Feed = () => {
 		e.preventDefault();
         console.log("sending");
         console.log(localStorage.getItem('username'))
+        console.log(userForm)
         setUserForm(localStorage.getItem('username'))
-        setRecipeForm("Ass")
+        setRecipeForm("Cheese")
         console.log("recipe name: " + recipeForm)
         var result = await Axios.post('http://localhost:5000/arrayTest', {
-            user: userForm,
+            user: localStorage.getItem("username"),
             recipe: recipeForm,
         })
         .then(response => {

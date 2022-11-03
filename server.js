@@ -88,19 +88,28 @@ app.post('/arrayTest', async(req, res) => {
     const newForm = {
         user: req.body.user
     }
+
+    const recipeForm = {
+        name: req.body.recipe
+    }
     
     console.log("user " + form.user)
     console.log("rec " + req.body.recipe)
 
     var update = {$push:{"likedRecipes": req.body.recipe}};
     var otherUpdate = {$pull:{"likedRecipes": req.body.recipe}};
-    var recipeString = "" + req.body.recipe
+
+    var increaseLike = {$inc: {"likes": 1}};
+    var decreaseLike = {$inc: {"likes" : -1}};
+
+    var recipeString = "" + recipeForm.name
     console.log("here is recipe " + recipeString)
 
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     if (result == null) {
         console.log("recipe is not there")
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,update);
+        var likeIncrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, increaseLike)
 //        console.log(result.likedRecipes.data)
         console.log("now it is")
     }
@@ -108,6 +117,7 @@ app.post('/arrayTest', async(req, res) => {
         console.log(result.likedRecipes)
         console.log("bye bye")
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,otherUpdate);
+        var likeDecrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, decreaseLike)
 
     }
 
