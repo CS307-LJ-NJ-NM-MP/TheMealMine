@@ -1,6 +1,7 @@
 import { TopNav } from '../topNav';
 import { SideNav } from '../sideNav';
 import { CategoryNav } from '../categoryNav';
+import { Comments } from '../comments';
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -88,13 +89,15 @@ export const Feed = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                Search for users here:
+                add category here:
                 <br />
 
             <br />
             <CategoryNav/>
 
+
             </div>
+            <Comments/>
             
         </>
     );
