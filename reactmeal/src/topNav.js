@@ -1,16 +1,7 @@
 import HomeLogo from "./imgs/homeLogo.png"
 import Axios from 'axios';
 import { ChakraProvider, Button, Image, Center, Heading, HStack } from "@chakra-ui/react";
-import {
-	Menu,
-	MenuButton,
-	MenuList,
-	MenuItem,
-	MenuItemOption,
-	MenuGroup,
-	MenuOptionGroup,
-	MenuDivider,
-  } from '@chakra-ui/react'
+import {Menu,MenuButton,MenuList,MenuItem,} from '@chakra-ui/react'
 
 export function TopNav() {
 	var username = localStorage.getItem('username');
@@ -79,13 +70,10 @@ export function TopNav() {
    	return (<ChakraProvider>
 		<Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
-				<Button bg="transparent" boxSize="-webkit-fit-content" borderRadius="full" onClick={home}>
-					<Image borderRadius='full' boxSize="50" src={HomeLogo}/>
-				</Button>
+					<Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
+				
 				<Heading color="turquoise" align="center">The Meal Mine</Heading>
-				<Button bg="transparent" boxSize="-webkit-fit-content" borderRadius="full" onClick={login}>
-					<Image borderRadius='full'boxSize="50" src={image}/>
-				</Button>
+					<Image borderRadius='full'boxSize="50" src={image} onClick={login}/>
 				<Menu>
 					{({ isOpen }) => (
 						<>

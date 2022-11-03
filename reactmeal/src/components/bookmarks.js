@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import Axios from "axios";
 import { Textarea } from '@chakra-ui/react'
-import { Button, VStack, Text, Container, Input, Image, Center,
+import { Button, VStack, Text, Box, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
@@ -191,24 +191,30 @@ export function Bookmarks() {
         }
     }
     return (<ChakraProvider>
-        <Container>
+        <Container maxW='100%'>
             <TopNav/>
                 <Center>
-                    <VStack>
-                        <FormLabel id="hi">Favorite Recipes</FormLabel>
+                    <FormLabel>Favorited Recipes</FormLabel>
+                </Center>
+                <Center>
+                <VStack maxW="80%" maxH="400px" overflowY="scroll">
                         {stack1}
                     </VStack>
                 </Center><br/>
                 <Center>
-                    <VStack>
-                        <FormLabel>Contributed Recipes</FormLabel>
-                        <HStack>
-                            <Textarea id="name" name="nameDoc" placeholder={name} variant="flushed"/>
-                            <Textarea id="image" name="imageDoc" placeholder={image} variant="flushed"/>
-                            <Textarea id="ingredients" name="ingredDoc" placeholder={ingred} variant="flushed"/>
-                            <Textarea id="instructions" name="instructDoc" placeholder={instruct} variant="flushed"/>
-                            <Textarea id="description" name="descriptDoc" placeholder={descript} variant="flushed"/>
-                        </HStack>
+                    <FormLabel>Contributed Recipes</FormLabel>
+                </Center>
+                <Center>
+                    <HStack>
+                        <Textarea id="name" name="nameDoc" placeholder={name} variant="flushed"/>
+                        <Textarea id="image" name="imageDoc" placeholder={image} variant="flushed"/>
+                        <Textarea id="ingredients" name="ingredDoc" placeholder={ingred} variant="flushed"/>
+                        <Textarea id="instructions" name="instructDoc" placeholder={instruct} variant="flushed"/>
+                        <Textarea id="description" name="descriptDoc" placeholder={descript} variant="flushed"/>
+                    </HStack>
+                </Center><br/>
+                <Center>
+                <VStack maxW="80%" maxH="400px" overflowY="scroll">
                         {stack2}
                     </VStack>
                 </Center><br/>
