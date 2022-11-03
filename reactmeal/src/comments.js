@@ -61,7 +61,7 @@ export function Comments () {
             <div className="categorynav">
                 <input
                     type="text" 
-                    placeholder = "Enter category here"
+                    placeholder = "Type comment here"
                     name={"user"}
                     style={{ textAlign: "center"}}
                     onChange={handleChange('comment')}
