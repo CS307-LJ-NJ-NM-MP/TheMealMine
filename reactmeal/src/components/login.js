@@ -42,8 +42,10 @@ export function Login()  {
 			localStorage.setItem('friendsList', result.data.friendsList);
 			localStorage.setItem('blockedList',result.data.blockedList);
 			localStorage.setItem('contribution',result.data.contributions);
+			//Below stuff is for friends Page searching, do not change please
 			localStorage.setItem('isSearching', "no");
 			localStorage.setItem('searchingBlocked', result.data.blockedList);
+			localStorage.setItem('searchingFriends', result.data.friendsList);
 			window.location = "/home";
 		} 
 	}

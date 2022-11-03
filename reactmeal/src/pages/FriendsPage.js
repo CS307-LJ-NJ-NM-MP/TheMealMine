@@ -8,8 +8,7 @@ import Axios from "axios";
 function FriendsPage() {
     var username = localStorage.getItem('username');
     const [doRender, setDoRender] = useState("no");
-    var friendsList;
-    var tmpBlkList = [];
+    var friendsList = [];
     var blockedList = [];
 
     console.log("New Refresh");
@@ -22,25 +21,22 @@ function FriendsPage() {
 			if(userFriendsList !== null) {
 			    friendsList = userFriendsList.split(",");
                 //setFriendsList(userFriendsList.split(","));
-                console.log({friendsList});
+                //console.log({friendsList});
 			} else {
 				friendsList = [];
 			}
             if (usersBlockedList !== null) {
                 blockedList = usersBlockedList.split(",");
-                console.log({blockedList});
+               // console.log({blockedList});
             } 
     } else {
         blockedList = localStorage.getItem('searchingBlocked').split(",")
-        friendsList = localStorage.getItem('friendsList').split(",");
+        friendsList = localStorage.getItem('searchingFriends').split(",");
     }
-    //setBlockedList(tmpBlkList);
-    
-    //console.log(blockedList);
+
     async function unfollow(e) {
         e.preventDefault();
         const nameToUnfollow = e.target.value;
-        //console.log("Unfollowing: " + nameToUnfollow);
         var result = await Axios.post('http://localhost:5000/unfollow', {
 				user: username,
 				name: nameToUnfollow
@@ -122,20 +118,27 @@ function FriendsPage() {
             </Box>
         );
     }
-    async function searchedBlocked(e) {
+    async function search(e) {
        e.preventDefault();
       // console.log("search" + e.target.value);
     if (e.target.value !== "") {
-       
        blockedList = localStorage.getItem('blockedList').split(",");
-       let temp = [];
+       friendsList = localStorage.getItem('friendsList').split(",");
+       let blockedTemp = [];
+       let friendsTemp = [];
         for (var i = 0; i < blockedList.length; i++) {                  
             if (blockedList[i].includes(e.target.value) === true) {
-                temp.push(blockedList[i]);
+                blockedTemp.push(blockedList[i]);
             }       
         }
+        for (var j= 0; j < friendsList.length; j++) {
+            if (friendsList[j].includes(e.target.value) === true) {
+                friendsTemp.push(friendsList[j]);
+            }
+        }
         //console.log("temp: " + temp);
-        localStorage.setItem('searchingBlocked', temp);
+        localStorage.setItem('searchingBlocked', blockedTemp);
+        localStorage.setItem('searchingFriends', friendsTemp)
         //console.log("local searchingBlocked: " + localStorage.getItem('searchingBlocked'));
         localStorage.setItem('isSearching', "yes");
     } else {
@@ -152,7 +155,7 @@ function FriendsPage() {
             
             <Container>
                 <Stack>
-                    <Input name="searchBar" placeholder="Search for user" onChange={searchedBlocked}/>
+                    <Input name="searchBar" placeholder="Search for user" onChange={search}/>
                     
                     <Text fontWeight="bold"> My Friends</Text>
                     <VStack>
