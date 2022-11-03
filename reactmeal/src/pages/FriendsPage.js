@@ -10,6 +10,8 @@ function FriendsPage() {
     const [doRender, setDoRender] = useState("no");
     var friendsList = [];
     var blockedList = [];
+    const [searchUsers, setSearchUsers] = useState([]);
+
 
     console.log("New Refresh");
     var iS = localStorage.getItem('isSearching');
@@ -120,8 +122,30 @@ function FriendsPage() {
     }
     async function search(e) {
        e.preventDefault();
-      // console.log("search" + e.target.value);
-    if (e.target.value !== "") {
+      
+        if (e.target.value !== "") {
+        //find users from search query
+        var result = await Axios.post('http://localhost:5000/findTheUserReg', {
+				search: e.target.value,  
+			}).then(response => {
+                console.log("result: " + response.data);
+                if (response.data.length != 0) {
+                    setSearchUsers(response.data);
+                    console.log( + searchUsers);
+                }
+                else {
+                     console.log("Nothing in the response.");
+                     console.log(response.data);
+                }
+
+            }).catch(error => {
+                console.log(error.data)
+                alert("errors out the ass");
+            });
+
+
+
+        //GET FRIENDS AND BLOCKED
        blockedList = localStorage.getItem('blockedList').split(",");
        friendsList = localStorage.getItem('friendsList').split(",");
        let blockedTemp = [];

@@ -76,12 +76,12 @@ app.post('/findUserReg', async(req, res) => {
 });
 
 app.post('/findTheUserReg', async(req, res) => {
-
-    if (req.body.user === '') {
+    console.log(req.body.search);
+    if (req.body.search === '') {
         res.status(400).send('query required');
     }
     const form = {
-        user: req.body.user
+        user: req.body.search
     };
     const projection = {user: 1};
     var string = "" + form.user;
@@ -94,7 +94,6 @@ app.post('/findTheUserReg', async(req, res) => {
         docs.forEach(function(doc) {
             var newString = "" + doc.user
             list.push(newString)
-
         }
         )
         if (list.length == 0) {
@@ -430,5 +429,23 @@ app.post('/blockUser', async (req, res) => {
         { user: req.body.user },
     );
     //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});
+app.post('/searchBlockedUser', async (req, res) => {
+    console.log("Searching for" + req.body.search);
+    var search = req.body.search
+    //Add regex
+    var result;
+    /*result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user,
+            //from search 
+         {blockedList: req.body.search}}, 
+        {new: true}
+    );
+    */
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //console.log(result);
     res.send(result);    
 });
