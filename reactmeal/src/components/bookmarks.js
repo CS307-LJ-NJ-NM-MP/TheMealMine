@@ -3,11 +3,10 @@ import React from "react";
 import { useState } from "react";
 import Axios from "axios";
 import { Textarea } from '@chakra-ui/react'
-import { Button, Tabs, TabList, Tab, TabPanels, TabPanel, VStack, Text, Container, Input, Image, Center,
+import { Button, VStack, Text, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
-import { render } from '@testing-library/react';
 
 export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -22,7 +21,12 @@ export function Bookmarks() {
         image: '',
         instructions: '',
         ingredients: '',
-        description: ''
+        description: '',
+        nameDoc: '',
+        imageDoc: '',
+        ingredDoc: '',
+        instructDoc: '',
+        descriptDoc: '',
 	})
     const handleChange = (e) => {
 		let value = e.target.value;
@@ -85,13 +89,15 @@ export function Bookmarks() {
         localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
     }
-    if(favoriteRecipes[0] !== '') {
-        for(var i = 0; i < favoriteRecipes.length/5/5; i++){
+    if(favoriteRecipes[0] !== ''){
+        var len = favoriteRecipes.length;
+        for(var i = 0; i < len; i+=40){
             let temp = [];
-            for(var j = 0; j < favoriteRecipes.length; j+=5) {
-                const element = () => {
+            for(var j = i; j < i+40; j+=8) {
+                if(favoriteRecipes[j] === undefined){break;}
+                const element = 
                         <HStack spacing="10px">
-                            <Button onClick={console.log("John")}><Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/></Button>
+                            <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
                             <VStack>
                                 <Text w="100px">{favoriteRecipes[j+1]}</Text>
                                 <Text w="100px">{favoriteRecipes[j+2]}</Text>
@@ -99,22 +105,59 @@ export function Bookmarks() {
                                 <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
                             </VStack>
                         </HStack>;
-                }
                 temp.push(element);
             }
             stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
     }
-    async function gotit(e) {
+    var recipeId = "RecipeId";
+    var name = "Selected Name";
+    var image = "Selected Image";
+    var ingred = "Selected Ingredients";
+    var instruct = "Selected Instructions";
+    var descript = "Selected Descriptions";
+    async function clickRecipe(e) {
         e.preventDefault();
         var buttonId = e.target.name;
-        var recipeId = contributedRecipes[buttonId+7]
-        var name = contributedRecipes[buttonId+1];
-        var image = contributedRecipes[buttonId];
-        var descript = contributedRecipes[buttonId+4];
-        var ingred = contributedRecipes[buttonId+6];
-        var instruct = contributedRecipes[buttonId+5];
-
+        buttonId = parseInt(buttonId);
+        recipeId = contributedRecipes[buttonId+7]
+        name = contributedRecipes[buttonId+1];
+        image = contributedRecipes[buttonId];
+        descript = contributedRecipes[buttonId+4];
+        ingred = contributedRecipes[buttonId+6];
+        instruct = contributedRecipes[buttonId+5];
+        var nDoc = document.getElementById("name");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',name);
+        nDoc = document.getElementById("image");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',image);
+        nDoc = document.getElementById("ingredients");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',ingred);
+        nDoc = document.getElementById("instructions");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',instruct);
+        nDoc = document.getElementById("description");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',descript);
+    }
+    async function updateRecipe(e) {
+        e.preventDefault();
+        await Axios.post('http://localhost:5000/updateRecipe', {
+            _id: id,
+            recipeId: recipeId,
+            name: formValue.nameDoc,
+            image: formValue.imageDoc,
+            instructions: formValue.instructDoc,
+            ingredients: formValue.ingredDoc,
+            description: formValue.descriptDoc
+        });
+        var nDoc = document.getElementById("name");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Name");
+        nDoc = document.getElementById("image");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Image");
+        nDoc = document.getElementById("ingredients");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Ingredients");
+        nDoc = document.getElementById("instructions");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Instructions");
+        nDoc = document.getElementById("description");
+        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Descriptions");
     }
     if(contributedRecipes[0] !== ''){
         var len = contributedRecipes.length;
@@ -124,7 +167,7 @@ export function Bookmarks() {
                 if(contributedRecipes[j] === undefined){break;}
                 const element = 
                         <HStack spacing="10px">
-                            <Image name={j} w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]} onClick={gotit}/>
+                            <Image name={j} w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
                             <VStack>
                                 <Text w="100px">{contributedRecipes[j+1]}</Text>
                                 <Text w="100px">{contributedRecipes[j+2]}</Text>
@@ -150,11 +193,11 @@ export function Bookmarks() {
                     <VStack>
                         <FormLabel>Contributed Recipes</FormLabel>
                         <HStack>
-                            <Textarea name="name" placeholder='Selected Name' variant="flushed"/>
-                            <Textarea name="image" placeholder='Selected Image' variant="flushed"/>
-                            <Textarea name="ingredients" placeholder='Selected Ingredients' variant="flushed"/>
-                            <Textarea name="instructions" placeholder='Selected Instructions' variant="flushed"/>
-                            <Textarea name="description" placeholder='Selected Descriptions' variant="flushed"/>
+                            <Textarea id="name" name="nameDoc" placeholder={name} variant="flushed"/>
+                            <Textarea id="image" name="imageDoc" placeholder={image} variant="flushed"/>
+                            <Textarea id="ingredients" name="ingredDoc" placeholder={ingred} variant="flushed"/>
+                            <Textarea id="instructions" name="instructDoc" placeholder={instruct} variant="flushed"/>
+                            <Textarea id="description" name="descriptDoc" placeholder={descript} variant="flushed"/>
                         </HStack>
                         {stack2}
                     </VStack>
@@ -162,7 +205,7 @@ export function Bookmarks() {
                 <Center>
                     <HStack>   
                         <Button onClick={onOpen}>Add Contribution</Button>
-                        <Button>Edit Contribution</Button>
+                        <Button onClick={updateRecipe}>Edit Contribution</Button>
                     </HStack>
                 </Center>
                     <Modal isOpen={isOpen} onClose={onClose}>

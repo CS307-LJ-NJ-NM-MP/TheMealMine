@@ -337,13 +337,6 @@ app.post('/addToFeeds', async (req,res) => {
             result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
             let temp = [];
             temp.push(req.body.recipeId);
-            temp.push(req.body.favorites);
-            temp.push(req.body.owner);
-            temp.push(req.body.name);
-            temp.push(req.body.image);
-            temp.push(req.body.instructions);
-            temp.push(req.body.description);
-            temp.push(req.body.ingredients);
             let feed = result.feed;
             feed.push(temp);
             var update = {$set:{"feed": feed}};
@@ -352,6 +345,10 @@ app.post('/addToFeeds', async (req,res) => {
     }
 });
 
+app.post('/updateRecipe', async (req,res) => {
+    console.log("Place Update Call Here");
+    res.send("Finished");
+});
 app.post('/addIngredients', async (req,res) => {
     const form = {
         owner: req.body.user,
