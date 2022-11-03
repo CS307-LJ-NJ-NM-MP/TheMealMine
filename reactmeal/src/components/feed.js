@@ -26,9 +26,9 @@ export const Feed = () => {
         console.log("sending");
         console.log(localStorage.getItem('username'))
         setUserForm(localStorage.getItem('username'))
-        setRecipeForm("Cheese")
+        setRecipeForm("Ass")
         console.log("recipe name: " + recipeForm)
-        var result = await Axios.post('http://localhost:5000/likeRecipe', {
+        var result = await Axios.post('http://localhost:5000/arrayTest', {
             user: userForm,
             recipe: recipeForm,
         })
