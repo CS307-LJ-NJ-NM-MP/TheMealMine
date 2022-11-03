@@ -1,6 +1,7 @@
 import { TopNav } from '../topNav';
 import { SideNav } from '../sideNav';
 import { CategoryNav } from '../categoryNav';
+import { Comments } from '../comments';
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -26,11 +27,12 @@ export const Feed = () => {
 		e.preventDefault();
         console.log("sending");
         console.log(localStorage.getItem('username'))
+        console.log(userForm)
         setUserForm(localStorage.getItem('username'))
-        setRecipeForm("Ass")
+        setRecipeForm("Cheese")
         console.log("recipe name: " + recipeForm)
         var result = await Axios.post('http://localhost:5000/arrayTest', {
-            user: userForm,
+            user: localStorage.getItem("username"),
             recipe: recipeForm,
         })
         .then(response => {
@@ -88,13 +90,15 @@ export const Feed = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                Search for users here:
+                add category here:
                 <br />
 
             <br />
             <CategoryNav/>
 
+
             </div>
+            <Comments/>
             
         </>
     );

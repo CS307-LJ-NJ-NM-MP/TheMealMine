@@ -88,19 +88,28 @@ app.post('/arrayTest', async(req, res) => {
     const newForm = {
         user: req.body.user
     }
+
+    const recipeForm = {
+        name: req.body.recipe
+    }
     
     console.log("user " + form.user)
     console.log("rec " + req.body.recipe)
 
     var update = {$push:{"likedRecipes": req.body.recipe}};
     var otherUpdate = {$pull:{"likedRecipes": req.body.recipe}};
-    var recipeString = "" + req.body.recipe
+
+    var increaseLike = {$inc: {"likes": 1}};
+    var decreaseLike = {$inc: {"likes" : -1}};
+
+    var recipeString = "" + recipeForm.name
     console.log("here is recipe " + recipeString)
 
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     if (result == null) {
         console.log("recipe is not there")
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,update);
+        var likeIncrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, increaseLike)
 //        console.log(result.likedRecipes.data)
         console.log("now it is")
     }
@@ -108,6 +117,7 @@ app.post('/arrayTest', async(req, res) => {
         console.log(result.likedRecipes)
         console.log("bye bye")
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,otherUpdate);
+        var likeDecrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, decreaseLike)
 
     }
 
@@ -138,6 +148,46 @@ app.post('/getRecipe', async(req,res) => {
     var recipe = await client.db("TheMealMine").collection("Recipes").findOne(form);
     res.send(recipe);
 });
+
+
+
+app.post('/postComment', async(req, res) => {
+    const commentForm = {
+        user: req.body.user,
+        comment: req.body.comment
+    }
+
+    const newForm = {
+        user: req.body.user
+    }
+    const recipeForm = {
+        name: req.body.recipe
+    }
+    
+    console.log("user " + commentForm.user)
+    console.log("rec " + req.body.recipe)
+    console.log("comment " + req.body.comment)
+    console.log("recipe btw " + recipeForm.name)
+
+
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm);
+    console.log(commentForm)
+    var update = {$push:{"comments": commentForm}};
+    if (result != null) {
+        console.log("adding the comment to the recipe")
+        result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
+    }
+    else {
+        console.log("recipe doesn't exist how did you get here")
+    }
+
+
+    
+    var projection = {comments: 1};
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(recipeForm,projection);
+//    console.log("list " + result.data.likedBy)
+    res.send(result);
+})
 
 
 app.post('/addCategory', async(req, res) => {
