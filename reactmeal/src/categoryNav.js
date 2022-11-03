@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 //import Data from "../src/mockdata.json"
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import Axios from "axios";
 
 export function CategoryNav () {
@@ -56,21 +58,13 @@ export function CategoryNav () {
         }
 	}
 
-    return (
-        <>
-            <div className="categorynav">
-                <input
-                    type="text" 
-                    placeholder = "Enter category here"
-                    name={"user"}
-                    style={{ textAlign: "center"}}
-                    onChange={handleChange('category')}
-                />
-                <input onClick={sendRequest} type='button' value="Add Category" id="categoryButton"/>
-                {textOut}
-            </div>
-        </>
-    );
+    return (<>
+        <Center>
+            <Input name="user" variant="flushed" type="text" placeholder="Enter Category Here" onChange={handleChange('category')}/>
+            <Button id="categoryButton" onClick={sendRequest}>Add Category</Button>
+        </Center>
+        {textOut}
+    </>);
 
 
 }

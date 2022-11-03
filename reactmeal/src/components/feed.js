@@ -1,5 +1,6 @@
 import { TopNav } from '../topNav';
-import { SideNav } from '../sideNav';
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import { CategoryNav } from '../categoryNav';
 import { Comments } from '../comments';
 import React, { useState } from "react";
@@ -75,31 +76,14 @@ export const Feed = () => {
         // }
 	}
 
-    return (
-        <>
-            <TopNav/>
-
-            <div className="feednav">
-                <input onClick={sendRequest} type='button' value="Like" id="likeButton"/>
-            </div>
-            
-            <SideNav/>
-
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                add category here:
-                <br />
-
-            <br />
-            <CategoryNav/>
-
-
-            </div>
-            <Comments/>
-            
-        </>
-    );
+    return (<>
+        <Container maxW="80%">
+            <TopNav/><br/>
+            <CategoryNav/><br/>
+            <Comments/><br/>
+            <Center>
+                <Button id="likeButton" type='submit' width="200px" onClick={sendRequest}>Like</Button>
+            </Center>
+        </Container>
+    </>);
 }
