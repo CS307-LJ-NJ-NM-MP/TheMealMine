@@ -7,21 +7,16 @@ import Axios from "axios";
 
 function FriendsPage() {
     var username = localStorage.getItem('username');
-    var password = localStorage.getItem('password');
-    const [doRender, setDoRender] = useState("");
+    const [doRender, setDoRender] = useState("no");
     var friendsList;
-    //const [friendsList, setFriendsList] = useState([]);
-    var blockedList;
-    //var tempName = localStorage.setItem('tempName', "guest");
+    var tmpBlkList = [];
+    var blockedList = [];
+
     console.log("New Refresh");
-    
-    //const [friendsListForm, setFriendsListForm] = useState({
-      //  friendsList: '',
-    //});
-    //const friendsList = JSON.parse(localStorage.getItem(friendsList));
-    
-    //&& instead of || ?
-    if((username !== null && username !== "Guest") && (password !== null && password !== "Guest")) {
+    var iS = localStorage.getItem('isSearching');
+
+    if (iS === "no") {
+            console.log("Is NOT SEARCHING");
 			var userFriendsList = localStorage.getItem('friendsList');
             var usersBlockedList = localStorage.getItem('blockedList');
 			if(userFriendsList !== null) {
@@ -34,27 +29,29 @@ function FriendsPage() {
             if (usersBlockedList !== null) {
                 blockedList = usersBlockedList.split(",");
                 console.log({blockedList});
-            } else {
-                blockedList = [];
-            }
-	} else {        
-        friendsList = [];
-        blockedList = [];
-	}  
+            } 
+    } else {
+        blockedList = localStorage.getItem('searchingBlocked').split(",")
+        friendsList = localStorage.getItem('friendsList').split(",");
+    }
+    //setBlockedList(tmpBlkList);
+    
+    //console.log(blockedList);
     async function unfollow(e) {
         e.preventDefault();
         const nameToUnfollow = e.target.value;
-        console.log("Unfollowing: " + nameToUnfollow);
+        //console.log("Unfollowing: " + nameToUnfollow);
         var result = await Axios.post('http://localhost:5000/unfollow', {
 				user: username,
 				name: nameToUnfollow
 		});
         localStorage.setItem('friendsList', result.data.friendsList);
-        console.log("New friendsList: " + localStorage.getItem('friendsList'));
+        //console.log("New friendsList: " + localStorage.getItem('friendsList'));
         setDoRender(e.target.value);
    
     }
     async function unblock(e) {
+        console.log("in unblock");
         e.preventDefault();
         //console.log("Unfollowing: " + nameToUnfollow);
         var result = await Axios.post('http://localhost:5000/unblock', {
@@ -64,10 +61,11 @@ function FriendsPage() {
         //console.log("Getting new friendsList " + result.friendsList[0] +  " hello");
         //localStorage.setItem('friendsList', result.friendsList);
         localStorage.setItem('blockedList', result.data.blockedList);
-        console.log("New blockedList: " + localStorage.getItem('blockedList'));
+        //console.log("New blockedList: " + localStorage.getItem('blockedList'));
         setDoRender(e.target.value);
     }
     async function block(e) {
+        console.log("in block");
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/blockUser', {
 				user: username,
@@ -79,6 +77,7 @@ function FriendsPage() {
     }
 
     const FriendDisplay = (name) => {
+        console.log("Friends Dispaly");
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -91,6 +90,7 @@ function FriendsPage() {
         );
     }
     function DisplayAllFriends() {
+        console.log("display all frineds");
         return (
             <Box>
             <ul>
@@ -100,7 +100,8 @@ function FriendsPage() {
             </Box>
         );
     }
- const BlockedDisplay = (name) => {
+    const BlockedDisplay = (name) => {
+        console.log("blocked diaplsy");
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -109,6 +110,8 @@ function FriendsPage() {
         )
     }
     function DisplayAllBlocked() {
+        
+        console.log("Display all blocked" + doRender);
         return (
             <Box>
             <ul>
@@ -119,9 +122,27 @@ function FriendsPage() {
             </Box>
         );
     }
-   
-    
-    
+    async function searchedBlocked(e) {
+       e.preventDefault();
+      // console.log("search" + e.target.value);
+    if (e.target.value !== "") {
+       
+       blockedList = localStorage.getItem('blockedList').split(",");
+       let temp = [];
+        for (var i = 0; i < blockedList.length; i++) {                  
+            if (blockedList[i].includes(e.target.value) === true) {
+                temp.push(blockedList[i]);
+            }       
+        }
+        //console.log("temp: " + temp);
+        localStorage.setItem('searchingBlocked', temp);
+        //console.log("local searchingBlocked: " + localStorage.getItem('searchingBlocked'));
+        localStorage.setItem('isSearching', "yes");
+    } else {
+        localStorage.setItem('isSearching', "no");
+    } 
+        setDoRender(e.target.value);
+    }
 
     
 
@@ -131,15 +152,16 @@ function FriendsPage() {
             
             <Container>
                 <Stack>
-                    <Input name="searchBar" placeholder="Search for user" />
+                    <Input name="searchBar" placeholder="Search for user" onChange={searchedBlocked}/>
                     
                     <Text fontWeight="bold"> My Friends</Text>
                     <VStack>
                             <DisplayAllFriends />
                     </VStack>
                     <br/>
+                
                     <VStack>
-                            <Text fontWeight="bold">My Blocked List</Text>
+                            <Text id="blocked" fontWeight="bold">My Blocked List</Text>
                             <DisplayAllBlocked />
                     </VStack>
                 </Stack>
