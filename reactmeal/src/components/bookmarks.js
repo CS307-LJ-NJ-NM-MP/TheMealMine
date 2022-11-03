@@ -1,11 +1,13 @@
 import { TopNav } from '../topNav'
+import React from "react";
 import { useState } from "react";
 import Axios from "axios";
 import { Textarea } from '@chakra-ui/react'
-import { Button, VStack, Text, Container, Input, Image, Center,
+import { Button, Tabs, TabList, Tab, TabPanels, TabPanel, VStack, Text, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
+import { render } from '@testing-library/react';
 
 export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -65,6 +67,7 @@ export function Bookmarks() {
             description: formValue.description,
             favorites: 0
         });
+        console.log(result2.data.personalRecipes);
         contributedRecipes = [];
         for(var i = 0; i < result2.data.personalRecipes.length; i++){
             let temp = [];
@@ -73,9 +76,11 @@ export function Bookmarks() {
             temp.push(result2.data.personalRecipes[i][2]);
             temp.push(result2.data.personalRecipes[i][1]);
             temp.push(result2.data.personalRecipes[i][6]);
+            temp.push(result2.data.personalRecipes[i][5]);
+            temp.push(result2.data.personalRecipes[i][7]);
+            temp.push(result2.data.personalRecipes[i][0]);
             contributedRecipes.push(temp);
         }
-        console.log(contributedRecipes);
         localStorage.setItem('ranking',result2.data.ranking);
         localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
@@ -84,9 +89,9 @@ export function Bookmarks() {
         for(var i = 0; i < favoriteRecipes.length/5/5; i++){
             let temp = [];
             for(var j = 0; j < favoriteRecipes.length; j+=5) {
-                let element = 
+                const element = () => {
                         <HStack spacing="10px">
-                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
+                            <Button onClick={console.log("John")}><Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/></Button>
                             <VStack>
                                 <Text w="100px">{favoriteRecipes[j+1]}</Text>
                                 <Text w="100px">{favoriteRecipes[j+2]}</Text>
@@ -94,21 +99,32 @@ export function Bookmarks() {
                                 <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
                             </VStack>
                         </HStack>;
+                }
                 temp.push(element);
             }
             stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
     }
+    async function gotit(e) {
+        e.preventDefault();
+        var buttonId = e.target.name;
+        var recipeId = contributedRecipes[buttonId+7]
+        var name = contributedRecipes[buttonId+1];
+        var image = contributedRecipes[buttonId];
+        var descript = contributedRecipes[buttonId+4];
+        var ingred = contributedRecipes[buttonId+6];
+        var instruct = contributedRecipes[buttonId+5];
+
+    }
     if(contributedRecipes[0] !== ''){
         var len = contributedRecipes.length;
-        for(i = 0; i < len; i+=25){
+        for(i = 0; i < len; i+=40){
             let temp = [];
-            for(j = i; j < i+25; j+=5) {
+            for(j = i; j < i+40; j+=8) {
                 if(contributedRecipes[j] === undefined){break;}
-                console.log(contributedRecipes[j]);
-                let element = 
+                const element = 
                         <HStack spacing="10px">
-                            <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
+                            <Image name={j} w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]} onClick={gotit}/>
                             <VStack>
                                 <Text w="100px">{contributedRecipes[j+1]}</Text>
                                 <Text w="100px">{contributedRecipes[j+2]}</Text>
@@ -126,35 +142,45 @@ export function Bookmarks() {
             <TopNav/>
                 <Center>
                     <VStack>
-                        <FormLabel>Favorite Recipes</FormLabel>
+                        <FormLabel id="hi">Favorite Recipes</FormLabel>
                         {stack1}
                     </VStack>
                 </Center><br/>
                 <Center>
                     <VStack>
                         <FormLabel>Contributed Recipes</FormLabel>
+                        <HStack>
+                            <Textarea name="name" placeholder='Selected Name' variant="flushed"/>
+                            <Textarea name="image" placeholder='Selected Image' variant="flushed"/>
+                            <Textarea name="ingredients" placeholder='Selected Ingredients' variant="flushed"/>
+                            <Textarea name="instructions" placeholder='Selected Instructions' variant="flushed"/>
+                            <Textarea name="description" placeholder='Selected Descriptions' variant="flushed"/>
+                        </HStack>
                         {stack2}
                     </VStack>
                 </Center><br/>
                 <Center>
-                    <Button onClick={onOpen}>Add Contribution</Button>
+                    <HStack>   
+                        <Button onClick={onOpen}>Add Contribution</Button>
+                        <Button>Edit Contribution</Button>
+                    </HStack>
                 </Center>
                     <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay/>
-                        <ModalContent>
-                            <Center>
-                                <VStack spacing='5%' m="0 0 20px 0">
-                                    <ModalHeader>Enter New Recipe Information</ModalHeader>
-                                    <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
-                                    <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
-                                    <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
-                                    <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
-                                    <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
-                                    <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
-                                </VStack>
-                            </Center>
+                            <ModalOverlay/>
+                            <ModalContent>
+                                <Center>
+                                    <VStack spacing='5%' m="0 0 20px 0">
+                                        <ModalHeader>Enter New Recipe Information</ModalHeader>
+                                        <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
+                                        <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
+                                        <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
+                                        <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
+                                        <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
+                                        <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
+                                    </VStack>
+                                </Center>
                         </ModalContent>
-                    </Modal>
+                    </Modal>;
         </Container>
     </ChakraProvider>);
 }
