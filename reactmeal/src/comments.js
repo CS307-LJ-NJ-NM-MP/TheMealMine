@@ -59,7 +59,7 @@ export function Comments () {
 
     return (<>
         <Center>
-            <Input name="user" type="text" variant="flushed" placeholder="Enter Category Here:" onChange={handleChange('comment')}/>
+            <Input name="user" type="text" variant="flushed" placeholder="Enter Comment Here:" onChange={handleChange('comment')}/>
             <Button id="commentButton" onClick={sendRequest}>Post Comment</Button>
         </Center>
         {textOut}
