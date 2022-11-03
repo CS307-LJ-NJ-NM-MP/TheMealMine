@@ -1,15 +1,18 @@
-import { Link } from "react-router-dom";
 import { TopNav } from './topNav'
 import { SideNav } from './sideNav'
 import { SearchNav } from './searchNav'
+import Pantry from "./addIngredients";
 
 export const Home = () => {
-    return (
-        <>
-            <TopNav/>
-            <SearchNav/>
-            <SideNav/>
-            <div>This is the homepage</div>
+    return (<>
+            <div>
+                <TopNav/>
+                <div className="home-display">
+                    <SearchNav/>
+                    <Pantry/>
+                    <SideNav/>
+                </div>
+            </div>
         </>
     );
 }
