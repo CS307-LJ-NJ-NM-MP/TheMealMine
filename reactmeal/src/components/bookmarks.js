@@ -97,7 +97,7 @@ export function Bookmarks() {
                 if(favoriteRecipes[j] === undefined){break;}
                 const element = 
                         <HStack spacing="10px">
-                            <Image w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]}/>
+                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
                             <VStack>
                                 <Text w="100px">{favoriteRecipes[j+1]}</Text>
                                 <Text w="100px">{favoriteRecipes[j+2]}</Text>
@@ -139,7 +139,7 @@ export function Bookmarks() {
     }
     async function updateRecipe(e) {
         e.preventDefault();
-        await Axios.post('http://localhost:5000/updateRecipe', {
+        var result = await Axios.post('http://localhost:5000/updateRecipe', {
             _id: id,
             recipeId: recipeId,
             name: formValue.nameDoc,
@@ -148,16 +148,23 @@ export function Bookmarks() {
             ingredients: formValue.ingredDoc,
             description: formValue.descriptDoc
         });
-        var nDoc = document.getElementById("name");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Name");
-        nDoc = document.getElementById("image");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Image");
-        nDoc = document.getElementById("ingredients");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Ingredients");
-        nDoc = document.getElementById("instructions");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Instructions");
-        nDoc = document.getElementById("description");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',"Selected Descriptions");
+        //You will need this below to finish the reload of the list
+        /*contributedRecipes = [];
+        for(var i = 0; i < result.data.personalRecipes.length; i++){
+            let temp = [];
+            temp.push(result2.data.personalRecipes[i][4]);
+            temp.push(result2.data.personalRecipes[i][3]);
+            temp.push(result2.data.personalRecipes[i][2]);
+            temp.push(result2.data.personalRecipes[i][1]);
+            temp.push(result2.data.personalRecipes[i][6]);
+            temp.push(result2.data.personalRecipes[i][5]);
+            temp.push(result2.data.personalRecipes[i][7]);
+            temp.push(result2.data.personalRecipes[i][0]);
+            contributedRecipes.push(temp);
+        }
+        localStorage.setItem('ranking',result.data.ranking);
+        localStorage.setItem('contributedRecipes',contributedRecipes);*/
+        window.location.reload(false);
     }
     if(contributedRecipes[0] !== ''){
         var len = contributedRecipes.length;
@@ -165,9 +172,12 @@ export function Bookmarks() {
             let temp = [];
             for(j = i; j < i+40; j+=8) {
                 if(contributedRecipes[j] === undefined){break;}
+                if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(contributedRecipes[j]) !== true){
+                    contributedRecipes[j] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
+                }
                 const element = 
                         <HStack spacing="10px">
-                            <Image name={j} w="75px" h="75px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
+                            <Image name={j} w="50px" h="50px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
                             <VStack>
                                 <Text w="100px">{contributedRecipes[j+1]}</Text>
                                 <Text w="100px">{contributedRecipes[j+2]}</Text>
