@@ -56,14 +56,10 @@ function FriendsPage() {
 				user: username,
 				name: e.target.value
 		});
-        //console.log("Getting new friendsList " + result.friendsList[0] +  " hello");
-        //localStorage.setItem('friendsList', result.friendsList);
         localStorage.setItem('blockedList', result.data.blockedList);
-        //console.log("New blockedList: " + localStorage.getItem('blockedList'));
         setDoRender(e.target.value);
     }
     async function block(e) {
-        console.log("in block");
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/blockUser', {
 				user: username,
@@ -75,7 +71,7 @@ function FriendsPage() {
     }
 
     const FriendDisplay = (name) => {
-        console.log("Friends Dispaly");
+
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -88,7 +84,7 @@ function FriendsPage() {
         );
     }
     function DisplayAllFriends() {
-        console.log("display all frineds");
+
         return (
             <Box>
             <ul>
@@ -99,7 +95,7 @@ function FriendsPage() {
         );
     }
     const BlockedDisplay = (name) => {
-        console.log("blocked diaplsy");
+
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -108,8 +104,6 @@ function FriendsPage() {
         )
     }
     function DisplayAllBlocked() {
-        
-        console.log("Display all blocked" + doRender);
         return (
             <Box>
             <ul>
@@ -130,12 +124,13 @@ function FriendsPage() {
 			}).then(response => {
                 console.log("result: " + response.data);
                 if (response.data.length != 0) {
+                    console.log("Response length: " + response.data.length);
                     setSearchUsers(response.data);
-                    console.log( + searchUsers);
                 }
                 else {
                      console.log("Nothing in the response.");
                      console.log(response.data);
+                     setSearchUsers([]);
                 }
 
             }).catch(error => {
@@ -160,9 +155,10 @@ function FriendsPage() {
                 friendsTemp.push(friendsList[j]);
             }
         }
+        //for (var k = 0; k < searchUsers.length);
         //console.log("temp: " + temp);
         localStorage.setItem('searchingBlocked', blockedTemp);
-        localStorage.setItem('searchingFriends', friendsTemp)
+        localStorage.setItem('searchingFriends', friendsTemp);
         //console.log("local searchingBlocked: " + localStorage.getItem('searchingBlocked'));
         localStorage.setItem('isSearching', "yes");
     } else {
@@ -170,8 +166,6 @@ function FriendsPage() {
     } 
         setDoRender(e.target.value);
     }
-
-    
 
     return(
         <Container maxW='xl' centerContent>

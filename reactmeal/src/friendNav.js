@@ -8,7 +8,7 @@ export const FriendNav = () => {
     const [textOut, setTextOut] = useState("");
 
     function sendRequest(e) {
-//        handleChange();
+    //        handleChange();
         findTheUser(e);
         console.log("here is new string" + query)
         setQuery("");
@@ -58,43 +58,7 @@ export const FriendNav = () => {
             alert ("No query");
         }
 	}
-
-    async function findUser(e) {
-		e.preventDefault();
-        console.log("sending");
-		if(formValue.user !== '') {
-            console.log("valid: " + formValue.user);
-			var result = await Axios.post('http://localhost:5000/findUserReg', {
-				user: formValue.user,  
-			})
-            .then(response => {
-                console.log("result: " + response.data);
-                console.log("other result: " + result)
-//                console.log("response: " + response);
-                if (response.data !== "") {
-                    console.log("form value: " + response.data.user)
-                    setQuery(response.data.user);
-                    console.log("final query: " + query)
-//                    alert("Users " + response.data.user + " found");
-                    setTextOut("" + response.data.user)
-                    setQuery("");
-                }
-                else {
-                    alert("error, user not valid")
-                    setQuery("");
-                }
-
-            })
-            .catch(error => {
-                console.log(error.data)
-                alert("error");
-            });
-		}
-        else {
-            alert ("No query");
-        }
-	}
-    
+   
     return (
         <>
             <div className="friendnav">
@@ -110,8 +74,6 @@ export const FriendNav = () => {
             </div>
         </>
     );
-
-
 }
 
 //     const [name, setName] = useState("");
@@ -175,4 +137,40 @@ export const FriendNav = () => {
 //         <p>{username.user}</p>
 //         </div>
 //     ));
-    
+    /*
+    async function findUser(e) {
+		e.preventDefault();
+        console.log("sending");
+		if(formValue.user !== '') {
+            console.log("valid: " + formValue.user);
+			var result = await Axios.post('http://localhost:5000/findUserReg', {
+				user: formValue.user,  
+			})
+            .then(response => {
+                console.log("result: " + response.data);
+                console.log("other result: " + result)
+//                console.log("response: " + response);
+                if (response.data !== "") {
+                    console.log("form value: " + response.data.user)
+                    setQuery(response.data.user);
+                    console.log("final query: " + query)
+//                    alert("Users " + response.data.user + " found");
+                    setTextOut("" + response.data.user)
+                    setQuery("");
+                }
+                else {
+                    alert("error, user not valid")
+                    setQuery("");
+                }
+
+            })
+            .catch(error => {
+                console.log(error.data)
+                alert("error");
+            });
+		}
+        else {
+            alert ("No query");
+        }
+	}
+    */
