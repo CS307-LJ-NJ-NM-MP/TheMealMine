@@ -2,51 +2,49 @@ import React, { useState } from "react";
 //import Data from "../src/mockdata.json"
 import Axios from "axios";
 
-export const FriendNav = () => {
+export function CategoryNav () {
 
     const [query, setQuery] = useState("");
     const [textOut, setTextOut] = useState("");
 
     function sendRequest(e) {
-        findTheUser(e);
+        addCategory(e);
         console.log("here is new string" + query)
         setQuery("");
     }
 
-    const [formValue, setFormValue] = useState({
+    const [userForm, setUserForm] = useState({
 		user: ''
 	})
 
+    const [categoryForm, setCategoryForm ] = useState({
+        category: ''
+    })
+
     const handleChange = name => event => {
-		setFormValue((prevState) => {
+		setCategoryForm((prevState) => {
 			return {
-				...prevState,
+                ...prevState,
 				[name]: event.target.value,
 			}
 		})
     }
 
-    async function findTheUser(e) {
+    async function addCategory(e) {
 		e.preventDefault();
+        setUserForm(localStorage.getItem('username'))
+        console.log(userForm)
+        console.log(categoryForm.category)
         console.log("sending");
-		if(formValue.user !== '') {
-            console.log("valid: " + formValue.user);
-			var result = await Axios.post('http://localhost:5000/findTheUserReg', {
-				user: formValue.user,  
+		if(userForm !== '') {
+            console.log("valid: " + userForm);
+			var result = await Axios.post('http://localhost:5000/addCategory', {
+				user: userForm,  
+                recipe: "Cheese",
+                category: categoryForm.category
 			})
             .then(response => {
-                console.log("result: " + response);
-                if (response.data.length != 0) {
-                    setQuery(response.data);
-                    setTextOut("" + response.data)
-                    setQuery("");
-                }
-                else {
-                     setQuery("");
-                     setTextOut("");
-                     alert("error, user not valid")
-                }
-
+                console.log("result: " + response.categories);
             })
             .catch(error => {
                 console.log(error.data)
@@ -60,15 +58,15 @@ export const FriendNav = () => {
 
     return (
         <>
-            <div className="friendnav">
+            <div className="categorynav">
                 <input
                     type="text" 
-                    placeholder = "Enter user here"
+                    placeholder = "Enter category here"
                     name={"user"}
                     style={{ textAlign: "center"}}
-                    onChange={handleChange('user')}
+                    onChange={handleChange('category')}
                 />
-                <input onClick={sendRequest} type='button' value="Find User" id="friendButton"/>
+                <input onClick={sendRequest} type='button' value="Add Category" id="categoryButton"/>
                 {textOut}
             </div>
         </>
