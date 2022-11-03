@@ -1,11 +1,11 @@
 import { TopNav } from '../topNav'
 import { SideNav } from '../sideNav'
 import { SearchNav } from '../searchNav';
+import { CategoryNav } from '../categoryNav';
 import { FriendNav } from '../friendNav';
 import { ReactDOM } from 'react-dom/client';
 
 export const Friends = () => {
-
 
     return (
         
@@ -20,10 +20,14 @@ export const Friends = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                Search for users here:<br/>
-            <FriendNav/><br/>
+                Search for users here:
+                <br />
+            <FriendNav/>
+            <br />
 
             </div>
+            
+
         </>
     );
 }

@@ -1,5 +1,7 @@
 import { TopNav } from '../topNav';
 import { SideNav } from '../sideNav';
+import { CategoryNav } from '../categoryNav';
+import { Comments } from '../comments';
 import React, { useState } from "react";
 import Axios from "axios";
 
@@ -25,15 +27,16 @@ export const Feed = () => {
 		e.preventDefault();
         console.log("sending");
         console.log(localStorage.getItem('username'))
+        console.log(userForm)
         setUserForm(localStorage.getItem('username'))
         setRecipeForm("Cheese")
         console.log("recipe name: " + recipeForm)
-        var result = await Axios.post('http://localhost:5000/likeRecipe', {
-            user: userForm,
+        var result = await Axios.post('http://localhost:5000/arrayTest', {
+            user: localStorage.getItem("username"),
             recipe: recipeForm,
         })
         .then(response => {
-            console.log("result" + response.data)
+            console.log(response.data.likedRecipes)
         })
         .catch(error => {
             console.log(error.data)
@@ -81,6 +84,21 @@ export const Feed = () => {
             </div>
             
             <SideNav/>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                add category here:
+                <br />
+
+            <br />
+            <CategoryNav/>
+
+
+            </div>
+            <Comments/>
             
         </>
     );
