@@ -202,8 +202,7 @@ function FriendsPage() {
         if ( name === username) {
             return (
                 <div></div>
-                   // alert("Cannot request yourself");
-                
+                   // alert("Cannot request yourself");   
             );
         } else {
         return (
