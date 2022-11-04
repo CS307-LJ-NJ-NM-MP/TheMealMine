@@ -46,7 +46,7 @@ export function Login()  {
 			localStorage.setItem('isSearching', "no");
 			localStorage.setItem('searchingBlocked', result.data.blockedList);
 			localStorage.setItem('searchingFriends', result.data.friendsList);
-			localStorage.setItem('notifications', []);
+			localStorage.setItem('notifications', result.data.notifications);
 			localStorage.setItem('requestedBy', result.data.requestedBy);
 
 			window.location = "/home";

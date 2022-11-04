@@ -131,7 +131,24 @@ app.post('/arrayTest', async(req, res) => {
     res.send(result);
 })
 
-
+app.post('/getRatings', async(req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body.recipeId)}
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    res.send(result.rating);
+});
+app.post('/setRecipeRating', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body.recipeId)}
+    console.log(req.body.recipeId);
+    console.log(req.body.rating);
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    var rating = parseInt(result.rating);
+    rating = ""+((rating+parseInt(req.body.rating))/2);
+    var update = {$set:{"rating": rating}};
+    result = await client.db("TheMealMine").collection("Recipes").updateOne(form,update);
+    res.send(rating);
+});
 
 app.post('/getRecipes', async(req,res) => {
     var ObjectId = require('mongodb').ObjectId;
@@ -150,7 +167,7 @@ app.post('/getRecipe', async(req,res) => {
 });
 
 
-
+/*
 app.post('/postComment', async(req, res) => {
     const commentForm = {
         user: req.body.user,
@@ -187,7 +204,7 @@ app.post('/postComment', async(req, res) => {
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(recipeForm,projection);
 //    console.log("list " + result.data.likedBy)
     res.send(result);
-})
+})*/
 
 
 app.post('/addCategory', async(req, res) => {
@@ -205,7 +222,8 @@ app.post('/addCategory', async(req, res) => {
     }
 
     const categoryForm = {
-        category: req.body.category
+        category: req.body.category,
+        owner: req.body.user
     }
     const categoryCheckForm = {
         category: req.body.category,
@@ -299,6 +317,8 @@ app.post('/findTheUserReg', async(req, res) => {
     });
 });
 
+
+
 app.post('/recoverPass', async (req, res) => {
     if (req.body.email === '') {
         res.status(400).send('email required');
@@ -351,6 +371,7 @@ app.post('/getFeed', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    console.log(result);
     res.send(result.feed);
 });
 
@@ -389,8 +410,6 @@ app.post('/deleteUser', async (req) => {
 
 });
 
-
-
 app.post('/loginUser', async (req,res) => {
 	const form = {
 		user: req.body.user,
@@ -426,45 +445,41 @@ app.post('/logoutUser', (req,res) => {
 	client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
 });
 
-app.post('/updateSettings', (req,res) => {
-      var settingNum = req.body.setting;
-      var form; var update;
-      if(settingNum == 0){
-          form = {
-              pass: req.body.pass,
-              email: req.body.email
-          }
-          update = {$set:{"user": req.body.user}};
-      }else if(settingNum == 1){
-          form = {
-              user: req.body.user,
-              pass: req.body.pass
-          }
-          update = {$set:{"email": req.body.email}};
-      }else if(settingNum == 2){
-          form = {
-              user: req.body.user,
-              email: req.body.email
-          }
-          update = {$set:{"pass": req.body.pass}};
-      }else if(settingNum == 3){
-          form = {
-              user: req.body.user,
-              email: req.body.email,
-              pass: req.body.pass
-          }
-          update = {$set:{"privacy": req.body.privacy}};
-      }else if(settingNum == 4){
-          form = {
-              user: req.body.user,
-              email: req.body.email,
-              pass: req.body.pass
-          }
-          update = {$set:{"remember": req.body.remember}};
-      }
-      client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+app.post('/updateSettings', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result;
+    if(req.body.user !== ''){
+        const update = {$set:{"user": req.body.user}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
+    if(req.body.email !== ''){
+        const update = {$set:{"email": req.body.email}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update); 
+    }
+    if(req.body.image !== ''){
+        const update = {$set:{"image": req.body.image}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
+    if(req.body.oldPass !== '' && req.body.newPass !== ''){
+        result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+        
+        if(result.pass === req.body.oldPass){
+            const update = {$set:{"pass": req.body.newPass}};
+            result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+        }
+    }
+    if(req.body.privacy !== '') {
+        const update = {$set:{"privacy": req.body.privacy}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
+    if(req.body.remember !== '') {
+        const update = {$set:{"remember": req.body.remember}};
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+    }
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
 });
-
 
 app.post('/getPantry', async (req,res) => {
     const form = {
@@ -511,9 +526,11 @@ app.post('/addRecipes', async (req,res) => {
         name: req.body.name,
         owner: req.body._id,
         image: req.body.image,
+        rating: 0,
         instructions: req.body.instructions,
         ingredients: req.body.ingredients,
         description: req.body.description,
+        comments: [],
         likes: 0
     }
     var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
@@ -546,7 +563,29 @@ app.post('/addRecipeToUser', async (req,res) => {
     res.send(result);
 });
 
-app.post('/addToFeeds', async (req,res) => {
+app.post('/postComment', async (req,res) => {
+    console.log(req.body.recipeId);
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body.recipeId)}
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    
+    let temp = [];
+    temp.push(req.body.user); temp.push(req.body.comments); 
+    let newArr = result.comments;
+    newArr.unshift(temp);
+    var update = {$set:{"comments": newArr}};
+    await client.db("TheMealMine").collection("Recipes").updateOne(form,update);
+});
+
+app.post('/getComments',async (req,res) => {
+    console.log(req.body.recipeId);
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body.recipeId)}
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    res.send(result.comments);
+});
+
+app.post('/addToFeeds', async (req) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
@@ -558,8 +597,15 @@ app.post('/addToFeeds', async (req,res) => {
             result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
             let temp = [];
             temp.push(req.body.recipeId);
+            temp.push(req.body.favorites);
+            temp.push(req.body.owner);
+            temp.push(req.body.name);
+            temp.push(req.body.image);
+            temp.push(req.body.instructions);
+            temp.push(req.body.description);
+            temp.push(req.body.ingredients);
             let feed = result.feed;
-            feed.push(temp);
+            feed.unshift(temp);
             var update = {$set:{"feed": feed}};
             result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
         }
@@ -614,7 +660,6 @@ app.post('/unfollow', async (req, res) => {
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(
         { user: req.body.user},
     );
-    //console.log(result);
     res.send(result);    
 });
 app.post('/unblock', async (req, res) => {
@@ -634,9 +679,7 @@ app.post('/unblock', async (req, res) => {
     //console.log(result);
     res.send(result);    
 });
-/* blocking a user needs a req with a user field, and name, where user
-is the account who is blocking name. returns documents of user. 
-Will remove friend from friendlist*/
+
 app.post('/blockUser', async (req, res) => {
     console.log("received request to block " + req.body.name);
     var result;
@@ -684,11 +727,15 @@ app.post('/searchBlockedUser', async (req, res) => {
     res.send(result);    
 });
 app.post('/follow', async (req, res) => {
+<<<<<<< HEAD
     //Called from FriendsPage.js
     //If name is returned it means there was a friend request sent
     //If username is returned it means there was a friend 
     
     console.log("received request to follow " + req.body.name);
+=======
+   
+>>>>>>> main
     var result;
     var str;
     //Search for user we are requesting
@@ -733,6 +780,7 @@ app.post('/follow', async (req, res) => {
   
         
 });
+<<<<<<< HEAD
 app.post('/acceptRequest', async (req, res) => {
     var result;
     var str;
@@ -786,3 +834,26 @@ app.post('/acceptRequest', async (req, res) => {
     }
     res.send(result);
 });
+=======
+app.post('/findUser', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );
+    
+    res.send(result);    
+});
+app.post('/removeNotif', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user  },
+        { $pull: {'notifications':req.body.message}  }
+    );
+    /*result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );*/
+    
+    res.send(result);    
+});
+
+>>>>>>> main
