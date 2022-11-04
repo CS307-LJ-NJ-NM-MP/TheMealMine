@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
     TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
-//import Data from "../src/mockdata.json"
-import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
-    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 import Axios from "axios";
 
 export function CategoryNav () {
