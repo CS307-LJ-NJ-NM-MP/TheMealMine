@@ -8,7 +8,6 @@ export const Home = () => {
             <div>
                 <TopNav/>
                 <div className="home-display">
-                    <SearchNav/>
                     <Pantry/>
                     <SideNav/>
                 </div>
