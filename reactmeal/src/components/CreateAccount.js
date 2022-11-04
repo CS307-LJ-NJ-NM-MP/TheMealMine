@@ -46,6 +46,12 @@ function CreateAccount() {
 		localStorage.setItem('id',result.data.insertedId);
         localStorage.setItem('ranking',0);
         localStorage.setItem('contribution',0);
+        localStorage.setItem('friendsList', []);
+        localStorage.setItem('blockedList', []); //HAVENT TESTED THESE. CHECK PLEASE
+        localStorage.setItem('isSearching', "no");
+        localStorage.setItem('searchingBlocked', []);
+		localStorage.setItem('searchingFriends', []);
+		localStorage.setItem('requestedBy', []);
         window.location = "/home";
     }
 	
