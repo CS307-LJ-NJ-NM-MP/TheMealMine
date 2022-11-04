@@ -46,6 +46,7 @@ export function Login()  {
 			localStorage.setItem('isSearching', "no");
 			localStorage.setItem('searchingBlocked', result.data.blockedList);
 			localStorage.setItem('searchingFriends', result.data.friendsList);
+			localStorage.setItem('notifications', result.data.notifications);
 			window.location = "/home";
 		} 
 	}

@@ -658,7 +658,7 @@ app.post('/searchBlockedUser', async (req, res) => {
     res.send(result);    
 });
 app.post('/follow', async (req, res) => {
-    console.log("received request to follow " + req.body.name);
+   
     var result;
     
     //Insert name into users blocked list
@@ -671,5 +671,13 @@ app.post('/follow', async (req, res) => {
         { user: req.body.user },
     );
     //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});
+app.post('/findUser', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );
+    
     res.send(result);    
 });
