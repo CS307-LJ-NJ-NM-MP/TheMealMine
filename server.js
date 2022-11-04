@@ -340,12 +340,18 @@ app.post('/updatePass', async (req, res) => {
         user: req.body.user,
         email: req.body.email
     }
-
     var update = {$set:{"pass": req.body.pass}};
     var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     var projection = {pass: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
     res.send(result);
+});
+
+app.post('/getFeed', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result.feed);
 });
 
 app.post('/signupUser', async (req, res) => {
@@ -359,7 +365,7 @@ app.post('/signupUser', async (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
-
+        notifications: [],
         friends: [],
         feed: [],
 		status: 1,
