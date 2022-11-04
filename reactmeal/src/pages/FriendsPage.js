@@ -48,6 +48,19 @@ function FriendsPage() {
         setDoRender(e.target.value);
    
     }
+    async function follow(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/follow', {
+				user: username,
+				name: e.target.value
+		});
+        var nDoc = document.getElementById("searchBar");
+        nDoc.value = "";
+        localStorage.setItem('friendsList', result.data.friendsList);
+        localStorage.setItem('isSearching', "no");
+        //console.log("New friendsList: " + localStorage.getItem('friendsList'));
+        setSearchUsers([]);
+    }
     async function unblock(e) {
         console.log("in unblock");
         e.preventDefault();
@@ -68,6 +81,19 @@ function FriendsPage() {
         localStorage.setItem('friendsList', result.data.friendsList);
         localStorage.setItem('blockedList', result.data.blockedList);
         setDoRender(e.target.value);
+    }
+    async function blockFromSearchBar(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/blockUser', {
+				user: username,
+				name: e.target.value
+		});
+        var nDoc = document.getElementById("searchBar");
+        nDoc.value = "";
+        localStorage.setItem('friendsList', result.data.friendsList);
+        localStorage.setItem('blockedList', result.data.blockedList);
+        localStorage.setItem('isSearching', "no");
+        setSearchUsers([]);
     }
 
     const FriendDisplay = (name) => {
@@ -119,8 +145,10 @@ function FriendsPage() {
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
+            <Button value={name} align="right" color="blue"  onClick={follow}>Follow</Button>
+            <Button value={name} align="right" color="red" onClick={blockFromSearchBar}>Block</Button>
         </HStack>
-        )
+        );
     }
 
 
@@ -196,7 +224,7 @@ function FriendsPage() {
             <Container>
                 <Stack>
                     <VStack>
-                        <Input name="searchBar" placeholder="Search for user" onChange={search}/>
+                        <Input id="searchBar" name="searchBar" placeholder="Search for user" onChange={search}/>
                         <DisplayAllSearch />
                     </VStack>
                     <Text fontWeight="bold"> My Friends</Text>

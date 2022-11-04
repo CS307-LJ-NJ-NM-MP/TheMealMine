@@ -205,7 +205,8 @@ app.post('/addCategory', async(req, res) => {
     }
 
     const categoryForm = {
-        category: req.body.category
+        category: req.body.category,
+        owner: req.body.user
     }
     const categoryCheckForm = {
         category: req.body.category,
@@ -659,18 +660,46 @@ app.post('/blockUser', async (req, res) => {
 app.post('/searchBlockedUser', async (req, res) => {
     console.log("Searching for" + req.body.search);
     var search = req.body.search
-    //Add regex
     var result;
-    /*result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
-        {user: req.body.user,
-            //from search 
-         {blockedList: req.body.search}}, 
-        {new: true}
-    );
-    */
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(
         { user: req.body.user },
     );
-    //console.log(result);
     res.send(result);    
 });
+app.post('/follow', async (req, res) => {
+   
+    var result;
+    
+    //Insert name into users blocked list
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user },
+        { $push: {'friendsList': req.body.name}},
+    );
+    //Find the new document
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});
+app.post('/findUser', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );
+    
+    res.send(result);    
+});
+app.post('/removeNotif', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user  },
+        { $pull: {'notifications':req.body.message}  }
+    );
+    /*result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );*/
+    
+    res.send(result);    
+});
+
