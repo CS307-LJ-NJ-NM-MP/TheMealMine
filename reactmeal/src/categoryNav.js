@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 //import Data from "../src/mockdata.json"
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
     TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
@@ -38,11 +40,11 @@ export function CategoryNav () {
         console.log(userForm)
         console.log(categoryForm.category)
         console.log("sending");
-		if(userForm !== '') {
-            console.log("valid: " + userForm);
+		if(categoryForm.category !== '') {
+            console.log("valid: " + categoryForm.category);
 			var result = await Axios.post('http://localhost:5000/addCategory', {
-				user: userForm,  
-                recipe: "Cheese",
+				user: localStorage.getItem('username'),  
+                recipe: "Milk",
                 category: categoryForm.category
 			})
             .then(response => {
@@ -57,114 +59,24 @@ export function CategoryNav () {
             alert ("No query");
         }
 	}
+  return (
+        <>
+            <Container className="categorynav">
+                <Center>
+                <Input
+                    type="text" 
+                    placeholder = "Enter category here"
+                    name={"user"}
+                    variant="flushed"
+                    onChange={handleChange('category')}
+                />
+                <Button onClick={sendRequest} id="categoryButton">Add Category</Button>
+                </Center>
+                {textOut}
+            </Container>
+        </>
+    );
 
-    return (<>
-        <Center>
-            <Input name="user" variant="flushed" type="text" placeholder="Enter Category Here" onChange={handleChange('category')}/>
-            <Button id="categoryButton" onClick={sendRequest}>Add Category</Button>
-        </Center>
-        {textOut}
-    </>);
 
 
 }
-
-//     const [name, setName] = useState("");
-
-
-//     const [list, setList] = useState(FriendsList);
-
-//     function sendRequest() {
-
-//         handleAdd();
-//         alert("Friend Request Sent to: " + name);
-//         setName("");
-//     }
-
-
-//     function handleAdd() {
-//         const newList = list.concat({name});
-//         setList(newList);
-//     }
-
-
-//     const handleSubmit = event => {
-//         event.preventDefault();
-// //        setName('');
-//     }
-
-                /* {list.map(data => (
-                    <p>{data.name}</p>
-                ))}
-
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        
-                        <label >Send Friend Request:</label>
-
-                        <input
-                        type="text" 
-                        onChange={event => setName(event.target.value)}
-                        value={name}
-                        />
-
-                    </div>
-                    <div>
-                        <input onClick={sendRequest} type="button" value="Send Friend Request" id="friendButton">
-
-                        </input>
-
-                    </div>
-
-                </form> */
-
-//     const dataList = Data.filter(username => {
-//         if (query === "") {
-// //            alert("User not found");
-//         }
-//         else if (username.user.toLowerCase().includes(query.toLowerCase())) {
-//             return username;
-//         }
-//     }).map((username) => (
-//         <div key={username.id}>
-//         <p>{username.user}</p>
-//         </div>
-//     ));
-    
-
-
-// async function findUser(e) {
-//     e.preventDefault();
-//     console.log("sending");
-//     if(formValue.user !== '') {
-//         console.log("valid: " + formValue.user);
-//         var result = await Axios.post('http://localhost:5000/findUserReg', {
-//             user: formValue.user,  
-//         })
-//         .then(response => {
-//             console.log("result: " + response.data);
-//             console.log("other result: " + result)
-// //                console.log("response: " + response);
-//             if (response.data !== "") {
-//                 console.log("form value: " + response.data.user)
-//                 setQuery(response.data.user);
-//                 console.log("final query: " + query)
-// //                    alert("Users " + response.data.user + " found");
-//                 setTextOut("" + response.data.user)
-//                 setQuery("");
-//             }
-//             else {
-//                 alert("error, user not valid")
-//                 setQuery("");
-//             }
-
-//         })
-//         .catch(error => {
-//             console.log(error.data)
-//             alert("error");
-//         });
-//     }
-//     else {
-//         alert ("No query");
-//     }
-// }

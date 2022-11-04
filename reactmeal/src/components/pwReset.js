@@ -42,6 +42,7 @@ export const PWReset = () => {
         alert("Password Changed");
         window.location = '/login';
     }
+    
     return (
         <>
             <div>

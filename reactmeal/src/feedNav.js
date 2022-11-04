@@ -8,53 +8,44 @@ export const FeedNav = () => {
         likePost(e);
     }
 
-    const [formValue, setFormValue] = useState({
-		user: ''
+    const [userForm, setUserForm] = useState({
+        user: ''
 	})
+
+    const [recipeForm, setRecipeForm] = useState({
+        recipe: ''
+    })
 
     async function likePost(e) {
 		e.preventDefault();
         console.log("sending");
         console.log(localStorage.getItem('username'))
-        // setFormValue(localStorage.getItem('user'))
-
-		// if(formValue.user !== '') {
-        //     console.log("valid: " + formValue.user);
-		// 	var result = await Axios.post('http://localhost:5000/findTheUserReg', {
-		// 		user: formValue.user,  
-		// 	})
-        //     .then(response => {
-        //         console.log("result: " + response);
-        //         if (response.data.length != 0) {
-        //             setQuery(response.data);
-        //             setTextOut("" + response.data)
-        //             setQuery("");
-        //         }
-        //         else {
-        //              setQuery("");
-        //              setTextOut("");
-        //              alert("error, user not valid")
-        //         }
-
-        //     })
-        //     .catch(error => {
-        //         console.log(error.data)
-        //         alert("errors out the ass");
-        //     });
-		// }
-        // else {
-        //     alert ("No query");
-        // }
+        console.log(userForm)
+        setUserForm(localStorage.getItem('username'))
+        setRecipeForm("Cheese")
+        console.log("recipe name: " + recipeForm)
+        var result = await Axios.post('http://localhost:5000/arrayTest', {
+            user: localStorage.getItem("username"),
+            recipe: recipeForm,
+        })
+        .then(response => {
+            console.log(response.data.likedRecipes)
+        })
+        .catch(error => {
+            console.log(error.data)
+            console.log("pain")
+            alert("pain")
+        })
 	}
-
     return (
         <>
-            <div className="feed">
-                <input onClick={sendRequest} type='like' value="Find User" id="friendButton"/>
-                {textOut}
+            <div className="feednav">
+                <input onClick={sendRequest} type='button' value="Like" id="lButton"/>
             </div>
+  
+            
         </>
     );
-
-
 }
+
+
