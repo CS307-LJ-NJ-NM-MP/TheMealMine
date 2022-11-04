@@ -734,6 +734,5 @@ app.post('/removeNotif', async (req, res) => {
         { user: req.body.user }
     );*/
     
-    res.send(result);    
 });
 

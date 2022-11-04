@@ -24,7 +24,7 @@ export const FeedNav = () => {
         setUserForm(localStorage.getItem('username'))
         setRecipeForm("Cheese")
         console.log("recipe name: " + recipeForm)
-        var result = await Axios.post('http://localhost:5000/arrayTest', {
+        var result = await Axios.post('http://localhost:5000/idTest', {
             user: localStorage.getItem("username"),
             recipe: recipeForm,
         })
