@@ -82,9 +82,13 @@ export function TopNav() {
             window.location = "/bookmarks";
         }
     }
-    function feed(e) {
+    async function feed(e) {
         e.preventDefault();
         if(username !== "Guest" && password !== "Guest"){
+            var result = await Axios.post('http://localhost:5000/getFeed', {
+                _id: id
+		    });
+            localStorage.setItem('feed',result.data);
             window.location = "/feed";
         }
     }

@@ -1,17 +1,11 @@
 import { TopNav } from '../topNav';
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
     TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
-import { CategoryNav } from '../categoryNav';
-import { Comments } from '../comments';
 import React, { useState } from "react";
 import Axios from "axios";
 
-
-
-
 export const Feed = () => {
-
-    function sendRequest(e) {
+    /*function sendRequest(e) {
         console.log("here is a string" + e)
         likePost(e);
     }
@@ -83,6 +77,21 @@ export const Feed = () => {
             <Comments/><br/>
             <Center>
                 <Button id="likeButton" type='submit' width="200px" onClick={sendRequest}>Like</Button>
+            </Center>
+        </Container>
+    </>);
+*/  
+    var id = localStorage.getItem('id');
+    var feed = localStorage.getItem('feed');
+    
+    return(<>
+        <Container maxW="100%">
+            <TopNav/>
+            <Center>
+                <FormLabel>Your Feed</FormLabel>
+            </Center>
+            <Center>
+                <Text>Hi</Text>
             </Center>
         </Container>
     </>);
