@@ -4,6 +4,7 @@ import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { useState } from "react";
 import Axios from "axios";
+import { useToast } from '@chakra-ui/react'
 
 function FriendsPage() {
     var username = localStorage.getItem('username');
@@ -96,6 +97,48 @@ function FriendsPage() {
         setSearchUsers([]);
     }
 
+    const toast = useToast()
+  const toastIdRef = React.useRef()
+
+  function close() {
+    if (toastIdRef.current) {
+      toast.close(toastIdRef.current)
+    }
+  }
+
+  function closeAll() {
+    // you may optionally pass an object of positions to exclusively close
+    // keeping other positions opened
+    // e.g. `{ positions: ['bottom'] }`
+    toast.closeAll()
+  }
+
+  async function addToast(e) {
+    e.preventDefault();
+    var result = await Axios.post('http://localhost:5000/findUser', {
+				user: e.target.value
+		});
+        if(result.data.privacy == 'Private'){
+            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}` })
+        }else{
+            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList}` })
+        }
+  }
+
+  async function showInfo(e){
+    e.preventDefault();
+    var result = await Axios.post('http://localhost:5000/findUser', {
+				user: e.target.value
+		});
+
+    if(result.data.privacy == 'Private'){
+        alert("Username: " + result.data.user + " Privacy: " + result.data.privacy);
+    }else{
+        alert("Username: " + result.data.user + " Privacy: " + result.data.privacy + " FriendsList: " + result.data.friendsList);
+    }
+  }
+
+
     const FriendDisplay = (name) => {
 
         return (
@@ -145,6 +188,8 @@ function FriendsPage() {
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
+            <Button value={name} align="right" color="blue"  onClick={addToast}>Open Info</Button>
+            <Button value={name} align="right" color="blue"  onClick={close}>Close Info</Button>
             <Button value={name} align="right" color="blue"  onClick={follow}>Follow</Button>
             <Button value={name} align="right" color="red" onClick={blockFromSearchBar}>Block</Button>
         </HStack>
