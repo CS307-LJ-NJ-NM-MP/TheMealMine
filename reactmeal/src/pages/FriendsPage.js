@@ -145,7 +145,7 @@ function FriendsPage() {
     var result = await Axios.post('http://localhost:5000/findUser', {
 				user: e.target.value
 		});
-        if(result.data.privacy == 'Private'){
+        if(result.data.privacy === 'Private'){
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}` })
         }else{
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList}` })
@@ -158,7 +158,7 @@ function FriendsPage() {
 				user: e.target.value
 		});
 
-    if(result.data.privacy == 'Private'){
+    if(result.data.privacy === 'Private'){
         alert("Username: " + result.data.user + " Privacy: " + result.data.privacy);
     }else{
         alert("Username: " + result.data.user + " Privacy: " + result.data.privacy + " FriendsList: " + result.data.friendsList);
