@@ -264,11 +264,11 @@ function FriendsPage() {
     function DisplayAllSearch() {
         if (localStorage.getItem('isSearching') === "no") {
             return (<div></div>);
-        } else if (searchUsers.length === 0) {
+        } else if (localStorage.getItem('isSearching') !== "no" && searchUsers.length === 0) {
             return ( 
                 alert("No user exists with that name")
             ); 
-        }   else {
+        } else {
         return (
             <Box>
                 <ul>
