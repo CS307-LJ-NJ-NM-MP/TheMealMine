@@ -82,7 +82,7 @@ app.post('/arrayTest', async(req, res) => {
     const form = {
 
         user: req.body.user,
-        favoriteRecipes: req.body.recipe
+        likedRecipes: req.body.recipe
     }
 
     const newForm = {
@@ -96,14 +96,8 @@ app.post('/arrayTest', async(req, res) => {
     console.log("user " + form.user)
     console.log("rec " + req.body.recipe)
 
-    var update = {$push:{"favoriteRecipes": req.body.recipe}};
-    var otherUpdate = {$pull:{"favoriteRecipes": req.body.recipe}};
-
-    var string = "" + newForm.user + " liked your post " + recipeForm.name
-    console.log("this is the string " + string)
-    var pushNotification = {$push:{"notifications": string}}
-//    var pullNotification = {$pull:{"notifications": string}}
-
+    var update = {$push:{"likedRecipes": req.body.recipe}};
+    var otherUpdate = {$pull:{"likedRecipes": req.body.recipe}};
 
     var increaseLike = {$inc: {"likes": 1}};
     var decreaseLike = {$inc: {"likes" : -1}};
@@ -111,40 +105,19 @@ app.post('/arrayTest', async(req, res) => {
     var recipeString = "" + recipeForm.name
     console.log("here is recipe " + recipeString)
 
-
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     if (result == null) {
         console.log("recipe is not there")
-
-        result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm)
-        var recipeOwner = result.owner
-        console.log(recipeOwner)
-
-        const notificationForm = {
-            user: recipeOwner
-        }
-        
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,update);
         var likeIncrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, increaseLike)
-        var likeNotification = await client.db("TheMealMine").collection("UserAccounts").updateOne(notificationForm, pushNotification)
+//        console.log(result.likedRecipes.data)
         console.log("now it is")
     }
     else {
-        console.log(result.favoriteRecipes)
+        console.log(result.likedRecipes)
         console.log("bye bye")
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(newForm,otherUpdate);
-
-        result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm)
-
-        // var recipeOwner = result.owner
-        // console.log(recipeOwner)
-
-        // const notificationForm = {
-        //     user: recipeOwner
-        // }
-
         var likeDecrease = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm, decreaseLike)
-//        var unlikeNotification = await client.db("TheMealMine").collection("UserAccounts").updateOne(notificationForm, pullNotification)
 
     }
 
@@ -686,7 +659,7 @@ app.post('/searchBlockedUser', async (req, res) => {
     res.send(result);    
 });
 app.post('/follow', async (req, res) => {
-    console.log("received request to follow " + req.body.name);
+   
     var result;
     
     //Insert name into users blocked list
@@ -699,5 +672,25 @@ app.post('/follow', async (req, res) => {
         { user: req.body.user },
     );
     //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});
+app.post('/findUser', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );
+    
+    res.send(result);    
+});
+app.post('/removeNotif', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user  },
+        { $pull: {'notifications':req.body.message}  }
+    );
+    /*result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );*/
+    
     res.send(result);    
 });
