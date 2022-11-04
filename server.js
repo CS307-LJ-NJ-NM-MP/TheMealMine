@@ -371,6 +371,7 @@ app.post('/signupUser', async (req, res) => {
 		status: 1,
         friendsList: [],
         blockedList: [],
+        requestedBy: [],
         ranking: 0,
         contributions: 0
 
@@ -593,16 +594,23 @@ app.post('/addIngredients', async (req,res) => {
 app.post('/unfollow', async (req, res) => {
     console.log("received request to unfollow " + req.body.name);
     var result;
+    var str;
     //Find the person we are unfollowing so that we can get its object id to pull out of friends
-    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+    
+    //Take user out of unfollowed persons 'friends'
+    str = "" + req.body.id;
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
         {user: req.body.name}, 
-    );
-
-    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
-        {user: req.body.user}, 
-        {$pull: {'friendsList': req.body.name, 'friends': result._id} },
+        {$pull: {'friends': str}},
         {new: true}
     );
+    //Remove friend from users friendList
+     result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        {user: req.body.user}, 
+        {$pull: {'friendsList': req.body.name}},
+        {new: true}
+    );
+    //Reget users friends
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(
         { user: req.body.user},
     );
@@ -614,7 +622,7 @@ app.post('/unblock', async (req, res) => {
     var result;
     result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
         {user: req.body.user}, 
-        {$pull: {'blockedList': req.body.name, } },
+        {$pull: {'blockedList': req.body.name} },
         {new: true}
     );
     if (result === null) {
@@ -632,6 +640,7 @@ Will remove friend from friendlist*/
 app.post('/blockUser', async (req, res) => {
     console.log("received request to block " + req.body.name);
     var result;
+    var str = "" + req.body.id;
     //Remove from friendList
     result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
         {user: req.body.user}, 
@@ -646,9 +655,19 @@ app.post('/blockUser', async (req, res) => {
     //Remove my Id from their list
     result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
         { user: req.body.name },
-        { $pull: {'friends': req.body.id}}
+        { $pull: {'friends': str}}
     );
-    //Find the new document
+    //Find them
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        {user: req.body.name }
+    );
+    str = "" + result._id;
+    //Remove their Id from my 'friends'
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user},
+        { $pull: {'friends': str} }
+    )
+        //Find the new document
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(
         { user: req.body.user },
     );
@@ -697,7 +716,7 @@ app.post('/follow', async (req, res) => {
         //Send message to friend and add users id to the friends 'friends' list
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.name},
-            { $push: {'notifications': str, 'friends': req.body.id}}
+            { $push: {'notifications': str, 'friends': "" + req.body.id}}
         )
         //uddate the users friends list
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
@@ -719,6 +738,7 @@ app.post('/acceptRequest', async (req, res) => {
     var str;
     if (req.body.state === "accept") {
         str = req.body.user + " has accepted your friend request.";
+        console.log(str);
         //Update the requesters friendslist to include this user and notify.
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.name },
@@ -730,12 +750,16 @@ app.post('/acceptRequest', async (req, res) => {
         result = await client.db("TheMealMine").collection("UserAccounts").findOne(
             { user: req.body.name }
         )
-        str = result._id;
+        str = "" + result._id;
+        console.log("Pushing: " + str + "onto " + req.body.user);
         //Update this user, by removing requestor from 'requestedBy' and push their id onto this 
         //users 'friends'
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.user },
             { $pull: {'requestedBy': req.body.name}},
+        );
+        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+            { user: req.body.user },
             { $push: {'friends': str}}
         );
         //Find the result.
@@ -744,6 +768,7 @@ app.post('/acceptRequest', async (req, res) => {
         );
     } else { //If they denied.
         str = req.body.user + " has denied your friend request.";
+        console.log(str);
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.user },
             { $pull: {'requestedBy': req.body.name}}

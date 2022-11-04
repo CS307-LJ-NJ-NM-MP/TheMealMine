@@ -11,8 +11,9 @@ function FriendsPage() {
     var Id = localStorage.getItem('id'); 
     var friendsList = [];
     var blockedList = [];
-    var requestedBy = [];
+    //var requestedBy = [];
     const [searchUsers, setSearchUsers] = useState([]);
+    var requestedBy = [];
     //Maybe make requestedBy a useState thingie
     if (localStorage.getItem('requestedBy') !== null) {
         requestedBy = localStorage.getItem('requestedBy').split(",");
@@ -47,6 +48,7 @@ function FriendsPage() {
         var result = await Axios.post('http://localhost:5000/unfollow', {
 				user: username,
 				name: nameToUnfollow,
+                id: Id,
 		});
         localStorage.setItem('friendsList', result.data.friendsList);
         //console.log("New friendsList: " + localStorage.getItem('friendsList'));
@@ -118,8 +120,7 @@ function FriendsPage() {
         //Now reset local storage and rerender
         localStorage.setItem('requestedBy', result.data.requestedBy);
         requestedBy = localStorage.getItem('requestedBy').split(",");
-        var myDoc = document.getElementById("displayRequested");
-        myDoc.innerHTML = myDoc.innerHTML;
+        setDoRender(e.target.value);
     }
 
     const FriendDisplay = (name) => {
@@ -180,16 +181,22 @@ function FriendsPage() {
 
     function DisplayAllRequested() {
         //If requestedBy === null or length === 0 do not return anything
+        if (requestedBy.length === 0) {
+            return (<div></div>)
+        } else {
+        
         return (
             <Box id="displayRequested">
                 <ul>
                     {
+                        
                         requestedBy.map( (name) => (
                         RequestedDisplay(name)
                     ))}
                 </ul>
             </Box>
         );
+       }
     }
     const DisplaySearch = (name) => {
         console.log(name);
