@@ -10,6 +10,8 @@ export const Feed = () => {
         recipeId: '',
         rating: '',
 	});
+
+
     const handleChange = (e) => {
 		let value = e.target.value;
 		let name = e.target.name;
@@ -99,7 +101,7 @@ export const Feed = () => {
                                     <Input id={i+2} variant="flushed" placeholder='Rating / 5'/>
                                     <Button id={i+3} onClick={setRanking}>Rate</Button>
                                 </Center>
-                                <Button id={i+4} border="1px" bg="transparent" w="100%">Favorite</Button>
+                                <Button id={i+4} onClick={sendRequest} border="1px" bg="transparent" w="100%">Favorite</Button>
                             </VStack>
                         </Box>
                     </HStack>
@@ -136,6 +138,43 @@ export const Feed = () => {
         }
         document.getElementById(buttonId-1).value = "";
     }
+
+    function sendRequest(e) {
+        console.log("here is a string" + e)
+        likePost(e);
+    }
+
+    const [userForm, setUserForm] = useState({
+        user: ''
+	})
+
+    const [recipeForm, setRecipeForm] = useState({
+        recipe: ''
+    })
+
+    async function likePost(e) {
+		e.preventDefault();
+        console.log("sending");
+        console.log(localStorage.getItem('username'))
+        console.log(userForm)
+        setUserForm(localStorage.getItem('username'))
+        setRecipeForm("Cheese")
+        console.log("recipe name: " + recipeForm)
+        var result = await Axios.post('http://localhost:5000/arrayTest', {
+            user: localStorage.getItem("username"),
+            recipe: recipeForm,
+            id: formValue.recipeId
+        })
+        .then(response => {
+            console.log(response.data.likedRecipes)
+        })
+        .catch(error => {
+            console.log(error.data)
+            console.log("pain")
+            alert("pain")
+        })
+	}
+
     return(<>
         <Container maxW='100%'>
             <TopNav/>

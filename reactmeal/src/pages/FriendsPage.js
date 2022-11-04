@@ -148,7 +148,7 @@ function FriendsPage() {
         if(result.data.privacy === 'Private'){
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}`})
         }else{
-            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList}` })
+            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList} contributions: ${result.data.contributions}` })
         }
   }
 
@@ -264,11 +264,12 @@ function FriendsPage() {
     function DisplayAllSearch() {
         if (localStorage.getItem('isSearching') === "no") {
             return (<div></div>);
-        } else if (searchUsers.length === 0) {
+        } else if (localStorage.getItem('isSearching') !== "no" && searchUsers.length === 0) {
             return ( 
-                alert("No user exists with that name")
+               // alert("No user exists with that name")
+               <></>
             ); 
-        }   else {
+        } else {
         return (
             <Box>
                 <ul>
@@ -301,7 +302,7 @@ function FriendsPage() {
 
             }).catch(error => {
                 console.log(error.data)
-                alert("errors out the ass");
+                alert("lots of errors");
             });
 
 
