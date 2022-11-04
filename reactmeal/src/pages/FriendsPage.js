@@ -9,10 +9,16 @@ import { useToast } from '@chakra-ui/react'
 function FriendsPage() {
     var username = localStorage.getItem('username');
     const [doRender, setDoRender] = useState("no");
+    var Id = localStorage.getItem('id'); 
     var friendsList = [];
     var blockedList = [];
+    //var requestedBy = [];
     const [searchUsers, setSearchUsers] = useState([]);
-
+    var requestedBy = [];
+    //Maybe make requestedBy a useState thingie
+    if (localStorage.getItem('requestedBy') !== null) {
+        requestedBy = localStorage.getItem('requestedBy').split(",");
+    }
 
     console.log("New Refresh");
     var iS = localStorage.getItem('isSearching');
@@ -42,24 +48,29 @@ function FriendsPage() {
         const nameToUnfollow = e.target.value;
         var result = await Axios.post('http://localhost:5000/unfollow', {
 				user: username,
-				name: nameToUnfollow
+				name: nameToUnfollow,
+                id: Id,
 		});
         localStorage.setItem('friendsList', result.data.friendsList);
         //console.log("New friendsList: " + localStorage.getItem('friendsList'));
         setDoRender(e.target.value);
-   
     }
     async function follow(e) {
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/follow', {
 				user: username,
-				name: e.target.value
+				name: e.target.value,
+                id: Id,
 		});
+        //If the result is the requested user, it means that a friend request was sent.
+        if (result.data.user === e.target.value) {
+            alert("Sent friend request to: " + result.data.user);
+        } else { //If not, the friendsList is set to localStorage
+           localStorage.setItem('friendsList', result.data.friendsList); 
+        } 
         var nDoc = document.getElementById("searchBar");
         nDoc.value = "";
-        localStorage.setItem('friendsList', result.data.friendsList);
         localStorage.setItem('isSearching', "no");
-        //console.log("New friendsList: " + localStorage.getItem('friendsList'));
         setSearchUsers([]);
     }
     async function unblock(e) {
@@ -77,7 +88,8 @@ function FriendsPage() {
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/blockUser', {
 				user: username,
-				name: e.target.value
+				name: e.target.value,
+                id: Id,
 		});
         localStorage.setItem('friendsList', result.data.friendsList);
         localStorage.setItem('blockedList', result.data.blockedList);
@@ -86,6 +98,7 @@ function FriendsPage() {
     async function blockFromSearchBar(e) {
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/blockUser', {
+                id: Id,
 				user: username,
 				name: e.target.value
 		});
@@ -95,6 +108,20 @@ function FriendsPage() {
         localStorage.setItem('blockedList', result.data.blockedList);
         localStorage.setItem('isSearching', "no");
         setSearchUsers([]);
+    }
+    async function accept(e) {
+        e.preventDefault();
+        //username is
+        var result = await Axios.post('http://localhost:5000/acceptRequest', {
+				user: username, 
+				name: e.target.value,
+                state: e.target.name,
+                id: Id,
+		});
+        //Now reset local storage and rerender
+        localStorage.setItem('requestedBy', result.data.requestedBy);
+        requestedBy = localStorage.getItem('requestedBy').split(",");
+        setDoRender(e.target.value);
     }
 
     const toast = useToast()
@@ -140,7 +167,6 @@ function FriendsPage() {
 
 
     const FriendDisplay = (name) => {
-
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -183,6 +209,38 @@ function FriendsPage() {
             </Box>
         );
     }
+
+    const RequestedDisplay = (name) => {
+        return (
+        <Box borderStyle="solid">
+        <HStack key={name} width="400px" spacing="10px" >
+            <Text width="200px">{name}</Text>
+            <Button value={name} name="accept" align="right" color="blue" onClick={accept}>Accept</Button>
+            <Button value={name} name="deny" align="right" color="red" onClick={accept}>Deny</Button>
+        </HStack>
+        </Box>
+        )
+    }
+
+    function DisplayAllRequested() {
+        //If requestedBy === null or length === 0 do not return anything
+        if (requestedBy.length === 0) {
+            return (<div></div>)
+        } else {
+        
+        return (
+            <Box id="displayRequested">
+                <ul>
+                    {
+                        
+                        requestedBy.map( (name) => (
+                        RequestedDisplay(name)
+                    ))}
+                </ul>
+            </Box>
+        );
+       }
+    }
     const DisplaySearch = (name) => {
         console.log(name);
         return (
@@ -211,8 +269,7 @@ function FriendsPage() {
                 </ul>
             </Box>
         );
-    }
-    }
+    }}
     async function search(e) {
        e.preventDefault();
       
@@ -222,7 +279,7 @@ function FriendsPage() {
 				search: e.target.value,  
 			}).then(response => {
                 console.log("result: " + response.data);
-                if (response.data.length != 0) {
+                if (response.data.length !== 0) {
                     console.log("Response length: " + response.data.length);
                     setSearchUsers(response.data);
                 }
@@ -281,6 +338,11 @@ function FriendsPage() {
                     <VStack>
                             <Text id="blocked" fontWeight="bold">My Blocked List</Text>
                             <DisplayAllBlocked />
+                    </VStack>
+                    <br />
+                    <VStack>
+                        <Text fontWeight="bold">Friend Requests</Text>
+                            <DisplayAllRequested />
                     </VStack>
                 </Stack>
                 
