@@ -645,18 +645,25 @@ app.post('/blockUser', async (req, res) => {
 app.post('/searchBlockedUser', async (req, res) => {
     console.log("Searching for" + req.body.search);
     var search = req.body.search
-    //Add regex
     var result;
-    /*result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
-        {user: req.body.user,
-            //from search 
-         {blockedList: req.body.search}}, 
-        {new: true}
-    );
-    */
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(
         { user: req.body.user },
     );
-    //console.log(result);
+    res.send(result);    
+});
+app.post('/follow', async (req, res) => {
+    console.log("received request to follow " + req.body.name);
+    var result;
+    
+    //Insert name into users blocked list
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user },
+        { $push: {'friendsList': req.body.name}},
+    );
+    //Find the new document
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //NOTE: Will have to update local storage of blocked list and friends list on client side
     res.send(result);    
 });
