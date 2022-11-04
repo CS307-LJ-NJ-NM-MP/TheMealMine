@@ -205,7 +205,8 @@ app.post('/addCategory', async(req, res) => {
     }
 
     const categoryForm = {
-        category: req.body.category
+        category: req.body.category,
+        owner: req.body.user
     }
     const categoryCheckForm = {
         category: req.body.category,

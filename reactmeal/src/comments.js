@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
     TabPanels, TabPanel, FormLabel, HStack} from '@chakra-ui/react'
 import Axios from "axios";
@@ -56,12 +57,23 @@ export function Comments () {
             alert ("No query");
         }
 	}
+  
+     return (
+        <>
+            <Container className="commentnav">
+                <Center>
 
-    return (<>
-        <Center>
-            <Input name="user" type="text" variant="flushed" placeholder="Enter Comment Here:" onChange={handleChange('comment')}/>
-            <Button id="commentButton" onClick={sendRequest}>Post Comment</Button>
-        </Center>
-        {textOut}
-    </>);
+                <Input
+                    type="text" 
+                    placeholder = "Type comment here"
+                    name={"user"}
+                    varient='flushed'
+                    onChange={handleChange('comment')}
+                />
+                <Button onClick={sendRequest} id="commentButton"> Post Comment </Button>
+                </Center>
+                {textOut}
+            </Container>
+        </>
+    );
 }
