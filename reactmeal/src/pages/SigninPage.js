@@ -1,8 +1,8 @@
 import React from "react";
-import loginBackground from "./imgs/loginBackground.jpg"
+import loginBackground from "../imgs/loginBackground.jpg"
 import { Container, Box, Center, Tabs, TabList, Tab, TabPanels,TabPanel} from "@chakra-ui/react";
-import Login from "./components/login";
-import CreateAccount from "./components/CreateAccount";
+import Login from "../components/login";
+import CreateAccount from "../components/CreateAccount";
 
 export function SigninPage() {
     return (

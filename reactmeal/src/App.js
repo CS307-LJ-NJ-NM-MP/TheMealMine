@@ -4,14 +4,12 @@ import { Home } from './Home';
 import { Settings } from "./components/settings"
 import { Feed } from "./components/feed"
 import  Bookmarks  from "./components/bookmarks"
-import { Friends } from "./components/addFriend"
-//import { Login } from "./components/login"
-//import { Signup } from "./components/signup"
 import { Recovery } from "./components/recovery"
 import { RecipeAdd } from "./components/recipeCreate"
 import { PWReset } from "./components/pwReset"
+import SigninPage from './pages/SigninPage';
+import FriendsPage from './pages/FriendsPage';
 import { Notifications } from './components/notifications';
-import SigninPage from './SigninPage';
 
 window.$username = '';
 
@@ -23,7 +21,7 @@ function App() {
         <Route path='/home' element={<Home/>} ></Route>
         <Route path='/settings' element={<Settings/>} ></Route>
         <Route path='/bookmarks' element={<Bookmarks />} ></Route>
-        <Route path='/addFriend' element={<Friends />} ></Route>
+        <Route path='/friends' element={<FriendsPage />} ></Route>
         <Route path='/feed' element={<Feed/>} ></Route>
 		    <Route path='/recovery' element={<Recovery/>} ></Route>
         <Route path='/recipeAdd' element={<RecipeAdd/>} ></Route>
