@@ -12,7 +12,7 @@ function CreateAccount() {
 		user: '',
 		image: ''
 	})
-	const [comfirmPassword, setConfirmPassword] = useState();
+	const [setConfirmPassword] = useState();
 	//ConfirmPassword to be used to compare before submitting
 	const [show, setShow] = useState(false);
 
@@ -31,7 +31,7 @@ function CreateAccount() {
 
 	async function addUser(e) {
 		e.preventDefault();
-		console.log("Got here");
+		//console.log("Got here");
 		localStorage.setItem('username',formValue.user);
 		localStorage.setItem('password',formValue.pass);
 		localStorage.setItem('email', formValue.email);

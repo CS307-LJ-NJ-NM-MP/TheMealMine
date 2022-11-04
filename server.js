@@ -271,12 +271,12 @@ app.post('/addCategory', async(req, res) => {
 
 
 app.post('/findTheUserReg', async(req, res) => {
-
-    if (req.body.user === '') {
+    console.log(req.body.search);
+    if (req.body.search === '') {
         res.status(400).send('query required');
     }
     const form = {
-        user: req.body.user
+        user: req.body.search
     };
     const projection = {user: 1};
     var string = "" + form.user;
@@ -289,7 +289,6 @@ app.post('/findTheUserReg', async(req, res) => {
         docs.forEach(function(doc) {
             var newString = "" + doc.user
             list.push(newString)
-
         }
         )
         if (list.length == 0) {
@@ -342,12 +341,18 @@ app.post('/updatePass', async (req, res) => {
         user: req.body.user,
         email: req.body.email
     }
-
     var update = {$set:{"pass": req.body.pass}};
     var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
     var projection = {pass: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
     res.send(result);
+});
+
+app.post('/getFeed', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result.feed);
 });
 
 app.post('/signupUser', async (req, res) => {
@@ -361,10 +366,12 @@ app.post('/signupUser', async (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
-
+        notifications: [],
         friends: [],
         feed: [],
-		    status: 1,
+		status: 1,
+        friendsList: [],
+        blockedList: [],
         ranking: 0,
         contributions: 0
 
@@ -469,6 +476,16 @@ app.post('/getPantry', async (req,res) => {
     console.log(result.pantry);
 });
 
+app.post('/getFriendsList', async (req,res) => {
+    const form = {
+        user: req.body.user,
+        pass: req.body.pass
+    }
+    var projection = {friendsList: 1};
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
+    res.send(result.friendsList);
+});
+
 app.post('/updatePicture', (req) => {
     const form = {
         user: req.body.user,
@@ -534,26 +551,25 @@ app.post('/addToFeeds', async (req,res) => {
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     let friends = result.friends;
-    for(var i = 0; i < friends.length; i++) {
-        var ObjectId = require('mongodb').ObjectId;
-        const form2 = {_id: new ObjectId(friends[i])}
-        result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
-        let temp = [];
-        temp.push(req.body.recipeId);
-        temp.push(req.body.favorites);
-        temp.push(req.body.owner);
-        temp.push(req.body.name);
-        temp.push(req.body.image);
-        temp.push(req.body.instructions);
-        temp.push(req.body.description);
-        temp.push(req.body.ingredients);
-        let feed = result.feed;
-        feed.push(temp);
-        var update = {$set:{"feed": feed}};
-        result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
+    if(friends!==undefined) {
+        for(var i = 0; i < friends.length; i++) {
+            var ObjectId = require('mongodb').ObjectId;
+            const form2 = {_id: new ObjectId(friends[i])}
+            result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
+            let temp = [];
+            temp.push(req.body.recipeId);
+            let feed = result.feed;
+            feed.push(temp);
+            var update = {$set:{"feed": feed}};
+            result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
+        }
     }
 });
 
+app.post('/updateRecipe', async (req,res) => {
+    console.log("Place Update Call Here");
+    res.send("Finished");
+});
 app.post('/addIngredients', async (req,res) => {
     const form = {
         owner: req.body.user,
@@ -575,52 +591,86 @@ app.post('/addIngredients', async (req,res) => {
     client.db("TheMealMine").collection("UserAccounts").updateOne(userForm,update);
 });
 
-
-// app.post('/findUser', async(req, res) => {
-
-//     if (req.body.user === '') {
-//         res.status(400).send('query required');
-//     }
-//     const form = {
-//         user: req.body.user
-//     };
-//     const projection = {user: 1};
-//     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-//     console.log("here is user: " + form.user)
-//     console.log("result: " + result)
-//     if (result == null) {
-//         console.log("error");
-//     }
-//     else {
-//         console.log("success");
-//     }
-//     res.send(result);
-// });
-
-// app.post('/findUserReg', async(req, res) => {
-
-//     if (req.body.user === '') {
-//         res.status(400).send('query required');
-//     }
-//     const form = {
-//         user: req.body.user
-//     };
-//     const projection = {user: 1};
-//     var string = "" + form.user;
-//     var result = await client.db("TheMealMine").collection("UserAccounts").findOne({
-//         user: {
-//             $regex : string 
-//         }
-//     });
-//     if (result == null || result.user === undefined) {
-//         console.log("error");
-//         res.send(null);
-//     }
-//     else {
-//         console.log("success");
-//         console.log("here is user: " + form.user)
-//         console.log("result: " + result.user)
-//         res.send(result);
-//     }
-
-// });
+app.post('/unfollow', async (req, res) => {
+    console.log("received request to unfollow " + req.body.name);
+    var result;
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'friendsList': req.body.name} },
+        {new: true}
+    );
+    if (result === null) {
+        console.log("opps");
+    }
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user},
+    );
+    //console.log(result);
+    res.send(result);    
+});
+app.post('/unblock', async (req, res) => {
+    console.log("received request to unblock " + req.body.name);
+    var result;
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'blockedList': req.body.name} },
+        {new: true}
+    );
+    if (result === null) {
+        console.log("opps");
+    }
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //console.log(result);
+    res.send(result);    
+});
+/* blocking a user needs a req with a user field, and name, where user
+is the account who is blocking name. returns documents of user. 
+Will remove friend from friendlist*/
+app.post('/blockUser', async (req, res) => {
+    console.log("received request to block " + req.body.name);
+    var result;
+    //Remove from friendList
+    result = await client.db("TheMealMine").collection("UserAccounts").findOneAndUpdate(
+        {user: req.body.user}, 
+        {$pull: {'friendsList': req.body.name} },
+        {new: true}
+    );
+    //Insert name into users blocked list
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user },
+        { $push: {'blockedList': req.body.name}},
+    );
+    //Find the new document
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});
+app.post('/searchBlockedUser', async (req, res) => {
+    console.log("Searching for" + req.body.search);
+    var search = req.body.search
+    var result;
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    res.send(result);    
+});
+app.post('/follow', async (req, res) => {
+    console.log("received request to follow " + req.body.name);
+    var result;
+    
+    //Insert name into users blocked list
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user },
+        { $push: {'friendsList': req.body.name}},
+    );
+    //Find the new document
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user },
+    );
+    //NOTE: Will have to update local storage of blocked list and friends list on client side
+    res.send(result);    
+});

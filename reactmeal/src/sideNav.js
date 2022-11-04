@@ -17,7 +17,7 @@ export const SideNav = () => {
     function friends(e) {
         e.preventDefault();
         if(username !== "Guest" && password !== "Guest"){
-            window.location = "/addFriend";
+            window.location = "/friends";
         }
     }
     async function bookmarks(e) {
@@ -60,14 +60,5 @@ export const SideNav = () => {
             window.location = "/feed";
         }
     }
-    return (
-        <>
-            <div className="sidenav">
-                <button onClick={settings}><img src={Settings}/></button>
-                <button onClick={friends}><img src={AddFriend}/></button>
-                <button onClick={bookmarks}><img src={Bookmark}/></button>
-                <button onClick={feed}><img src={Feed}/></button>
-            </div>
-        </>
-    );
+    
 }

@@ -1,16 +1,16 @@
 import { TopNav } from '../topNav'
-import { SideNav } from '../sideNav'
-import { SearchNav } from '../searchNav'
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 
 
 
 export const Notifications = () => {
-    return (
-        <>
+    return (<>
+        <Container maxW="100%">
             <TopNav/>
-            <div>This is the Notifications homepage</div>
-            <SideNav/>
-            
-        </>
-    );
+            <Center>
+                <FormLabel>Notifications</FormLabel>
+            </Center>
+        </Container>
+    </>);
 }

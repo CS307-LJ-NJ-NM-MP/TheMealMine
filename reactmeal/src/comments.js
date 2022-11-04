@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Box, Input, Button, Center, Container } from '@chakra-ui/react'
-//import Data from "../src/mockdata.json"
+
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel, HStack} from '@chakra-ui/react'
 import Axios from "axios";
 
 export function Comments () {
@@ -56,8 +57,8 @@ export function Comments () {
             alert ("No query");
         }
 	}
-
-    return (
+  
+     return (
         <>
             <Container className="commentnav">
                 <Center>
@@ -75,6 +76,4 @@ export function Comments () {
             </Container>
         </>
     );
-
-
 }

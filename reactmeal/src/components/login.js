@@ -36,10 +36,16 @@ export function Login()  {
 			console.log(result.data.email);
 			localStorage.setItem('email',result.data.email);
 			localStorage.setItem('image',result.data.image);
-			localStorage.setItem('id',result.data._id);
+			localStorage.setItem('id', result.data._id);
 			localStorage.setItem('pantry',result.data.pantry);
-			localStorage.setItem('ranking',result.data.ranking);
+			localStorage.setItem('ranking', result.data.ranking);
+			localStorage.setItem('friendsList', result.data.friendsList);
+			localStorage.setItem('blockedList',result.data.blockedList);
 			localStorage.setItem('contribution',result.data.contributions);
+			//Below stuff is for friends Page searching, do not change please
+			localStorage.setItem('isSearching', "no");
+			localStorage.setItem('searchingBlocked', result.data.blockedList);
+			localStorage.setItem('searchingFriends', result.data.friendsList);
 			window.location = "/home";
 		} 
 	}
@@ -54,10 +60,10 @@ export function Login()  {
 		localStorage.setItem('password',"Guest");
 		localStorage.setItem('email',"Guest");
 		localStorage.setItem('pantry',"Guest");
+		localStorage.setItem('friendsList', "Guest");
+		localStorage.setItem('blockedList', "Guest");
+		localStorage.setItem('isSearching', "Guest");
 		window.location = "/home";
-	}
-	function goToReset() {
-		window.location = '/PWReset';
 	}
 	return (
         <VStack
