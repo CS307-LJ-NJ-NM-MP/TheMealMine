@@ -146,7 +146,7 @@ function FriendsPage() {
 				user: e.target.value
 		});
         if(result.data.privacy === 'Private'){
-            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}` })
+            toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}`})
         }else{
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList}` })
         }
