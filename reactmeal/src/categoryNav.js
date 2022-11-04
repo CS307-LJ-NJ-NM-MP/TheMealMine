@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
 //import Data from "../src/mockdata.json"
 import Axios from "axios";
 
@@ -36,11 +38,11 @@ export function CategoryNav () {
         console.log(userForm)
         console.log(categoryForm.category)
         console.log("sending");
-		if(userForm !== '') {
-            console.log("valid: " + userForm);
+		if(categoryForm.category !== '') {
+            console.log("valid: " + categoryForm.category);
 			var result = await Axios.post('http://localhost:5000/addCategory', {
 				user: localStorage.getItem('username'),  
-                recipe: "Cheese",
+                recipe: "Milk",
                 category: categoryForm.category
 			})
             .then(response => {
@@ -58,17 +60,19 @@ export function CategoryNav () {
 
     return (
         <>
-            <div className="categorynav">
-                <input
+            <Container className="categorynav">
+                <Center>
+                <Input
                     type="text" 
                     placeholder = "Enter category here"
                     name={"user"}
-                    style={{ textAlign: "center"}}
+                    variant="flushed"
                     onChange={handleChange('category')}
                 />
-                <input onClick={sendRequest} type='button' value="Add Category" id="categoryButton"/>
+                <Button onClick={sendRequest} id="categoryButton">Add Category</Button>
+                </Center>
                 {textOut}
-            </div>
+            </Container>
         </>
     );
 

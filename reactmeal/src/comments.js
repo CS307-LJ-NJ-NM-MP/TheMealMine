@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box, Input, Button, Center, Container } from '@chakra-ui/react'
 //import Data from "../src/mockdata.json"
 import Axios from "axios";
 
@@ -58,17 +59,20 @@ export function Comments () {
 
     return (
         <>
-            <div className="categorynav">
-                <input
+            <Container className="commentnav">
+                <Center>
+
+                <Input
                     type="text" 
                     placeholder = "Type comment here"
                     name={"user"}
-                    style={{ textAlign: "center"}}
+                    varient='flushed'
                     onChange={handleChange('comment')}
                 />
-                <input onClick={sendRequest} type='button' value="Post Comment" id="commentButton"/>
+                <Button onClick={sendRequest} id="commentButton"> Post Comment </Button>
+                </Center>
                 {textOut}
-            </div>
+            </Container>
         </>
     );
 
