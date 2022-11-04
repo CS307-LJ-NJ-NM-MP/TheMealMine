@@ -481,6 +481,7 @@ app.post('/updateSettings', async (req,res) => {
     res.send(result);
 });
 
+
 app.post('/getPantry', async (req,res) => {
     const form = {
         user: req.body.user,
@@ -679,7 +680,9 @@ app.post('/unblock', async (req, res) => {
     //console.log(result);
     res.send(result);    
 });
-
+/* blocking a user needs a req with a user field, and name, where user
+is the account who is blocking name. returns documents of user. 
+Will remove friend from friendlist*/
 app.post('/blockUser', async (req, res) => {
     console.log("received request to block " + req.body.name);
     var result;
@@ -727,15 +730,11 @@ app.post('/searchBlockedUser', async (req, res) => {
     res.send(result);    
 });
 app.post('/follow', async (req, res) => {
-<<<<<<< HEAD
     //Called from FriendsPage.js
     //If name is returned it means there was a friend request sent
     //If username is returned it means there was a friend 
     
     console.log("received request to follow " + req.body.name);
-=======
-   
->>>>>>> main
     var result;
     var str;
     //Search for user we are requesting
@@ -780,7 +779,6 @@ app.post('/follow', async (req, res) => {
   
         
 });
-<<<<<<< HEAD
 app.post('/acceptRequest', async (req, res) => {
     var result;
     var str;
@@ -834,7 +832,6 @@ app.post('/acceptRequest', async (req, res) => {
     }
     res.send(result);
 });
-=======
 app.post('/findUser', async (req, res) => {
    
     var result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
@@ -856,4 +853,3 @@ app.post('/removeNotif', async (req, res) => {
     res.send(result);    
 });
 
->>>>>>> main
