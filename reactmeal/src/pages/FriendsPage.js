@@ -266,7 +266,8 @@ function FriendsPage() {
             return (<div></div>);
         } else if (localStorage.getItem('isSearching') !== "no" && searchUsers.length === 0) {
             return ( 
-                alert("No user exists with that name")
+               // alert("No user exists with that name")
+               <></>
             ); 
         } else {
         return (
@@ -301,7 +302,7 @@ function FriendsPage() {
 
             }).catch(error => {
                 console.log(error.data)
-                alert("errors out the ass");
+                alert("lots of errors");
             });
 
 
