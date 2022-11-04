@@ -1,97 +1,79 @@
 import { TopNav } from '../topNav';
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
-    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
+    Badge, HStack, FormLabel} from '@chakra-ui/react'
 import React, { useState } from "react";
 import Axios from "axios";
 
 export const Feed = () => {
-    /*function sendRequest(e) {
-        console.log("here is a string" + e)
-        likePost(e);
-    }
-
-    const [userForm, setUserForm] = useState({
-        user: ''
-	})
-
-    const [recipeForm, setRecipeForm] = useState({
-        recipe: ''
-    })
-
-    async function likePost(e) {
-		e.preventDefault();
-        console.log("sending");
-        console.log(localStorage.getItem('username'))
-        console.log(userForm)
-        setUserForm(localStorage.getItem('username'))
-        setRecipeForm("Cheese")
-        console.log("recipe name: " + recipeForm)
-        var result = await Axios.post('http://localhost:5000/arrayTest', {
-            user: localStorage.getItem("username"),
-            recipe: recipeForm,
-        })
-        .then(response => {
-            console.log(response.data.likedRecipes)
-        })
-        .catch(error => {
-            console.log(error.data)
-            console.log("pain")
-            alert("pain")
-        })
-
-
-
-		// if(formValue.user !== '') {
-        //     console.log("valid: " + formValue.user);
-		// 	var result = await Axios.post('http://localhost:5000/findTheUserReg', {
-		// 		user: formValue.user,  
-		// 	})
-        //     .then(response => {
-        //         console.log("result: " + response);
-        //         if (response.data.length != 0) {
-        //             setQuery(response.data);
-        //             setTextOut("" + response.data)
-        //             setQuery("");
-        //         }
-        //         else {
-        //              setQuery("");
-        //              setTextOut("");
-        //              alert("error, user not valid")
-        //         }
-
-        //     })
-        //     .catch(error => {
-        //         console.log(error.data)
-        //         alert("errors out the ass");
-        //     });
-		// }
-        // else {
-        //     alert ("No query");
-        // }
-	}
-
-    return (<>
-        <Container maxW="80%">
-            <TopNav/><br/>
-            <CategoryNav/><br/>
-            <Comments/><br/>
-            <Center>
-                <Button id="likeButton" type='submit' width="200px" onClick={sendRequest}>Like</Button>
-            </Center>
-        </Container>
-    </>);
-*/  
     var id = localStorage.getItem('id');
-    var feed = localStorage.getItem('feed');
-    
+    var feed = localStorage.getItem('feed').split(",");
+    let newFeed = [];
+    if(feed[0] !== "") { 
+        for(var i = 0; i < feed.length; i+=8) {
+            let temp = [];
+            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== true){
+                feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
+            }
+            temp.push(
+                <Box borderRadius="lg" border="1px" p="10px" w="100%">
+                    <HStack>
+                        <Box>
+                            <HStack>
+                            <Box p="10px" align="center">
+                                <Image id={i} w="50px" h="50px" borderRadius="full" src={feed[i+4]}/>
+                            </Box>
+                            <Box w="100px" p="10px">
+                                <Text>{feed[i+3]}</Text>
+                                <Text>{feed[i+2]}</Text>
+                                <Text id={i+1}>Likes: {feed[i+1]}</Text>
+                            </Box>
+                            </HStack>
+                            <Box p="10px">
+                                <Center>
+                                    <Badge borderRadius="lg" w="200px" align="center">Category</Badge>
+                                </Center>
+                            </Box>
+                        </Box>
+                        <Box p="10px">
+                            <VStack spacing="15px">
+                                <Center>
+                                    <Input id={i+2} variant="flushed" placeholder='Rating / 5'/>
+                                    <Button id={i+3}>Rate</Button>
+                                </Center>
+                                <Button id={i+4} border="1px" bg="transparent" w="100%">Favorite</Button>
+                            </VStack>
+                        </Box>
+                    </HStack>
+                </Box> 
+            );
+            newFeed.push(temp);
+        }
+
+    }else{
+        newFeed = [<Text>No Recipes to Display</Text>];
+    }
     return(<>
-        <Container maxW="100%">
+        <Container maxW='100%'>
             <TopNav/>
             <Center>
                 <FormLabel>Your Feed</FormLabel>
             </Center>
             <Center>
-                <Text>Hi</Text>
+            <Center>
+                <HStack spacing="20px">
+                    <VStack spacing="20px" maxW="100%">
+                            {newFeed}
+                    </VStack>
+                    <Box borderRadius="lg" border="1px">
+                        <FormLabel>Name: Name of Recipe</FormLabel>
+                        <FormLabel>Owner: Username</FormLabel>
+                        <FormLabel>Rating: Current Rating</FormLabel>
+                        <FormLabel></FormLabel>
+                        <Text>Fun Box Here</Text>
+                    </Box>
+                </HStack>
+                
+            </Center>
             </Center>
         </Container>
     </>);

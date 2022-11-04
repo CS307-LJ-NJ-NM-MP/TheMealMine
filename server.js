@@ -351,6 +351,7 @@ app.post('/getFeed', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    console.log(result);
     res.send(result.feed);
 });
 
@@ -557,6 +558,13 @@ app.post('/addToFeeds', async (req,res) => {
             result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
             let temp = [];
             temp.push(req.body.recipeId);
+            temp.push(req.body.favorites);
+            temp.push(req.body.owner);
+            temp.push(req.body.name);
+            temp.push(req.body.image);
+            temp.push(req.body.instructions);
+            temp.push(req.body.description);
+            temp.push(req.body.ingredients);
             let feed = result.feed;
             feed.push(temp);
             var update = {$set:{"feed": feed}};
