@@ -199,7 +199,13 @@ function FriendsPage() {
        }
     }
     const DisplaySearch = (name) => {
-        console.log(name);
+        if ( name === username) {
+            return (
+                <div></div>
+                   // alert("Cannot request yourself");
+                
+            );
+        } else {
         return (
         <HStack key={name} width="400px" spacing="10px" border-style="solid">
             <Text width="200px">{name}</Text>
@@ -207,13 +213,18 @@ function FriendsPage() {
             <Button value={name} align="right" color="red" onClick={blockFromSearchBar}>Block</Button>
         </HStack>
         );
+        }
     }
 
 
     function DisplayAllSearch() {
         if (localStorage.getItem('isSearching') === "no") {
             return (<div></div>);
-        } else {
+        } else if (searchUsers.length === 0) {
+            return ( 
+                alert("No user exists with that name")
+            ); 
+        }   else {
         return (
             <Box>
                 <ul>
