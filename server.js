@@ -365,7 +365,7 @@ app.post('/signupUser', async (req, res) => {
         pantry: [],
         favoriteRecipes: [],
         personalRecipes: [],
-
+        notifications: [],
         friends: [],
         feed: [],
 		status: 1,
