@@ -5,17 +5,11 @@ import { CategoryNav } from '../categoryNav';
 import { Comments } from '../comments';
 import { FeedNav } from '../feedNav';
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
-<<<<<<< HEAD
     Badge, HStack, FormLabel} from '@chakra-ui/react'
-=======
-    TabPanels, TabPanel, FormLabel} from '@chakra-ui/react'
-
->>>>>>> 821391ac4ecfb00220f7aa15750cf2b60f007bae
 import React, { useState } from "react";
 import Axios from "axios";
 
 export const Feed = () => {
-<<<<<<< HEAD
     var id = localStorage.getItem('id');
     var feed = localStorage.getItem('feed').split(",");
     let newFeed = [];
@@ -79,7 +73,10 @@ export const Feed = () => {
                         <FormLabel>Name: Name of Recipe</FormLabel>
                         <FormLabel>Owner: Username</FormLabel>
                         <FormLabel>Rating: Current Rating</FormLabel>
-                        <FormLabel></FormLabel>
+                        <FormLabel>Comments</FormLabel>
+                        <VStack>
+
+                        </VStack>
                         <Text>Fun Box Here</Text>
                     </Box>
                 </HStack>
@@ -88,29 +85,4 @@ export const Feed = () => {
             </Center>
         </Container>
     </>);
-=======
-    return (
-        <>
-            <TopNav/>
-
-            <FeedNav/>
-            
-            <SideNav/>
-
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <br />
-
-            <br />
-            <CategoryNav/>
-            </div>
-            <Comments/>
-            
-        </>
-    );
-
->>>>>>> 821391ac4ecfb00220f7aa15750cf2b60f007bae
 }
