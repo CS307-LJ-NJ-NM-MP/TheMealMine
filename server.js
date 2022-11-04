@@ -544,7 +544,7 @@ app.post('/addToFeeds', async (req,res) => {
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     let friends = result.friends;
-    if(friends.length > 0) {
+    if(friends!==undefined) {
         for(var i = 0; i < friends.length; i++) {
             var ObjectId = require('mongodb').ObjectId;
             const form2 = {_id: new ObjectId(friends[i])}
