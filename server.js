@@ -682,3 +682,16 @@ app.post('/findUser', async (req, res) => {
     
     res.send(result);    
 });
+app.post('/removeNotif', async (req, res) => {
+   
+    var result =  await client.db("TheMealMine").collection("UserAccounts").updateOne(
+        { user: req.body.user  },
+        { $pull: {'notifications':req.body.message}  }
+    );
+    /*result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
+        { user: req.body.user }
+    );*/
+    
+    res.send(result);    
+});
+

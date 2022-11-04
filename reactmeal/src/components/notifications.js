@@ -28,7 +28,22 @@ export const Notifications = () => {
     }else{
         notifications = [""]
     }
-
+    async function seen (e) {
+        var result = await Axios.post('http://localhost:5000/removeNotif', {
+				user: username,
+                message: e.target.value
+		});
+        getNotis();
+    
+    //const [doRender, setDoRender] = useState("no");
+    var notifications = [];
+    var notis = localStorage.getItem('notifications');
+    if(notis!=undefined){
+        notifications = notis.split(",");
+    }else{
+        notifications = [""]
+    }
+    }
     
     return (
     
@@ -43,7 +58,7 @@ export const Notifications = () => {
                 
                 <div>
                     {notifications.map((message, index) => (
-                        <p key={index}>{message}  <button>Remove</button></p>
+                        <p key={message}>{message}  <Button value={message} onClick={seen} >Remove</Button></p>
                     ))}
                 </div>
             </Center>
