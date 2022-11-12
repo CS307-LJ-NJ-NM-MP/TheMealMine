@@ -224,22 +224,22 @@ export function Bookmarks() {
                         <Button onClick={updateRecipe}>Edit Contribution</Button>
                     </HStack>
                 </Center>
-                    <Modal isOpen={isOpen} onClose={onClose}>
-                            <ModalOverlay/>
-                            <ModalContent>
-                                <Center>
-                                    <VStack spacing='5%' m="0 0 20px 0">
-                                        <ModalHeader>Enter New Recipe Information</ModalHeader>
-                                        <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
-                                        <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
-                                        <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
-                                        <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
-                                        <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
-                                        <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
-                                    </VStack>
-                                </Center>
-                        </ModalContent>
-                    </Modal>;
+                <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay/>
+                        <ModalContent>
+                            <Center>
+                                <VStack spacing='5%' m="0 0 20px 0">
+                                    <ModalHeader>Enter New Recipe Information</ModalHeader>
+                                    <Input name="name" w="100%" variant="flushed" placeholder='Enter Title' onChange={handleChange}/>
+                                    <Input name="image" w="100%" variant="flushed" placeholder='Enter Image' onChange={handleChange}/>
+                                    <Textarea name="instructions" w="100%" variant="flushed" placeholder='Enter Instructions' onChange={handleChange}/>
+                                    <Textarea name="ingredients" w="100%" variant="flushed" placeholder='Enter Ingredients' onChange={handleChange}/>
+                                    <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
+                                    <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
+                                </VStack>
+                            </Center>
+                    </ModalContent>
+                </Modal>;
         </Container>
     </ChakraProvider>);
 }
