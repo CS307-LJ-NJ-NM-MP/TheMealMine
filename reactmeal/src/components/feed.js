@@ -178,12 +178,16 @@ export const Feed = () => {
     return(<>
         <Container maxW='100%'>
             <TopNav/>
-            <Center>
-                <FormLabel>Your Feed</FormLabel>
-            </Center>
+            
             <Center>
             <Center>
                 <Box border="1px" borderRadius="lg">
+                <Center>
+                    <FormLabel m="10px 0 10px 0">Your Feed</FormLabel>
+                </Center>
+                <Center>
+                <Divider w="90%"/>
+                </Center>
                     <HStack spacing="20px">
                     <VStack m="0 0 0 10px" maxH="530px" overflow="hidden" overflowY="scroll" p={2}
                         sx={{
