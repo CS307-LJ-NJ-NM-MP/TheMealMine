@@ -2,7 +2,7 @@ import { TopNav } from '../topNav'
 import React from "react";
 import { useState } from "react";
 import Axios from "axios";
-import { Textarea } from '@chakra-ui/react'
+import { Divider, Textarea } from '@chakra-ui/react'
 import { Button, VStack, Text, Box, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
@@ -148,22 +148,6 @@ export function Bookmarks() {
             ingredients: formValue.ingredDoc,
             description: formValue.descriptDoc
         });
-        //You will need this below to finish the reload of the list
-        /*contributedRecipes = [];
-        for(var i = 0; i < result.data.personalRecipes.length; i++){
-            let temp = [];
-            temp.push(result2.data.personalRecipes[i][4]);
-            temp.push(result2.data.personalRecipes[i][3]);
-            temp.push(result2.data.personalRecipes[i][2]);
-            temp.push(result2.data.personalRecipes[i][1]);
-            temp.push(result2.data.personalRecipes[i][6]);
-            temp.push(result2.data.personalRecipes[i][5]);
-            temp.push(result2.data.personalRecipes[i][7]);
-            temp.push(result2.data.personalRecipes[i][0]);
-            contributedRecipes.push(temp);
-        }
-        localStorage.setItem('ranking',result.data.ranking);
-        localStorage.setItem('contributedRecipes',contributedRecipes);*/
         window.location.reload(false);
     }
     if(contributedRecipes[0] !== ''){
@@ -175,19 +159,32 @@ export function Bookmarks() {
                 if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(contributedRecipes[j]) !== true){
                     contributedRecipes[j] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
                 }
-                const element = 
-                        <HStack spacing="10px">
-                            <Image name={j} w="50px" h="50px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
-                            <VStack>
-                                <Text w="100px">{contributedRecipes[j+1]}</Text>
-                                <Text w="100px">{contributedRecipes[j+2]}</Text>
-                                <Text w="100px">Likes: {contributedRecipes[j+3]}</Text>
-                                <Text w="100px">Description: {contributedRecipes[j+4]}</Text>
+                temp.push( 
+                    <Box w="500px" border="1px" borderRadius="lg">
+                        <HStack p={1}>
+                            <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
+                            <VStack spacing="15px" w="90%">
+                                <Input w="90%" variant="flushed" placeholder={"Title: " + contributedRecipes[j+1]}/>
+                                <Textarea w="90%" variant="flushed" placeholder={"Description: " + contributedRecipes[j+4]}/>
+                                <Input w="90%" variant="flushed" placeholder={"Ingredients: Ingredients"}/>
+                                <Input w="90%" variant="flushed" placeholder={"Instructions: Instructions"}/>
+                                <HStack spacing="80px">
+                                    <Text>Likes: {contributedRecipes[j+3]}</Text>
+                                    <Text>Rating: </Text>
+                                    <Text>Category: </Text>
+                                </HStack>
                             </VStack>
-                        </HStack>;
-                temp.push(element);
+                        </HStack>
+                        <Center>
+                            <Divider w="90%" p="5px" />
+                        </Center>
+                        <Center>
+                            <Button m="5px 5px 5px 5px" w="100%" onClick={updateRecipe}>Edit Contribution</Button> 
+                        </Center>
+                    </Box>
+                );
             }
-            stack2.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
+            stack2.push(temp)
         }
     }
     return (<ChakraProvider>
@@ -197,33 +194,41 @@ export function Bookmarks() {
                     <FormLabel>Favorited Recipes</FormLabel>
                 </Center>
                 <Center>
-                <VStack maxW="80%" maxH="400px" overflowY="scroll">
+                <VStack maxH="400px" overflowY="scroll">
                         {stack1}
                     </VStack>
                 </Center><br/>
+                
                 <Center>
-                    <FormLabel>Contributed Recipes</FormLabel>
-                </Center>
-                <Center>
-                    <HStack>
-                        <Textarea id="name" name="nameDoc" placeholder={name} variant="flushed"/>
-                        <Textarea id="image" name="imageDoc" placeholder={image} variant="flushed"/>
-                        <Textarea id="ingredients" name="ingredDoc" placeholder={ingred} variant="flushed"/>
-                        <Textarea id="instructions" name="instructDoc" placeholder={instruct} variant="flushed"/>
-                        <Textarea id="description" name="descriptDoc" placeholder={descript} variant="flushed"/>
-                    </HStack>
+                    <Box border="1px" borderRadius="lg">
+                        <Center>
+                            <FormLabel m="10px 0 0 0">Contributed Recipes</FormLabel>
+                        </Center>
+                        <Center>
+                            <Divider p="5px" w="90%" />
+                        </Center>
+                        <Center>
+                            <VStack m="10px 10px 0 10px" maxH="450px" overflow="hidden" overflowY="scroll"
+                                sx={{
+                                    '&::-webkit-scrollbar': {
+                                    width: '0px',
+                                    backgroundColor: `transparent`,
+                                    },
+                                    '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: `transparent`,
+                                    },
+                                }}>
+                                {stack2}
+                            </VStack>
+                        </Center>
+                        <Center>
+                            <Divider w="90%" p="5px" />
+                        </Center>
+                        <Center>
+                            <Button m="10px 5px 5px 5px" w="90%" onClick={onOpen}>Add Contribution</Button>
+                        </Center>
+                    </Box>
                 </Center><br/>
-                <Center>
-                <VStack maxW="80%" maxH="400px" overflowY="scroll">
-                        {stack2}
-                    </VStack>
-                </Center><br/>
-                <Center>
-                    <HStack>   
-                        <Button onClick={onOpen}>Add Contribution</Button>
-                        <Button onClick={updateRecipe}>Edit Contribution</Button>
-                    </HStack>
-                </Center>
                 <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay/>
                         <ModalContent>
