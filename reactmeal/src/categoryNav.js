@@ -41,7 +41,7 @@ export function CategoryNav () {
             console.log("valid: " + categoryForm.category);
 			var result = await Axios.post('http://localhost:5000/addCategory', {
 				user: localStorage.getItem('username'),  
-                recipe: "Milk",
+                recipe: "cheese",
                 category: categoryForm.category
 			})
             .then(response => {
@@ -49,7 +49,7 @@ export function CategoryNav () {
             })
             .catch(error => {
                 console.log(error.data)
-                alert("errors out the ass");
+                alert("errors");
             });
 		}
         else {
