@@ -44,7 +44,7 @@ export const FindByDifficulty = () => {
                 else {
                      setQuery("");
                      setTextOut("");
-                     alert("error, input not valid")
+                     alert("enter input between 1 and 5")
                 }
 
             })
