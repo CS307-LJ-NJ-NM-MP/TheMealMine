@@ -99,6 +99,13 @@ export function TopNav() {
         }
     }
 
+    function searchRecipes(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/searchRecipes";
+        }
+    }
+
    	return (<ChakraProvider>
 		<Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
@@ -116,6 +123,7 @@ export function TopNav() {
 							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
 							<MenuItem onClick={feed}>Feed</MenuItem>
 							<MenuItem onClick={notis}>Notifications</MenuItem>
+                            <MenuItem onClick={searchRecipes}>Search Recipes</MenuItem>
 							<MenuItem onClick={login}>Login/Logout</MenuItem>
 						</MenuList>
 					</>)}
