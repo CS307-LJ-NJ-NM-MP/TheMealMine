@@ -7,11 +7,17 @@ export const FindByCuisine = () => {
 
     const [query, setQuery] = useState("");
     const [textOut, setTextOut] = useState("");
+    const [finalList, setList] = useState([]);
+    const recipeItems = finalList.map((name) => 
+        <li>
+            {name}
+        </li>
+    )
+    const blankList = []
 
     function sendRequest(e) {
         findRecipes(e);
         console.log("here is new string" + query)
-        setQuery("");
     }
 
     const [formValue, setFormValue] = useState({
@@ -38,14 +44,17 @@ export const FindByCuisine = () => {
             .then(response => {
                 console.log("result: " + response);
                 if (response.data.length != 0) {
-                    setQuery(response.data);
-                    setTextOut("" + response.data)
-                    setQuery("");
+                    response.data.sort((a, b) => a.name - b.name)
+                    var recipeArray = []
+                    for (var i = 0; i < response.data.length; i++) {
+                        recipeArray.push(response.data[i].name)
+                        console.log("name " + response.data[i].name)
+                    }
+                    setList(recipeArray)
                 }
                 else {
-                     setQuery("");
-                     setTextOut("");
-                     alert("error, user not valid")
+                    setList(blankList)
+                    alert("error")
                 }
 
             })
@@ -55,6 +64,7 @@ export const FindByCuisine = () => {
             });
 		}
         else {
+            setList(blankList)
             alert ("No query");
         }
 	}
@@ -72,7 +82,7 @@ export const FindByCuisine = () => {
                 />
                 <Button onClick={sendRequest} id="categoryButton">Search by Cuisine</Button>
                 </Center>
-                {textOut}
+                {recipeItems}
             </Container>
         </>
     );

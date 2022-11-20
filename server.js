@@ -45,9 +45,7 @@ app.post('/findByCuisine', async(req, res) => {
 
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-
-            var newString = "Recipe Name: " + doc.name + "\n" + "Cuisine: " + doc.cuisine + "\n"
-            list.push(newString)
+            list.push(doc)
         }
         )
         if (list.length == 0) {
@@ -71,14 +69,13 @@ app.post('/findByDifficulty', async(req, res) => {
     var string = "" + form.difficulty;
     var diff = parseInt(string)
     var list = []
-    await client.db("TheMealMine").collection("Recipes").find({
+    var array = await client.db("TheMealMine").collection("Recipes").find({
         difficulty: {
             $lte : diff
         }
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-            var newString = " Recipe Name: " + doc.name + "\n" + "Difficulty: " + doc.difficulty
-            list.push(newString)
+            list.push(doc)
         }
         )
         if (list.length == 0 || diff > 5) {
