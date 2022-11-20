@@ -46,7 +46,7 @@ app.post('/findByCuisine', async(req, res) => {
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
 
-            var newString = "Recipe Name " + doc.name + "\n" + "Cuisine: " + doc.cuisine + "\n"
+            var newString = "Recipe Name: " + doc.name + "\n" + "Cuisine: " + doc.cuisine + "\n"
             list.push(newString)
         }
         )
@@ -77,7 +77,7 @@ app.post('/findByDifficulty', async(req, res) => {
         }
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-            var newString = "Recipe Name: " + doc.name + "\n" + "Difficulty " + doc.difficulty + "\n"
+            var newString = " Recipe Name: " + doc.name + "\n" + "Difficulty: " + doc.difficulty
             list.push(newString)
         }
         )
