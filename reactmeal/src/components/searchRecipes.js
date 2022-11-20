@@ -337,7 +337,7 @@ function SearchRecipes() {
     return(
         <Container maxW='xl' centerContent>
             <TopNav/>         
-            <FindByCuisine/>
+ 
             <Container>
                 <Stack>
                     <VStack>
@@ -345,6 +345,7 @@ function SearchRecipes() {
                         <DisplayAllSearch />
                     </VStack>
                     <FindByDifficulty/>
+                    <FindByCuisine/>
                     <Text fontWeight="bold"> My Friends</Text>
                     <VStack>
                             <DisplayAllFriends />
