@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Text, Stack, Input, Button, HStack, VStack } from "@chakra-ui/react";
+import { Box, Center, Container, Text, Stack, Input, Button, HStack, VStack } from "@chakra-ui/react";
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { useToast } from '@chakra-ui/react'
 import { FindByDifficulty } from '../findRecipesByDifficulty';
 import { FindByCuisine } from '../findRecipesByCuisine';
 import { Select } from '@chakra-ui/react'
+import searchBackground from '../imgs/searchBackground.jpg'
 
 function SearchRecipes() {
     var username = localStorage.getItem('username');
@@ -335,16 +336,37 @@ function SearchRecipes() {
     }
 
     return(
-        <Container maxW='xl' centerContent>
-            <TopNav/>         
-            <FindByCuisine/>
-            <Container>
+        
+        <Container
+            maxW = '100%'
+            h='calc(100vh)'
+            backgroundRepeat="no-repeat"
+            bgSize="100%"
+            backgroundImage={searchBackground}
+            align="center"
+            
+        >
+            <TopNav/>      
+            <Box 
+            m="2%"
+            bg="white" w='69%'
+            p={4}
+            borderRadius='lg' borderWidth="1 px"
+            alignContent={"center"}
+            alignItems="center">
+
                 <Stack>
                     <VStack>
                         <Input id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
                         <DisplayAllSearch />
                     </VStack>
+                    <Center>
                     <FindByDifficulty/>
+                    </Center>
+                    <Center>
+                    <FindByCuisine/>
+                    </Center>
+
 
                     <HStack>
                         <Text fontWeight="bold"> My Friends</Text>
@@ -382,7 +404,7 @@ function SearchRecipes() {
                     </HStack>
                 </Stack>
                 
-            </Container>
+            </Box>
             
             <SideNav />
         </Container>
