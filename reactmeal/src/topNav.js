@@ -107,35 +107,37 @@ export function TopNav() {
     }
 
    	return (<ChakraProvider>
-        <Box
-        bg="white"
-        w="37%"
-        borderRadius='lg'
-        >
+        <Center>
+            <Box
+            bg="white"
+            w="37%"
+            borderRadius='lg'
+            >
 
-		<Center>
-            <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
-					<Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
-				
-				<Heading color="turquoise" align="center">The Meal Mine</Heading>
-				<Menu>
-					{({ isOpen }) => (<>
-						<MenuButton bg="transparent" isActive={isOpen}>
-							<Image borderRadius='full'boxSize="50" src={image}/>
-						</MenuButton>
-						<MenuList>
-							<MenuItem onClick={settings} >Settings</MenuItem>
-							<MenuItem onClick={friends}>Friends</MenuItem>
-							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
-							<MenuItem onClick={feed}>Feed</MenuItem>
-							<MenuItem onClick={notis}>Notifications</MenuItem>
-                            <MenuItem onClick={searchRecipes}>Search Recipes</MenuItem>
-							<MenuItem onClick={login}>Login/Logout</MenuItem>
-						</MenuList>
-					</>)}
-				</Menu>
-			</HStack>
-		</Center>
-        </Box>
+                <Center>
+                    <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
+                            <Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
+                        
+                        <Heading color="turquoise" align="center">The Meal Mine</Heading>
+                        <Menu>
+                            {({ isOpen }) => (<>
+                                <MenuButton bg="transparent" isActive={isOpen}>
+                                    <Image borderRadius='full'boxSize="50" src={image}/>
+                                </MenuButton>
+                                <MenuList>
+                                    <MenuItem onClick={settings} >Settings</MenuItem>
+                                    <MenuItem onClick={friends}>Friends</MenuItem>
+                                    <MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
+                                    <MenuItem onClick={feed}>Feed</MenuItem>
+                                    <MenuItem onClick={notis}>Notifications</MenuItem>
+                                    <MenuItem onClick={searchRecipes}>Search Recipes</MenuItem>
+                                    <MenuItem onClick={login}>Login/Logout</MenuItem>
+                                </MenuList>
+                            </>)}
+                        </Menu>
+                    </HStack>
+                </Center>
+            </Box>
+        </Center>
     </ChakraProvider>)
 }
