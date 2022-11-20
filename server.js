@@ -385,6 +385,36 @@ app.post('/findTheUserReg', async(req, res) => {
     });
 });
 
+app.post('/findTheRecReg', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        name: req.body.search
+    };
+    const projection = {name: 1};
+    var string = "" + form.name;
+    var list = []
+    await client.db("TheMealMine").collection("Recipes").find({
+        name: {
+            $regex : string 
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            var newString = "" + doc.name
+            list.push(newString)
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
 
 
 app.post('/recoverPass', async (req, res) => {
