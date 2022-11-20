@@ -5,12 +5,17 @@ import { Button, Container, Input, Center } from "@chakra-ui/react";
 
 export const FindByDifficulty = () => {
 
-    const [query, setQuery] = useState("");
-    const [textOut, setTextOut] = useState("");
+
+    const blankList = []
+    const [finalList, setList] = useState([])
+    const recipeItems = finalList.map((difficulty) => 
+    <li>
+        {difficulty}
+    </li>
+    );
 
     function sendRequest(e) {
         findRecipe(e);
-        setQuery("");
     }
 
     const [formValue, setFormValue] = useState({
@@ -37,14 +42,17 @@ export const FindByDifficulty = () => {
             .then(response => {
                 console.log("result: " + response);
                 if (response.data.length !== 0) {
-                    setQuery(response.data);
-                    setTextOut("" + response.data)
-                    setQuery("");
+                    response.data.sort((a, b) => a.difficulty - b.difficulty)
+                    console.log(response.data[0].difficulty)
+                    var recipeArray = []
+                    for (var i = 0; i < response.data.length; i++) {
+                        recipeArray.push("Recipe name: " + response.data[i].name + "; Difficulty: " + response.data[i].difficulty + "\n")
+                    }
+                    setList(recipeArray);
                 }
                 else {
-                     setQuery("");
-                     setTextOut("");
-                     alert("enter input between 1 and 5")
+                    setList(blankList)
+                    alert("enter input between 1 and 5")
                 }
 
             })
@@ -54,6 +62,7 @@ export const FindByDifficulty = () => {
             });
 		}
         else {
+            setList(blankList)
             alert ("No query");
         }
 	}
@@ -71,7 +80,7 @@ export const FindByDifficulty = () => {
                 />
                 <Button onClick={sendRequest} id="categoryButton">Search by Difficulty</Button>
                 </Center>
-                {textOut}
+                {recipeItems}
             </Container>
         </>
     );
