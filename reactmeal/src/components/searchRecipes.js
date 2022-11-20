@@ -5,6 +5,7 @@ import { SideNav } from "../sideNav";
 import { useState } from "react";
 import Axios from "axios";
 import { useToast } from '@chakra-ui/react'
+import { Select } from '@chakra-ui/react'
 
 function SearchRecipes() {
     var username = localStorage.getItem('username');
@@ -286,7 +287,7 @@ function SearchRecipes() {
       
         if (e.target.value !== "") {
         //find users from search query
-        var result = await Axios.post('http://localhost:5000/findTheUserReg', {
+        var result = await Axios.post('http://localhost:5000/findTheRecReg', {
 				search: e.target.value,  
 			}).then(response => {
                 console.log("result: " + response.data);
@@ -340,10 +341,27 @@ function SearchRecipes() {
                         <Input id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
                         <DisplayAllSearch />
                     </VStack>
-                    <Text fontWeight="bold"> My Friends</Text>
-                    <VStack>
-                            <DisplayAllFriends />
-                    </VStack>
+                    <HStack>
+                        <Text fontWeight="bold"> My Friends</Text>
+                        <VStack>
+                                <DisplayAllFriends />
+                        </VStack>
+                        <VStack>
+                            <Select placeholder='Select Allergy/Dietary restriction'>
+                                <option value='option1'>Vegan</option>
+                                <option value='option2'>Vegetarian</option>
+                                <option value='option3'>No Wheat</option>
+                            </Select>
+                            <Select placeholder='Select Rating'>
+                                <option value='option1'>1</option>
+                                <option value='option2'>2</option>
+                                <option value='option3'>3</option>
+                                <option value='option4'>4</option>
+                                <option value='option5'>5</option>
+                            </Select>
+                        </VStack>
+                        
+                    </HStack>
                 </Stack>
                 
             </Container>
