@@ -5,6 +5,8 @@ import { SideNav } from "../sideNav";
 import { useState } from "react";
 import Axios from "axios";
 import { useToast } from '@chakra-ui/react'
+import { FindByDifficulty } from '../findRecipesByDifficulty';
+import { FindByCuisine } from '../findRecipesByCuisine';
 import { Select } from '@chakra-ui/react'
 
 function SearchRecipes() {
@@ -335,12 +337,15 @@ function SearchRecipes() {
     return(
         <Container maxW='xl' centerContent>
             <TopNav/>         
+            <FindByCuisine/>
             <Container>
                 <Stack>
                     <VStack>
                         <Input id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
                         <DisplayAllSearch />
                     </VStack>
+                    <FindByDifficulty/>
+
                     <HStack>
                         <Text fontWeight="bold"> My Friends</Text>
                         <VStack>
