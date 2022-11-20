@@ -180,7 +180,6 @@ export const Feed = () => {
     return(<>
         <Container maxW='100%'>
             <TopNav/>
-            <FindByDifficulty/>
             <CategoryNav/>
             <Center>
                 <FormLabel>Your Feed</FormLabel>

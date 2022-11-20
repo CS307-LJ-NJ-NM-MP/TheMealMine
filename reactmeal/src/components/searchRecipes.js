@@ -5,6 +5,9 @@ import { SideNav } from "../sideNav";
 import { useState } from "react";
 import Axios from "axios";
 import { useToast } from '@chakra-ui/react'
+import { FindByDifficulty } from '../findRecipesByDifficulty';
+import { FindByCuisine } from '../findRecipesByCuisine';
+
 
 function SearchRecipes() {
     var username = localStorage.getItem('username');
@@ -334,12 +337,14 @@ function SearchRecipes() {
     return(
         <Container maxW='xl' centerContent>
             <TopNav/>         
+            <FindByCuisine/>
             <Container>
                 <Stack>
                     <VStack>
                         <Input id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
                         <DisplayAllSearch />
                     </VStack>
+                    <FindByDifficulty/>
                     <Text fontWeight="bold"> My Friends</Text>
                     <VStack>
                             <DisplayAllFriends />

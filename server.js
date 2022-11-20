@@ -27,6 +27,39 @@ app.use(express.json());
 app.listen(port);
 
 
+
+
+app.post('/findByCuisine', async(req, res) => {
+    console.log(req.body.cuisine);
+    if (req.body.cuisine === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        cuisine: req.body.cuisine
+    };
+    const projection = {cuisine: 1};
+    var string = "" + form.cuisine;
+    var list = []
+    await client.db("TheMealMine").collection("Recipes").find({
+        cuisine: string 
+
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+
+            var newString = "Recipe Name " + doc.name + "\n" + "Cuisine: " + doc.cuisine + "\n"
+            list.push(newString)
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
+
 app.post('/findByDifficulty', async(req, res) => {
     console.log(req.body.search);
     if (req.body.search === '') {
@@ -35,7 +68,6 @@ app.post('/findByDifficulty', async(req, res) => {
     const form = {
         difficulty: req.body.difficulty
     };
-//    const projection = {difficulty: 1};
     var string = "" + form.difficulty;
     var diff = parseInt(string)
     var list = []
@@ -45,11 +77,11 @@ app.post('/findByDifficulty', async(req, res) => {
         }
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-            var newString = "Recipe Name " + doc.name + "\n" + "Difficulty " + doc.difficulty + "\n"
+            var newString = "Recipe Name: " + doc.name + "\n" + "Difficulty " + doc.difficulty + "\n"
             list.push(newString)
         }
         )
-        if (list.length == 0) {
+        if (list.length == 0 || diff > 5) {
             res.send(null);
         }
         else {
