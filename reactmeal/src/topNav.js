@@ -113,7 +113,6 @@ export function TopNav() {
             w="37%"
             borderRadius='lg'
             >
-
                 <Center>
                     <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
                             <Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
