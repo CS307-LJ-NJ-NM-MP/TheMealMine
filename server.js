@@ -875,6 +875,11 @@ app.post('/follow', async (req, res) => {
         
 });
 app.post('/acceptRequest', async (req, res) => {
+    //Req Needs to be hold... (aka the client side must send...)
+    /* "user" is the client
+        "name" is the person requesting to be friends with the client/user
+
+    */
     var result;
     var str;
     if (req.body.state === "accept") {
@@ -884,15 +889,16 @@ app.post('/acceptRequest', async (req, res) => {
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.name },
             { $push: 
-                {'friendsList': req.body.user, 'notifications': str },
+                {'friendsList': req.body.user, 'notifications': str, 'friends': req.body.id },
             }
         );
         //Find the requestor so we can pull their object _id and add to this users 'friends'
         result = await client.db("TheMealMine").collection("UserAccounts").findOne(
             { user: req.body.name }
         )
-        str = "" + result._id;
-        console.log("Pushing: " + str + "onto " + req.body.user);
+        console.log(result);
+        //str = "" + result.data.user;
+       // console.log("Pushing: " + result.data. + "onto " + req.body.user);
         //Update this user, by removing requestor from 'requestedBy' and push their id onto this 
         //users 'friends'
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(

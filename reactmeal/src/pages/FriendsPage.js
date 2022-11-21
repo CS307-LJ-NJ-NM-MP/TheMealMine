@@ -333,7 +333,7 @@ function FriendsPage() {
 
     return(
         <Container maxW='xl' centerContent>
-            <TopNav/>         
+            <TopNav />         
             <Container>
                 <Stack>
                     <VStack>
