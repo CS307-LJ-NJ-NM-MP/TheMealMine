@@ -2,6 +2,8 @@ import { TopNav } from '../topNav';
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
     Badge, HStack, FormLabel, Divider} from '@chakra-ui/react'
 import React, { useState } from "react";
+import { CategoryNav } from "../categoryNav";
+import { FindByDifficulty } from '../findRecipesByDifficulty';
 import Axios from "axios";
 
 export const Feed = () => {
@@ -179,6 +181,7 @@ export const Feed = () => {
         <Container maxW='100%'>
             <TopNav/>
             
+            <CategoryNav/>
             <Center>
             <Center>
                 <Box border="1px" borderRadius="lg">

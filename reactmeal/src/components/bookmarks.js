@@ -121,6 +121,7 @@ export function Bookmarks() {
         var buttonId = e.target.name;
         buttonId = parseInt(buttonId);
         recipeId = contributedRecipes[buttonId+7]
+
         name = contributedRecipes[buttonId+1];
         image = contributedRecipes[buttonId];
         descript = contributedRecipes[buttonId+4];

@@ -102,6 +102,13 @@ export function TopNav() {
         }
     }
 
+    function searchRecipes(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/searchRecipes";
+        }
+    }
+
    	return (<ChakraProvider>
 		<Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
@@ -114,111 +121,16 @@ export function TopNav() {
 							<Image borderRadius='full'boxSize="50" src={image}/>
 						</MenuButton>
 						<MenuList>
-                            <MenuItem onClick={bookmarks}>Cookbook</MenuItem>
-                            <MenuItem onClick={feed}>Feed</MenuItem>
+							<MenuItem onClick={settings} >Settings</MenuItem>
 							<MenuItem onClick={friends}>Friends</MenuItem>
+							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
+							<MenuItem onClick={feed}>Feed</MenuItem>
 							<MenuItem onClick={notis}>Notifications</MenuItem>
-                            <MenuItem onClick={onOpen}>Tutorial</MenuItem>
-                            <MenuItem onClick={settings} >Settings</MenuItem>
 							<MenuItem onClick={login}>Login/Logout</MenuItem>
 						</MenuList>
 					</>)}
 				</Menu>
 			</HStack>
-            <Modal isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay/>
-				<ModalContent>
-                    <Center>
-                        <ModalHeader>Tutorial</ModalHeader>
-                    </Center>
-					<Center>
-                        <VStack maxH="500px" overflow="hidden" overflowY="scroll" p={2}
-                            sx={{
-                                '&::-webkit-scrollbar': {
-                                width: '0px',
-                                backgroundColor: `transparent`,
-                                },
-                                '&::-webkit-scrollbar-thumb': {
-                                backgroundColor: `transparent`,
-                                },
-                            }}>
-                            <Divider w="90%"/>
-                            <FormLabel>Overview</FormLabel>
-                            <Box w='90%'>
-                                TheMealMine is an app designed to make your life 
-                                in the kitchen easier and more efficient. Offered to you
-                                are the creations of TheMealMine community, the opportunity
-                                to add to the database, and to interact with your friends and family
-                                showing off your recipes! Reference below for additional information. 
-                            </Box>
-                            <FormLabel>Pantry / Home Page</FormLabel>
-                            <Box w="90%">
-                                The Pantry / Home Page allows you to search for ingredients currently in your   
-                                pantry, and add ingredients to the database.
-                            </Box>
-                            <FormLabel>Cookbook</FormLabel>
-                            <Box w="90%">
-                                The cookbook displays your favorited recipes and your contributed recipes.
-                                From here you can add recipes to display in your friends' feeds. If you want
-                                or need to edit a contributed recipe this is also the place to do this.   
-                            </Box>
-                            <FormLabel>Feed</FormLabel>
-                            <Box w="90%">
-                                The feed displays all of the most recent contributions made by your friends, as well as
-                                recommended recipes by public profiles. By clicking on the username of the author you can 
-                                their profile information and a list of their recipes. The same can be said by clicking on 
-                                the recipe image, as the information of the currently clicked recipe will be displayed on 
-                                screen. You can also try the feed recipes and rate them as well as comment on your experience. 
-                                Commenting allows you to talk directly with the author for more information about the recipe.   
-                            </Box>
-                            <FormLabel>Friends</FormLabel>
-                            <Box w="90%">
-                                The friends page allows you to search, follow, unfollow, and block users. This page contains a 
-                                list of your current friends, a list of profiles you have blocked, and any friend requests you
-                                have received.
-                            </Box>
-                            <FormLabel>Notifications</FormLabel>
-                            <Box w="90%">
-                                This page displays a log of all interactions you and your content has with other users. After
-                                viewing a notification, you can select remove to indicate you have seen the notification.
-                            </Box>
-                            <FormLabel>Tutorial</FormLabel>
-                            <Box w="90%">
-                                This is the current pop-up you are reading, and dislay all relevant information about the 
-                                functionality of TheMealMine.
-                            </Box>
-                            <FormLabel>Settings</FormLabel>
-                            <Box w="90%">
-                                The settings page allows you to explore all of your profile settings and information. All profile
-                                information changes, outside of password, can be viewed in the 'Current User Information tab'. If 
-                                you would like to change your username, email, password, this can be accomplished under the 'Login
-                                Information' tab. You can change your profile picture, privacy status, and cookie settings under the 
-                                'Profile Picture', 'Privacy', and 'App' tabs respectively. 
-                            </Box>
-                            <FormLabel>Login / Logout</FormLabel>
-                            <Box w="90%">
-                                Logging in and out of your account is simple by selecting your profile picture at the top of any page
-                                and then selecting 'Login/Logout'. This will redirect you to the login page.
-                            </Box>
-                            <FormLabel>Account Status</FormLabel>
-                            <Box w="90%">
-                                You can either be a MealMine community member or a guest. Guests are welcome, however we encourage you 
-                                to sign up for an account as our recipe database can only grow with contributions from our members. Join 
-                                TheMealMine today and become the chef you have always wanted to be for free!
-                            </Box>
-                            <FormLabel>Further Q&A</FormLabel>
-                            <Box w="90%">
-                                We want to here from you! Your experience is our priority. 
-                                For any comments, suggestions, ideas, or inquiries contact 
-                                us at themealmine@gmail.com.
-                            </Box>
-                        </VStack>
-					</Center>
-                    <Center>
-                        <Button m="10px" w="100%" borderRadius="lg" onClick={onClose}>Exit</Button>
-                    </Center>
-				</ModalContent>
-			</Modal>
 		</Center>
     </ChakraProvider>)
 }
