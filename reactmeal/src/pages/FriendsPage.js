@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Container, Text, Stack, Input, Button, HStack, VStack } from "@chakra-ui/react";
+import { Box, Container, Text, Stack, Input, 
+        Center, Button, HStack, VStack, FormLabel, Divider } from "@chakra-ui/react";
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { useState } from "react";
@@ -12,10 +13,8 @@ function FriendsPage() {
     var Id = localStorage.getItem('id'); 
     var friendsList = [];
     var blockedList = [];
-    //var requestedBy = [];
     const [searchUsers, setSearchUsers] = useState([]);
     var requestedBy = [];
-    //Maybe make requestedBy a useState thingie
     if (localStorage.getItem('requestedBy') !== null) {
         requestedBy = localStorage.getItem('requestedBy').split(",");
     }
@@ -29,14 +28,11 @@ function FriendsPage() {
             var usersBlockedList = localStorage.getItem('blockedList');
 			if(userFriendsList !== null) {
 			    friendsList = userFriendsList.split(",");
-                //setFriendsList(userFriendsList.split(","));
-                //console.log({friendsList});
 			} else {
 				friendsList = [];
 			}
             if (usersBlockedList !== null) {
                 blockedList = usersBlockedList.split(",");
-               // console.log({blockedList});
             } 
     } else {
         blockedList = localStorage.getItem('searchingBlocked').split(",")
@@ -52,7 +48,6 @@ function FriendsPage() {
                 id: Id,
 		});
         localStorage.setItem('friendsList', result.data.friendsList);
-        //console.log("New friendsList: " + localStorage.getItem('friendsList'));
         setDoRender(e.target.value);
     }
     async function follow(e) {
@@ -62,10 +57,8 @@ function FriendsPage() {
 				name: e.target.value,
                 id: Id,
 		});
-        //If the result is the requested user, it means that a friend request was sent.
         if (result.data.user === e.target.value) {
             alert("Sent friend request to: " + result.data.user);
-        } else { //If not, the friendsList is set to localStorage
            localStorage.setItem('friendsList', result.data.friendsList); 
         } 
         var nDoc = document.getElementById("searchBar");
@@ -76,7 +69,6 @@ function FriendsPage() {
     async function unblock(e) {
         console.log("in unblock");
         e.preventDefault();
-        //console.log("Unfollowing: " + nameToUnfollow);
         var result = await Axios.post('http://localhost:5000/unblock', {
 				user: username,
 				name: e.target.value
@@ -111,60 +103,37 @@ function FriendsPage() {
     }
     async function accept(e) {
         e.preventDefault();
-        //username is
         var result = await Axios.post('http://localhost:5000/acceptRequest', {
 				user: username, 
 				name: e.target.value,
                 state: e.target.name,
                 id: Id,
 		});
-        //Now reset local storage and rerender
         localStorage.setItem('requestedBy', result.data.requestedBy);
         requestedBy = localStorage.getItem('requestedBy').split(",");
         setDoRender(e.target.value);
     }
 
     const toast = useToast()
-  const toastIdRef = React.useRef()
+    const toastIdRef = React.useRef()
 
-  function close() {
-    if (toastIdRef.current) {
-      toast.close(toastIdRef.current)
+    function close() {
+        if (toastIdRef.current) {
+        toast.close(toastIdRef.current)
+        }
     }
-  }
 
-  function closeAll() {
-    // you may optionally pass an object of positions to exclusively close
-    // keeping other positions opened
-    // e.g. `{ positions: ['bottom'] }`
-    toast.closeAll()
-  }
-
-  async function addToast(e) {
-    e.preventDefault();
-    var result = await Axios.post('http://localhost:5000/findUser', {
-				user: e.target.value
-		});
+    async function addToast(e) {
+        e.preventDefault();
+        var result = await Axios.post('http://localhost:5000/findUser', {
+                    user: e.target.value
+        });
         if(result.data.privacy === 'Private'){
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy}`})
         }else{
             toastIdRef.current = toast({ description: `username: ${result.data.user} privacy: ${result.data.privacy} Friendslist: ${result.data.friendsList}` })
         }
-  }
-
-  async function showInfo(e){
-    e.preventDefault();
-    var result = await Axios.post('http://localhost:5000/findUser', {
-				user: e.target.value
-		});
-
-    if(result.data.privacy === 'Private'){
-        alert("Username: " + result.data.user + " Privacy: " + result.data.privacy);
-    }else{
-        alert("Username: " + result.data.user + " Privacy: " + result.data.privacy + " FriendsList: " + result.data.friendsList);
     }
-  }
-
 
     const FriendDisplay = (name) => {
         return (
@@ -178,17 +147,18 @@ function FriendsPage() {
         </HStack>
         );
     }
+
     function DisplayAllFriends() {
-        
         return (
             <Box>
-            <ul>
-            { friendsList.map( (name) => (
+            <l>
+                {friendsList.map( (name) => (
                 FriendDisplay(name)
-            ))}</ul>
+            ))}</l>
             </Box>
         );
     }
+
     const BlockedDisplay = (name) => {
         
         return (
@@ -198,6 +168,7 @@ function FriendsPage() {
         </HStack>
         )
     }
+
     function DisplayAllBlocked() {
         return (
             <Box>
@@ -223,7 +194,6 @@ function FriendsPage() {
     }
 
     function DisplayAllRequested() {
-        //If requestedBy === null or length === 0 do not return anything
         if (requestedBy.length === 0) {
             return (<div></div>)
         } else {
@@ -232,7 +202,6 @@ function FriendsPage() {
             <Box id="displayRequested">
                 <ul>
                     {
-                        
                         requestedBy.map( (name) => (
                         RequestedDisplay(name)
                     ))}
@@ -243,23 +212,21 @@ function FriendsPage() {
     }
     const DisplaySearch = (name) => {
         if ( name === username) {
-            return (
-                <div></div>
-                   // alert("Cannot request yourself");   
-            );
+            return (<div></div>);
         } else {
-        return (
-        <HStack key={name} width="400px" spacing="10px" border-style="solid">
-            <Text width="200px">{name}</Text>
-            <Button value={name} align="right" color="blue"  onClick={addToast}>Open Info</Button>
-            <Button value={name} align="right" color="blue"  onClick={close}>Close Info</Button>
-            <Button value={name} align="right" color="blue"  onClick={follow}>Follow</Button>
-            <Button value={name} align="right" color="red" onClick={blockFromSearchBar}>Block</Button>
-        </HStack>
-        );
+            return (
+                <Box border="1px" borderRadius="lg" m="5px 10px 5px 10px">
+                    <HStack key={name} padding="5px" spacing="10px">
+                        <FormLabel m="0 0 0 10px">{name}</FormLabel>
+                        <Button value={name} color="blue"  onClick={addToast}>Open Info</Button>
+                        <Button value={name} color="blue"  onClick={close}>Close Info</Button>
+                        <Button value={name} color="blue"  onClick={follow}>Follow</Button>
+                        <Button value={name} color="red" onClick={blockFromSearchBar}>Block</Button>
+                    </HStack>
+                </Box>
+            );
         }
     }
-
 
     function DisplayAllSearch() {
         if (localStorage.getItem('isSearching') === "no") {
@@ -284,8 +251,7 @@ function FriendsPage() {
        e.preventDefault();
       
         if (e.target.value !== "") {
-        //find users from search query
-        var result = await Axios.post('http://localhost:5000/findTheUserReg', {
+            await Axios.post('http://localhost:5000/findTheUserReg', {
 				search: e.target.value,  
 			}).then(response => {
                 console.log("result: " + response.data);
@@ -298,15 +264,8 @@ function FriendsPage() {
                      console.log(response.data);
                      setSearchUsers([]);
                 }
-
-            }).catch(error => {
-                console.log(error.data)
-                alert("errors out the ass");
             });
 
-
-
-        //GET FRIENDS AND BLOCKED
        blockedList = localStorage.getItem('blockedList').split(",");
        friendsList = localStorage.getItem('friendsList').split(",");
        let blockedTemp = [];
@@ -330,34 +289,61 @@ function FriendsPage() {
         setDoRender(e.target.value);
     }
 
+    async function sortFriends(e) {
+        e.preventDefault();
+        var buttonId = e.target.id;
+        buttonId = parseInt(buttonId);
+    }
+
     return(
-        <Container maxW='xl' centerContent>
-            <TopNav/>         
-            <Container>
-                <Stack>
-                    <VStack>
-                        <Input id="searchBar" name="searchBar" placeholder="Search for user" onChange={search}/>
-                        <DisplayAllSearch />
-                    </VStack>
-                    <Text fontWeight="bold"> My Friends</Text>
-                    <VStack>
-                            <DisplayAllFriends />
-                    </VStack>
-                    <br/>
-                
-                    <VStack>
-                            <Text id="blocked" fontWeight="bold">My Blocked List</Text>
-                            <DisplayAllBlocked />
-                    </VStack>
-                    <br />
-                    <VStack>
-                        <Text fontWeight="bold">Friend Requests</Text>
-                            <DisplayAllRequested />
-                    </VStack>
-                </Stack>
-                
-            </Container>
-            
+        <Container maxW="100%">
+            <TopNav/>
+                <Center padding="10px">
+                    <Box w="80%" border="1px" borderRadius="lg">
+                        <VStack m="10px 10px 10px 10px">
+                            <Input id="searchBar" name="searchBar" placeholder="Search for user" onChange={search}/>
+                            <Divider/>
+                            <DisplayAllSearch />
+                        </VStack>
+                    </Box>
+                </Center>
+                <Center padding="10px">
+                    <Box w="80%" border="1px" borderRadius="lg">
+                        <Center padding="10px">
+                            <VStack>
+                                <HStack spacing="10px">
+                                    <FormLabel> My Friends</FormLabel>
+                                    <Button id="ascending" onClick={sortFriends}>Ascending</Button>
+                                    <Button id="descending" onClick={sortFriends}>Descending</Button>
+                                </HStack>
+                                <Divider/>
+                                <VStack>
+                                        <DisplayAllFriends />
+                                </VStack>
+                            </VStack>
+                        </Center>
+                    </Box>
+                </Center>
+                <Center padding="10px">
+                    <Box w="80%" border="1px" borderRadius="lg">
+                        <Center padding="10px">
+                            <VStack>
+                                <Text id="blocked" fontWeight="bold">My Blocked List</Text>
+                                <DisplayAllBlocked />
+                            </VStack>
+                        </Center>
+                    </Box>
+                </Center>
+                <Center padding="10px">
+                    <Box w="80%" border="1px" borderRadius="lg">
+                        <Center padding="10px">
+                            <VStack>
+                                <Text fontWeight="bold">Friend Requests</Text>
+                                    <DisplayAllRequested />
+                            </VStack>
+                        </Center>
+                    </Box>
+                </Center>
             <SideNav />
         </Container>
     ); 
