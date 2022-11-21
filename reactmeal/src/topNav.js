@@ -1,9 +1,12 @@
 import HomeLogo from "./imgs/homeLogo.png"
 import Axios from 'axios';
-import { ChakraProvider, Button, Image, Center, Heading, HStack } from "@chakra-ui/react";
-import {Box, Menu,MenuButton,MenuList,MenuItem,} from '@chakra-ui/react'
+import { ChakraProvider, Button, Image, Center, Heading, 
+    HStack, useDisclosure, Modal, ModalOverlay, ModalContent,
+    VStack, ModalHeader, Box, FormLabel, Divider } from "@chakra-ui/react";
+import {Menu,MenuButton,MenuList,MenuItem,} from '@chakra-ui/react'
 
 export function TopNav() {
+    const {isOpen, onOpen, onClose} = useDisclosure();
 	var id = localStorage.getItem('id');
 	var username = localStorage.getItem('username');
 	var password = localStorage.getItem('password');
@@ -107,36 +110,27 @@ export function TopNav() {
     }
 
    	return (<ChakraProvider>
-        <Center>
-            <Box
-            bg="white"
-            w="37%"
-            borderRadius='lg'
-            >
-                <Center>
-                    <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
-                            <Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
-                        
-                        <Heading color="turquoise" align="center">The Meal Mine</Heading>
-                        <Menu>
-                            {({ isOpen }) => (<>
-                                <MenuButton bg="transparent" isActive={isOpen}>
-                                    <Image borderRadius='full'boxSize="50" src={image}/>
-                                </MenuButton>
-                                <MenuList>
-                                    <MenuItem onClick={settings} >Settings</MenuItem>
-                                    <MenuItem onClick={friends}>Friends</MenuItem>
-                                    <MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
-                                    <MenuItem onClick={feed}>Feed</MenuItem>
-                                    <MenuItem onClick={notis}>Notifications</MenuItem>
-                                    <MenuItem onClick={searchRecipes}>Search Recipes</MenuItem>
-                                    <MenuItem onClick={login}>Login/Logout</MenuItem>
-                                </MenuList>
-                            </>)}
-                        </Menu>
-                    </HStack>
-                </Center>
-            </Box>
-        </Center>
+		<Center>
+            <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
+					<Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
+				
+				<Heading color="turquoise" align="center">The Meal Mine</Heading>
+				<Menu>
+					{({ isOpen }) => (<>
+						<MenuButton bg="transparent" isActive={isOpen}>
+							<Image borderRadius='full'boxSize="50" src={image}/>
+						</MenuButton>
+						<MenuList>
+							<MenuItem onClick={settings} >Settings</MenuItem>
+							<MenuItem onClick={friends}>Friends</MenuItem>
+							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
+							<MenuItem onClick={feed}>Feed</MenuItem>
+							<MenuItem onClick={notis}>Notifications</MenuItem>
+							<MenuItem onClick={login}>Login/Logout</MenuItem>
+						</MenuList>
+					</>)}
+				</Menu>
+			</HStack>
+		</Center>
     </ChakraProvider>)
 }

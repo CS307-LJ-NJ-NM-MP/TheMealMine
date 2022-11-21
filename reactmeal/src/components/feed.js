@@ -1,6 +1,6 @@
 import { TopNav } from '../topNav';
 import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
-    Badge, HStack, FormLabel} from '@chakra-ui/react'
+    Badge, HStack, FormLabel, Divider} from '@chakra-ui/react'
 import React, { useState } from "react";
 import { CategoryNav } from "../categoryNav";
 import { FindByDifficulty } from '../findRecipesByDifficulty';
@@ -180,61 +180,76 @@ export const Feed = () => {
     return(<>
         <Container maxW='100%'>
             <TopNav/>
+            
             <CategoryNav/>
             <Center>
-                <FormLabel>Your Feed</FormLabel>
-
-            </Center>
             <Center>
-            <Center>
-                <HStack spacing="20px">
-                <VStack spacing="20px" maxW="80%" maxH="300px" overflowY="scroll">
-                            {newFeed}
+                <Box border="1px" borderRadius="lg">
+                <Center>
+                    <FormLabel m="10px 0 10px 0">Your Feed</FormLabel>
+                </Center>
+                <Center>
+                <Divider w="90%"/>
+                </Center>
+                    <HStack spacing="20px">
+                    <VStack m="0 0 0 10px" maxH="530px" overflow="hidden" overflowY="scroll" p={2}
+                        sx={{
+                            '&::-webkit-scrollbar': {
+                            width: '0px',
+                            backgroundColor: `transparent`,
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: `transparent`,
+                            },
+                        }}>
+                        {newFeed}
                     </VStack>
-                    <Box p="10px" borderRadius="lg" border="1px">
                         <Box p="10px">
-                            <FormLabel id="name">Name: {name}</FormLabel>
-                            <FormLabel id="owner">Owner: {owner}</FormLabel>
-                            <FormLabel id="rating">Rating: {rating}</FormLabel>
+                            <Box p="10px">
+                                <FormLabel id="name">Name: {name}</FormLabel>
+                                <FormLabel id="owner">Owner: {owner}</FormLabel>
+                                <FormLabel id="rating">Rating: {rating}</FormLabel>
+                            </Box>
+                            <Center>
+                                <FormLabel>Description</FormLabel>
+                            </Center>
+                            <Center>
+                                <VStack id="descriptions" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
+                                    {descript}
+                                </VStack>
+                            </Center><br/>
+                            <Center>
+                                <FormLabel>Ingredients</FormLabel>
+                            </Center>
+                            <Center>
+                                <VStack id="ingredients" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
+                                    {ingred}
+                                </VStack>
+                            </Center><br/>
+                            <Center>
+                                <FormLabel>Instructions</FormLabel>
+                            </Center>
+                            <Center>
+                                <VStack id="instructions" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
+                                    {instruct}
+                                </VStack>
+                            </Center><br/>
+                            <Center>
+                                <FormLabel>Comments</FormLabel>
+                            </Center>
+                            <Center>
+                                <VStack id="comments" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
+                                    {displayedComments}
+                                </VStack>
+                            </Center>
+                            <Box p="10px">
+                                <Input id="comment" name="comment" variant="flushed" placeholder='Write Comment' m="0 0 10px 0" onChange={handleChange}/>
+                                <Button w="100%" onClick={postComment}>Post</Button>
+                            </Box>
                         </Box>
-                        <Center>
-                            <FormLabel>Description</FormLabel>
-                        </Center>
-                        <Center>
-                            <VStack id="descriptions" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
-                                {descript}
-                            </VStack>
-                        </Center><br/>
-                        <Center>
-                            <FormLabel>Ingredients</FormLabel>
-                        </Center>
-                        <Center>
-                            <VStack id="ingredients" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
-                                {ingred}
-                            </VStack>
-                        </Center><br/>
-                        <Center>
-                            <FormLabel>Instructions</FormLabel>
-                        </Center>
-                        <Center>
-                            <VStack id="instructions" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
-                                {instruct}
-                            </VStack>
-                        </Center><br/>
-                        <Center>
-                            <FormLabel>Comments</FormLabel>
-                        </Center>
-                        <Center>
-                            <VStack id="comments" spacing="20px" maxW="200px" maxH="100px" overflowY="scroll">
-                                {displayedComments}
-                            </VStack>
-                        </Center>
-                        <Box p="10px">
-                            <Input id="comment" name="comment" variant="flushed" placeholder='Write Comment' m="0 0 10px 0" onChange={handleChange}/>
-                            <Button w="100%" onClick={postComment}>Post</Button>
-                        </Box>
-                    </Box>
-                </HStack>
+                    </HStack>
+                </Box>
+                
                 
             </Center>
             </Center>

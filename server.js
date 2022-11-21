@@ -327,7 +327,6 @@ app.post('/addCategory', async(req, res) => {
     }
 
     var update = {$push:{"categories": req.body.category}};
-    var otherUpdate = {$pull:{"categories": req.body.category}};
     var recipeString = "" + req.body.recipe
 
     result = await client.db("TheMealMine").collection("Recipes").findOne(form);
@@ -525,7 +524,6 @@ app.post('/loginUser', async (req,res) => {
 	};
 	const update = {$set:{"status": 1}}; 
 	var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
-
   result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
   res.send(result);
 });
