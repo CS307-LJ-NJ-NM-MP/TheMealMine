@@ -26,6 +26,69 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.listen(port);
 
+
+
+
+app.post('/findByCuisine', async(req, res) => {
+    console.log(req.body.cuisine);
+    if (req.body.cuisine === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        cuisine: req.body.cuisine
+    };
+    const projection = {cuisine: 1};
+    var string = "" + form.cuisine;
+    var list = []
+    await client.db("TheMealMine").collection("Recipes").find({
+        cuisine: string 
+
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
+
+app.post('/findByDifficulty', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        difficulty: req.body.difficulty
+    };
+    var string = "" + form.difficulty;
+    var diff = parseInt(string)
+    var list = []
+    var array = await client.db("TheMealMine").collection("Recipes").find({
+        difficulty: {
+            $lte : diff
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0 || diff > 5) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
+
+
 app.post('/likeRecipe', async(req, res) => {
     const form = {
 
@@ -208,45 +271,6 @@ app.post('/getRecipe', async(req,res) => {
 });
 
 
-/*
-app.post('/postComment', async(req, res) => {
-    const commentForm = {
-        user: req.body.user,
-        comment: req.body.comment
-    }
-
-    const newForm = {
-        user: req.body.user
-    }
-    const recipeForm = {
-        name: req.body.recipe
-    }
-    
-    console.log("user " + commentForm.user)
-    console.log("rec " + req.body.recipe)
-    console.log("comment " + req.body.comment)
-    console.log("recipe btw " + recipeForm.name)
-
-
-    var result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm);
-    console.log(commentForm)
-    var update = {$push:{"comments": commentForm}};
-    if (result !== null) {
-        console.log("adding the comment to the recipe")
-        result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
-    }
-    else {
-        console.log("recipe doesn't exist how did you get here")
-    }
-
-
-    
-    var projection = {comments: 1};
-    result = await client.db("TheMealMine").collection("UserAccounts").findOne(recipeForm,projection);
-//    console.log("list " + result.data.likedBy)
-    res.send(result);
-})*/
-
 
 app.post('/addCategory', async(req, res) => {
     const form = {
@@ -346,6 +370,36 @@ app.post('/findTheUserReg', async(req, res) => {
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
             var newString = "" + doc.user
+            list.push(newString)
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
+app.post('/findTheRecReg', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        name: req.body.search
+    };
+    const projection = {name: 1};
+    var string = "" + form.name;
+    var list = []
+    await client.db("TheMealMine").collection("Recipes").find({
+        name: {
+            $regex : string 
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            var newString = "" + doc.name
             list.push(newString)
         }
         )
@@ -893,3 +947,41 @@ app.post('/removeNotif', async (req, res) => {
     
 });
 
+/*
+app.post('/postComment', async(req, res) => {
+    const commentForm = {
+        user: req.body.user,
+        comment: req.body.comment
+    }
+
+    const newForm = {
+        user: req.body.user
+    }
+    const recipeForm = {
+        name: req.body.recipe
+    }
+    
+    console.log("user " + commentForm.user)
+    console.log("rec " + req.body.recipe)
+    console.log("comment " + req.body.comment)
+    console.log("recipe btw " + recipeForm.name)
+
+
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm);
+    console.log(commentForm)
+    var update = {$push:{"comments": commentForm}};
+    if (result !== null) {
+        console.log("adding the comment to the recipe")
+        result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
+    }
+    else {
+        console.log("recipe doesn't exist how did you get here")
+    }
+
+
+    
+    var projection = {comments: 1};
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(recipeForm,projection);
+//    console.log("list " + result.data.likedBy)
+    res.send(result);
+})*/

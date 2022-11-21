@@ -14,7 +14,8 @@ export const RecipeAdd = () => {
 		add: '',
 		instructions: '',
 		ingred: [],
-		image: ''
+		image: '',
+		time: ''
 	})
 	
 	const handleChange = (e) => {
@@ -46,7 +47,8 @@ export const RecipeAdd = () => {
 			user: formValue.user,
            	ingredients: formValue.ingredients,
 			instructions: formValue.instructions,
-			image: formValue.image
+			image: formValue.image,
+			time: formValue.time
 		});
 	}
 
@@ -62,6 +64,8 @@ export const RecipeAdd = () => {
                         	<div><input size="15"type="text" name="add" onChange={handleChange}/><button type="submit" onClick={handleList}>Add</button></div>
                             Recipe Instructions:
                             <div><input size="15"type="text" name="instructions" onChange={handleChange}/></div>
+							Prep Time:
+							<div><input size="15"type="text" name="prep time" onChange={handleChange}/></div>
                             Image:
                             <div><input size="15"type="text" name="image" onChange={handleChange}/></div>
 							<div><button type="submit" onClick={addRecipe}>Submit</button></div>
