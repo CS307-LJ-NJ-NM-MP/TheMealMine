@@ -288,6 +288,7 @@ function FriendsPage() {
         //find users from search query
         var result = await Axios.post('http://localhost:5000/findTheUserReg', {
 				search: e.target.value,  
+                user: username
 			}).then(response => {
                 console.log("result: " + response.data);
                 if (response.data.length !== 0) {
