@@ -7,6 +7,7 @@ import Axios from "axios";
 import { useToast } from '@chakra-ui/react'
 import { FindByDifficulty } from '../findRecipesByDifficulty';
 import { FindByCuisine } from '../findRecipesByCuisine';
+import { FindByPrepTime } from "../findRecipesByPrep";
 import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
 
@@ -361,10 +362,13 @@ function SearchRecipes() {
                         <DisplayAllSearch />
                     </VStack>
                     <Center>
-                    <FindByDifficulty/>
+                        <FindByDifficulty/>
                     </Center>
                     <Center>
-                    <FindByCuisine/>
+                        <FindByCuisine/>
+                    </Center>
+                    <Center>
+                        <FindByPrepTime/>
                     </Center>
 
 
