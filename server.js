@@ -57,6 +57,34 @@ app.post('/findByCuisine', async(req, res) => {
     });
 });
 
+app.post('/findByPrepTime', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        prepTime: req.body.prepTime
+    };
+    var string = "" + form.prepTime;
+    var prep = parseFloat(string)
+    var list = []
+    var array = await client.db("TheMealMine").collection("Recipes").find({
+        prepTime: {
+            $lte : prep
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0 || prep <= 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
 
 app.post('/findByDifficulty', async(req, res) => {
     console.log(req.body.search);
