@@ -125,6 +125,7 @@ export function TopNav() {
 							<MenuItem onClick={friends}>Friends</MenuItem>
 							<MenuItem onClick={bookmarks}>Bookmarks</MenuItem>
 							<MenuItem onClick={feed}>Feed</MenuItem>
+                            <MenuItem onClick={searchRecipes}> Search Recipes </MenuItem>
 							<MenuItem onClick={notis}>Notifications</MenuItem>
 							<MenuItem onClick={login}>Login/Logout</MenuItem>
 						</MenuList>
