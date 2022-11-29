@@ -57,6 +57,34 @@ app.post('/findByCuisine', async(req, res) => {
     });
 });
 
+app.post('/findByPrepTime', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        prepTime: req.body.prepTime
+    };
+    var string = "" + form.prepTime;
+    var prep = parseFloat(string)
+    var list = []
+    var array = await client.db("TheMealMine").collection("Recipes").find({
+        prepTime: {
+            $lte : prep
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0 || prep <= 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
 
 app.post('/findByDifficulty', async(req, res) => {
     console.log(req.body.search);
@@ -350,7 +378,8 @@ app.post('/addCategory', async(req, res) => {
     res.send(result);
 })
 
-
+//CHECKS IF USER IS IN BLOCKED LIST.
+//FriendsPage calls this around line 289
 app.post('/findTheUserReg', async(req, res) => {
     console.log(req.body.search);
     if (req.body.search === '') {
@@ -359,26 +388,38 @@ app.post('/findTheUserReg', async(req, res) => {
     const form = {
         user: req.body.search
     };
-    const projection = {user: 1};
+    //const projection = {user: 1};
     var string = "" + form.user;
     var list = []
-    await client.db("TheMealMine").collection("UserAccounts").find({
-        user: {
-            $regex : string 
-        }
-    }).toArray(function(err, docs) {
+    var result;
+    var st = "" + req.body.user;
+    console.log("cant include: " + st);
+    await client.db("TheMealMine").collection("UserAccounts").find(  {
+           
+                //Tries to find all users that match regex and whose blocked List
+                user: { $regex : string }, 
+                //{ $elemMatch: { blockedList : { $ne: st } } } //Hopefully this works   
+                blockedList: { $ne: st }}
+        ).toArray(function(err, docs) {
         docs.forEach(function(doc) {
             var newString = "" + doc.user
             list.push(newString)
         }
-        )
+        );
+        //console.log(list);
         if (list.length == 0) {
             res.send(null);
         }
         else {
+            
             res.send(list);
+            console.log("Sending list: " + list);
         }
     });
+   // console.log("Now i got here");
+    //Now check each name to see if "user" is in their blockedList
+    //Send the list
+    
 });
 
 app.post('/findTheRecReg', async(req, res) => {
@@ -881,6 +922,11 @@ app.post('/follow', async (req, res) => {
         
 });
 app.post('/acceptRequest', async (req, res) => {
+    //Req Needs to be hold... (aka the client side must send...)
+    /* "user" is the client
+        "name" is the person requesting to be friends with the client/user
+        "id" is the object id of the user/client, so that it can be placed in the requestors "friends" list
+    */
     var result;
     var str;
     if (req.body.state === "accept") {
@@ -890,15 +936,16 @@ app.post('/acceptRequest', async (req, res) => {
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(
             { user: req.body.name },
             { $push: 
-                {'friendsList': req.body.user, 'notifications': str },
+                {'friendsList': req.body.user, 'notifications': str, 'friends': req.body.id },
             }
         );
         //Find the requestor so we can pull their object _id and add to this users 'friends'
         result = await client.db("TheMealMine").collection("UserAccounts").findOne(
             { user: req.body.name }
         )
-        str = "" + result._id;
-        console.log("Pushing: " + str + "onto " + req.body.user);
+        console.log(result);
+        //str = "" + result.data.user;
+       // console.log("Pushing: " + result.data. + "onto " + req.body.user);
         //Update this user, by removing requestor from 'requestedBy' and push their id onto this 
         //users 'friends'
         result = await client.db("TheMealMine").collection("UserAccounts").updateOne(

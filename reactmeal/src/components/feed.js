@@ -121,6 +121,12 @@ export const Feed = () => {
     }
     var username = localStorage.getItem('username');
     async function postComment(e) {
+        console.log(formValue.recipeId);
+
+        //Check here to make sure comment is appropriate
+        //If it is.. Axios.post
+        //If it is not .. Display message that comment had a bad word.
+        //Check for upper case and lower case
         Axios.post('http://localhost:5000/postComment', {
             user: username,
             recipeId: formValue.recipeId,

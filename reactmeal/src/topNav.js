@@ -1,12 +1,9 @@
 import HomeLogo from "./imgs/homeLogo.png"
 import Axios from 'axios';
-import { ChakraProvider, Button, Image, Center, Heading, 
-    HStack, useDisclosure, Modal, ModalOverlay, ModalContent,
-    VStack, ModalHeader, Box, FormLabel, Divider } from "@chakra-ui/react";
-import {Menu,MenuButton,MenuList,MenuItem,} from '@chakra-ui/react'
+import { ChakraProvider, Button, Image, Center, Heading, HStack } from "@chakra-ui/react";
+import {Box, Menu,MenuButton,MenuList,MenuItem,} from '@chakra-ui/react'
 
 export function TopNav() {
-    const {isOpen, onOpen, onClose} = useDisclosure();
 	var id = localStorage.getItem('id');
 	var username = localStorage.getItem('username');
 	var password = localStorage.getItem('password');
