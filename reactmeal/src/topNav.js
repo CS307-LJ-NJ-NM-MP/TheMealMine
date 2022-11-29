@@ -91,6 +91,7 @@ export function TopNav() {
             var result = await Axios.post('http://localhost:5000/getFeed', {
                 _id: id
 		    });
+            console.log(result.data);
             localStorage.setItem('feed',result.data);
             window.location = "/feed";
         }
