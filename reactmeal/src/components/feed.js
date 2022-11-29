@@ -72,14 +72,11 @@ export const Feed = () => {
     }
 
     var id = localStorage.getItem('id');
-    console.log(localStorage.getItem('feed'));
     var feed = localStorage.getItem('feed').split(",");
-    console.log(feed);
     let newFeed = [];
     
     if(feed[0] !== "") { 
         for(var i = 0; i < feed.length; i+=8) {
-            if(i + 8 > feed.length){break;}
             let temp = [];
             //if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== false){
             //    feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
@@ -153,7 +150,7 @@ export const Feed = () => {
             <Center>
                 <Box border="1px" borderRadius="lg">
                 <Center>
-                    <FormLabel m="10px 0 10px 0">Your Feed + {feed.length}</FormLabel>
+                    <FormLabel m="10px 0 10px 0">Your Feed</FormLabel>
                 </Center>
                 <Center>
                 <Divider w="90%"/>
