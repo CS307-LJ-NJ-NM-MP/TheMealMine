@@ -125,8 +125,21 @@ export function TopNav() {
         }
     }
 
+    function searchRecipes(e) {
+        e.preventDefault();
+        if(username !== "Guest" && password !== "Guest"){
+            window.location = "/searchRecipes";
+        }
+    }
+
    	return (<ChakraProvider>
-		<Center>
+        <Center>
+            <Box
+            bg="white"
+            w="37%"
+            borderRadius='lg'
+            >
+                <Center>
             <HStack spacing="20px" h="70px" m="10px 0 10px 0" bg="transparent">
 					<Image borderRadius='full' boxSize="50" src={HomeLogo}onClick={home}/>
 				
@@ -143,6 +156,7 @@ export function TopNav() {
 							<MenuItem onClick={notis}>Notifications</MenuItem>
                             <MenuItem onClick={onOpen}>Tutorial</MenuItem>
                             <MenuItem onClick={settings} >Settings</MenuItem>
+                            <MenuItem onClick={searchRecipes}>Search Recipes</MenuItem>
 							<MenuItem onClick={login}>Login/Logout</MenuItem>
 						</MenuList>
 					</>)}
@@ -242,6 +256,8 @@ export function TopNav() {
                     </Center>
 				</ModalContent>
 			</Modal>
+            </Center>
+            </Box>
 		</Center>
     </ChakraProvider>)
 }
