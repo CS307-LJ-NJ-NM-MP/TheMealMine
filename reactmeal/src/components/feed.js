@@ -121,12 +121,7 @@ export const Feed = () => {
     }
     var username = localStorage.getItem('username');
     async function postComment(e) {
-        console.log(formValue.recipeId);
-
-        //Check here to make sure comment is appropriate
-        //If it is.. Axios.post
-        //If it is not .. Display message that comment had a bad word.
-        //Check for upper case and lower case
+        e.preventDefault();
         Axios.post('http://localhost:5000/postComment', {
             user: username,
             recipeId: formValue.recipeId,
@@ -141,7 +136,7 @@ export const Feed = () => {
         var iD = feed[buttonId-3];
         var r = document.getElementById(buttonId-1).value;
         if(r >= 0 && r <= 5) {
-            var result = await Axios.post('http://localhost:5000/setRecipeRating', {
+            await Axios.post('http://localhost:5000/setRecipeRating', {
                 recipeId: iD,
                 rating: r
             });

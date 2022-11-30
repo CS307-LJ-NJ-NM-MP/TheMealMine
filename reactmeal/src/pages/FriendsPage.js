@@ -9,6 +9,7 @@ import { useToast } from '@chakra-ui/react'
 
 function FriendsPage() {
     var username = localStorage.getItem('username');
+    var id = localStorage.getItem('id');
     const [doRender, setDoRender] = useState("no");
     var Id = localStorage.getItem('id'); 
     var friendsList = [];
@@ -19,11 +20,9 @@ function FriendsPage() {
         requestedBy = localStorage.getItem('requestedBy').split(",");
     }
 
-    console.log("New Refresh");
     var iS = localStorage.getItem('isSearching');
 
     if (iS === "no") {
-            console.log("Is NOT SEARCHING");
 			var userFriendsList = localStorage.getItem('friendsList');
             var usersBlockedList = localStorage.getItem('blockedList');
 			if(userFriendsList !== null) {
@@ -67,7 +66,6 @@ function FriendsPage() {
         setSearchUsers([]);
     }
     async function unblock(e) {
-        console.log("in unblock");
         e.preventDefault();
         var result = await Axios.post('http://localhost:5000/unblock', {
 				user: username,
@@ -232,21 +230,20 @@ function FriendsPage() {
         if (localStorage.getItem('isSearching') === "no") {
             return (<div></div>);
         } else if (searchUsers.length === 0) {
-            return ( 
-                alert("No user exists with that name")
-            ); 
+            return (<div></div>); 
         }   else {
-        return (
-            <Box>
-                <ul>
-                    {
-                        searchUsers.map( (name) => (
-                        DisplaySearch(name)
-                    ))}
-                </ul>
-            </Box>
-        );
-    }}
+            return (
+                <Box>
+                    <ul>
+                        {
+                            searchUsers.map( (name) => (
+                            DisplaySearch(name)
+                        ))}
+                    </ul>
+                </Box>
+            );
+        }
+    }
     async function search(e) {
        e.preventDefault();
       
@@ -255,15 +252,11 @@ function FriendsPage() {
 				search: e.target.value,  
                 user: username
 			}).then(response => {
-                console.log("result: " + response.data);
                 if (response.data.length !== 0) {
-                    console.log("Response length: " + response.data.length);
                     setSearchUsers(response.data);
                 }
                 else {
-                     console.log("Nothing in the response.");
-                     console.log(response.data);
-                     setSearchUsers([]);
+                    setSearchUsers([]);
                 }
             });
 
@@ -290,12 +283,114 @@ function FriendsPage() {
         setDoRender(e.target.value);
     }
 
-    async function sortFriends(e) {
-        e.preventDefault();
-        var buttonId = e.target.id;
-        buttonId = parseInt(buttonId);
+    let friends = localStorage.getItem('friends').split(",");
+    
+    async function unsorted() {
+        var result = await Axios.post('http://localhost:5000/getFriends', {
+                _id: id
+		    }); 
+            let friends = result.data;
+            for(var i = 0; i < friends.length; i++){
+                result = await Axios.post('http://localhost:5000/getFriendRanks', {
+                    _id: friends[i]
+                });
+                console.log(parseInt(result.data.ranking));
+                var rank = result.data.ranking + "";
+                let temp = [];
+                temp.push(result.data.user);
+                temp.push(rank);
+                friends[i] = temp;
+            }
+            localStorage.setItem('friends',friends);
+            window.location = "/friends";
     }
 
+    function ascending() {
+        friends = localStorage.getItem('friends').split(",");
+        let temp = [];
+        for(var i = 0; i < friends.length; i+=2){
+            temp.push([friends[i],friends[i+1]]);
+        }
+        for(var i = 0; i < temp.length; i++){
+            for(var j = i; j < temp.length; j++){
+                if(temp[i][1] > temp[j][1]){
+                    let k = temp[i][1];
+                    let l = temp[i][0];
+                    temp[i][1] = temp[j][1];
+                    temp[i][0] = temp[j][0];
+                    temp[j][1] = k;
+                    temp[j][0] = l;
+                }
+            }
+        }
+        let temp2 = [];
+        for(var i = 0; i < friends.length; i+=2){
+            temp2.push(
+                <Box>
+                    <Center>
+                        <FormLabel>Name: {friends[i]}</FormLabel>
+                        <FormLabel>Ranking: {friends[i+1]}</FormLabel>
+                    </Center>
+                </Box>
+            );
+        }
+        friends = temp2;
+        localStorage.setItem('friends',temp);
+        console.log(temp);
+        window.location = "/friends";
+    }
+
+    function descending() {
+        friends = localStorage.getItem('friends').split(",");
+        let temp = [];
+        for(var i = 0; i < friends.length; i+=2){
+            temp.push([friends[i],friends[i+1]]);
+        }
+        for(var i = 0; i < temp.length; i++){
+            for(var j = i; j < temp.length; j++){
+                if(temp[i][1] < temp[j][1]){
+                    let k = temp[i][1];
+                    let l = temp[i][0];
+                    temp[i][1] = temp[j][1];
+                    temp[i][0] = temp[j][0];
+                    temp[j][1] = k;
+                    temp[j][0] = l;
+                }
+            }
+        }
+        let temp2 = [];
+        for(var i = 0; i < friends.length; i+=2){
+            temp2.push(
+                <Box>
+                    <Center>
+                        <FormLabel>Name: {friends[i]}</FormLabel>
+                        <FormLabel>Ranking: {friends[i+1]}</FormLabel>
+                    </Center>
+                </Box>
+            );
+        }
+        friends = temp2;
+        localStorage.setItem('friends',temp);
+        console.log(temp);
+        window.location = "/friends";
+    }
+
+    if(friends[0] !== ''){
+        let temp = [];
+        for(var i = 0; i < friends.length; i+=2){
+            temp.push(
+                <Box>
+                    <Center>
+                        <FormLabel>Name: {friends[i]}</FormLabel>
+                        <FormLabel>Ranking: {friends[i+1]}</FormLabel>
+                    </Center>
+                </Box>
+            );
+        }
+        friends = temp;
+    }else{
+        friends = [<Text>No Friends to Display</Text>];
+    }
     return(
         <Container maxW="100%">
             <TopNav/>
@@ -312,14 +407,15 @@ function FriendsPage() {
                     <Box w="80%" border="1px" borderRadius="lg">
                         <Center padding="10px">
                             <VStack>
+                            <FormLabel> My Friends</FormLabel>
                                 <HStack spacing="10px">
-                                    <FormLabel> My Friends</FormLabel>
-                                    <Button id="ascending" onClick={sortFriends}>Ascending</Button>
-                                    <Button id="descending" onClick={sortFriends}>Descending</Button>
+                                    <Button id="ascending" onClick={unsorted}>Original</Button>
+                                    <Button id="ascending" onClick={ascending}>Ascending</Button>
+                                    <Button id="descending" onClick={descending}>Descending</Button>
                                 </HStack>
                                 <Divider/>
-                                <VStack>
-                                        <DisplayAllFriends />
+                                <VStack id="VStack">
+                                    {friends}
                                 </VStack>
                             </VStack>
                         </Center>

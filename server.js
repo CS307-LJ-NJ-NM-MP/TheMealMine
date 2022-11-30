@@ -626,6 +626,20 @@ app.post('/getPantry', async (req,res) => {
     console.log(result.pantry);
 });
 
+app.post('/getFriendRanks', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
+});
+
+app.post('/getFriends', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result.friends);
+});
+
 app.post('/getFriendsList', async (req,res) => {
     const form = {
         user: req.body.user,
