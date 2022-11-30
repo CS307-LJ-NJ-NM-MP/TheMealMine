@@ -1,7 +1,3 @@
-import Settings from "./imgs/settings.png"
-import AddFriend from "./imgs/addFriend.png"
-import Bookmark from "./imgs/bookmark.png"
-import Feed from "./imgs/feed.png"
 import Axios from "axios";
 
 export const SideNav = () => {
@@ -59,6 +55,5 @@ export const SideNav = () => {
         if(username !== "Guest" && password !== "Guest"){
             window.location = "/feed";
         }
-    }
-    
+    }   
 }

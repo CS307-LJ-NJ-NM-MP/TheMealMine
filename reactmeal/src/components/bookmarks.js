@@ -2,7 +2,7 @@ import { TopNav } from '../topNav'
 import React from "react";
 import { useState } from "react";
 import Axios from "axios";
-import { Divider, Textarea } from '@chakra-ui/react'
+import { Divider, list, Textarea } from '@chakra-ui/react'
 import { Button, VStack, Text, Box, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
@@ -14,8 +14,13 @@ export function Bookmarks() {
     var username = localStorage.getItem('username');
     let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
     let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
+
+
+
+    
     let stack1 = [];
     let stack2 = [];
+
     const [formValue, setFormValue] = useState({
 		name: '',
         image: '',
@@ -75,13 +80,21 @@ export function Bookmarks() {
         contributedRecipes = [];
         for(var i = 0; i < result2.data.personalRecipes.length; i++){
             let temp = [];
+            /* img */
             temp.push(result2.data.personalRecipes[i][4]);
+            /* name */
             temp.push(result2.data.personalRecipes[i][3]);
+            /* owner */
             temp.push(result2.data.personalRecipes[i][2]);
+            /* favorites */
             temp.push(result2.data.personalRecipes[i][1]);
+            /* description */
             temp.push(result2.data.personalRecipes[i][6]);
+            /* instructions */
             temp.push(result2.data.personalRecipes[i][5]);
+            /* ingredients */
             temp.push(result2.data.personalRecipes[i][7]);
+            /* id */
             temp.push(result2.data.personalRecipes[i][0]);
             contributedRecipes.push(temp);
         }
@@ -94,7 +107,7 @@ export function Bookmarks() {
         for(var i = 0; i < len; i+=40){
             let temp = [];
             for(var j = i; j < i+40; j+=8) {
-                if(favoriteRecipes[j] === undefined){break;}
+                if(favoriteRecipes[j] === undefined) {break;}
                 const element = 
                         <HStack spacing="10px">
                             <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
@@ -138,57 +151,164 @@ export function Bookmarks() {
         nDoc = document.getElementById("description");
         nDoc.value = ""; nDoc.setAttribute('placeholder',descript);
     }
+    var titleId = 0
+    var descId = 0
+
+
+    const handleEdit = (e) => {
+		let value = e.target.value;
+        console.log("new text: " + value)
+		let name = e.target.name;
+        console.log("the thing " + name)
+		setEditFormValue((prevState) => {
+			return {
+				...prevState,
+				[name]: value
+			}
+		}); 
+	}
+    const [editFormValue, setEditFormValue] = useState({
+        recipeName: '',
+        recipeDescription: '',
+        recipeIngredients: '',
+        recipeInstructions: '',
+        
+    })
     async function updateRecipe(e) {
-        e.preventDefault();
+
+        e.preventDefault()
+
+        console.log("name "+ editFormValue.recipeName)
+        console.log("instructions " + editFormValue.recipeInstructions)
+        console.log("ingredients " + editFormValue.recipeIngredients)
+        console.log("description " + editFormValue.recipeDescription)
+
+        var index = newContributedRecipesList.indexOf(editFormValue.recipeName)
+
+        if (editFormValue.recipeInstructions !== '') {
+            newContributedRecipesList[index + 2] = editFormValue.recipeInstructions
+        }
+        if (editFormValue.recipeIngredients !== '') {
+            newContributedRecipesList[index + 4] = editFormValue.recipeIngredients
+        }
+        if (editFormValue.recipeDescription !== '') {
+            newContributedRecipesList[index + 3] = editFormValue.recipeDescription
+        }
+
+        setList(newContributedRecipesList)
+
+
         var result = await Axios.post('http://localhost:5000/updateRecipe', {
-            _id: id,
-            recipeId: recipeId,
-            name: formValue.nameDoc,
-            image: formValue.imageDoc,
-            instructions: formValue.instructDoc,
-            ingredients: formValue.ingredDoc,
-            description: formValue.descriptDoc
+
+            name: editFormValue.recipeName,
+            instructions: editFormValue.recipeInstructions,
+            ingredients: editFormValue.recipeIngredients,
+            description: editFormValue.recipeDescription,
+            owner: id,
+            username: username,
+            newList: newContributedRecipesList
+
         });
+
+        console.log(result.data.personalRecipes)
+
         window.location.reload(false);
     }
-    if(contributedRecipes[0] !== ''){
-        var len = contributedRecipes.length;
-        for(i = 0; i < len; i+=40){
-            let temp = [];
-            for(j = i; j < i+40; j+=8) {
-                if(contributedRecipes[j] === undefined){break;}
-                if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(contributedRecipes[j]) !== true){
-                    contributedRecipes[j] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
-                }
-                temp.push( 
-                    <Box w="500px" border="1px" borderRadius="lg">
-                        <HStack p={1}>
-                            <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={contributedRecipes[j]} onClick={clickRecipe}/>
-                            <VStack spacing="15px" w="90%">
-                                <Input w="90%" variant="flushed" placeholder={"Title: " + contributedRecipes[j+1]}/>
-                                <Textarea w="90%" variant="flushed" placeholder={"Description: " + contributedRecipes[j+4]}/>
-                                <Input w="90%" variant="flushed" placeholder={"Ingredients: Ingredients"}/>
-                                <Input w="90%" variant="flushed" placeholder={"Instructions: Instructions"}/>
-                                <HStack spacing="80px">
-                                    <Text>Likes: {contributedRecipes[j+3]}</Text>
-                                    <Text>Rating: </Text>
-                                    <Text>Category: </Text>
-                                </HStack>
-                            </VStack>
-                        </HStack>
-                        <Center>
-                            <Divider w="90%" p="5px" />
-                        </Center>
-                        <Center>
-                            <Button m="5px 5px 5px 5px" w="100%" onClick={updateRecipe}>Edit Contribution</Button> 
-                        </Center>
-                    </Box>
-                );
+
+    
+    const [newContributedRecipesList, setList] = useState([])
+
+
+    async function findContributedRecipes(e) {
+        e.preventDefault()
+        var list = await Axios.post('http://localhost:5000/findContributedRecipes', {
+            user: username,  
+        })
+        var newList = list.data
+        var len = newList.length;
+        var newList = list.data
+        var finalList = []
+        var len = newList.length;
+        for (var i = 0; i < len; i++) {
+            for (var j = 0; j < newList[i].length; j++) {
+                finalList.push(newList[i][j])
             }
-            stack2.push(temp)
         }
+
+        console.log(finalList)
+        setList(finalList)
+
     }
-    return (<ChakraProvider>
+
+
+
+    if(newContributedRecipesList[0] !== []){
+
+        var len = newContributedRecipesList.length;
+
+        for(j = 0; j < len; j += 8) {
+            let temp = [];
+            if(newContributedRecipesList[j] === undefined){break;}
+            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(newContributedRecipesList[j + 4]) !== true){
+                newContributedRecipesList[j + 4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
+            }
+
+            temp.push( 
+                <Box w="500px" border="1px" borderRadius="lg">
+                    <HStack p={1}>
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]} onClick={clickRecipe}/>
+                        <VStack spacing="15px" w="90%">
+                            <Input 
+                            name="recipeName"
+                            w="90%" 
+                            variant="flushed" 
+                            placeholder={"Re-Enter Title: " + newContributedRecipesList[j + 3]}
+                            onChange={handleEdit}
+                            />
+                            <Textarea 
+                            name="recipeDescription"
+                            w="90%" 
+                            variant="flushed" 
+                            placeholder={"Description: " + newContributedRecipesList[j + 6]}
+                            onChange={handleEdit}
+                            />
+                            <Input 
+                            name="recipeIngredients"
+                            w="90%" 
+                            variant="flushed" 
+                            placeholder={"Ingredients: " + newContributedRecipesList[j + 7]}
+                            onChange={handleEdit}
+                            />
+                            <Input
+                            name="recipeInstructions"
+                            w="90%"
+                            variant="flushed"
+                            placeholder={"Instructions: " + newContributedRecipesList[j + 5]}
+                            onChange={handleEdit}
+                            />
+                            <HStack spacing="80px">
+                                <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
+                                <Text>Rating: </Text>
+                                <Text>Category: </Text>
+                            </HStack>
+                        </VStack>
+                    </HStack>
+                    <Center>
+                        <Divider w="90%" p="5px" />
+                    </Center>
+                    <Center>
+                        <Button m="5px 5px 5px 5px" w="100%" onClick={updateRecipe}>Edit Contribution</Button> 
+                    </Center>
+                </Box>
+            );
+            stack2.push(temp)
+
+        }
+
+    }
+    return (
+    <body onLoad={findContributedRecipes}>
+    <ChakraProvider>
         <Container maxW='100%'>
             <TopNav/>
                 <Center>
@@ -247,7 +367,10 @@ export function Bookmarks() {
                     </ModalContent>
                 </Modal>;
         </Container>
-    </ChakraProvider>);
+    </ChakraProvider>
+    </body>
+    );
+    
 }
 
 export default Bookmarks;

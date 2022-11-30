@@ -28,6 +28,16 @@ app.listen(port);
 
 
 
+app.post('/findContributedRecipes', async(req, res) => {
+    const form = {
+
+        user: req.body.user
+    }
+    
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
+
+    res.send(result.personalRecipes);
+})
 
 app.post('/findByCuisine', async(req, res) => {
     console.log(req.body.cuisine);
@@ -267,7 +277,7 @@ app.post('/getRatings', async(req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body.recipeId)}
     var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
-    res.send(result.rating);
+    res.send(result);
 });
 app.post('/setRecipeRating', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
@@ -374,56 +384,44 @@ app.post('/addCategory', async(req, res) => {
     
     var projection = {categories: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-//    console.log("list " + result.data.likedBy)
     res.send(result);
 })
 
-//CHECKS IF USER IS IN BLOCKED LIST.
-//FriendsPage calls this around line 289
 app.post('/findTheUserReg', async(req, res) => {
-    console.log(req.body.search);
     if (req.body.search === '') {
-        res.status(400).send('query required');
+        res.send(null);
     }
-    const form = {
-        user: req.body.search
-    };
-    //const projection = {user: 1};
-    var string = "" + form.user;
+    var form;
+    if(isNaN(req.body.search)){
+        form = {
+            user: { $regex : req.body.search },
+            blockedList: { $ne: st }
+        }
+    }else{
+        var string = parseInt(req.body.search);
+        form = {
+            ranking: string,
+            blockedList: { $ne: st }
+        }
+    }
     var list = []
-    var result;
     var st = "" + req.body.user;
-    console.log("cant include: " + st);
-    await client.db("TheMealMine").collection("UserAccounts").find(  {
-           
-                //Tries to find all users that match regex and whose blocked List
-                user: { $regex : string }, 
-                //{ $elemMatch: { blockedList : { $ne: st } } } //Hopefully this works   
-                blockedList: { $ne: st }}
+    await client.db("TheMealMine").collection("UserAccounts").find(form
         ).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-            var newString = "" + doc.user
-            list.push(newString)
-        }
-        );
-        //console.log(list);
+            if(doc.privacy + "" !== "Private"){
+                list.push([doc._id,doc.image,doc.user,doc.ranking]);
+            }
+        });
         if (list.length == 0) {
             res.send(null);
-        }
-        else {
-            
+        }else {
             res.send(list);
-            console.log("Sending list: " + list);
         }
     });
-   // console.log("Now i got here");
-    //Now check each name to see if "user" is in their blockedList
-    //Send the list
-    
 });
 
 app.post('/findTheRecReg', async(req, res) => {
-    console.log(req.body.search);
     if (req.body.search === '') {
         res.status(400).send('query required');
     }
@@ -506,7 +504,7 @@ app.post('/getFeed', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log(result);
+    console.log(result.feed);
     res.send(result.feed);
 });
 
@@ -626,6 +624,20 @@ app.post('/getPantry', async (req,res) => {
     console.log(result.pantry);
 });
 
+app.post('/getFriendRanks', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result);
+});
+
+app.post('/getFriends', async (req,res) => {
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    res.send(result.friends);
+});
+
 app.post('/getFriendsList', async (req,res) => {
     const form = {
         user: req.body.user,
@@ -665,7 +677,7 @@ app.post('/addRecipes', async (req,res) => {
         instructions: req.body.instructions,
         ingredients: req.body.ingredients,
         description: req.body.description,
-        comments: [],
+        comments: ["No Comments"],
         likes: 0
     }
     var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
@@ -703,11 +715,19 @@ app.post('/postComment', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body.recipeId)}
     var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
-    
-    let temp = [];
-    temp.push(req.body.user); temp.push(req.body.comments); 
-    let newArr = result.comments;
-    newArr.unshift(temp);
+    let newArr = [];
+    if(result.comments[0] === "No Comments") {
+        let temp = [];
+        temp.push(req.body.user);
+        temp.push(req.body.comments);
+        newArr = result.comments;
+        newArr[0] = temp;
+    }else{
+        let temp = [];
+        temp.push(req.body.user); temp.push(req.body.comments); 
+        newArr = result.comments;
+        newArr.unshift(temp);
+    }
     var update = {$set:{"comments": newArr}};
     await client.db("TheMealMine").collection("Recipes").updateOne(form,update);
 });
@@ -748,9 +768,82 @@ app.post('/addToFeeds', async (req) => {
 });
 
 app.post('/updateRecipe', async (req,res) => {
-    console.log("Place Update Call Here");
-    res.send("Finished");
+
+    const newForm = {
+        name: req.body.name,
+        instructions: req.body.instructions,
+        description: req.body.description,
+        ingredients: req.body.ingredients
+    }
+    
+    const form = {
+        owner: req.body.owner,
+        name: req.body.name
+    }
+    const userForm = {
+        user: req.body.username
+    }
+
+
+
+    console.log("name " + newForm.name)
+    console.log("instructions " + newForm.instructions)
+    console.log("description " + newForm.description)
+    console.log("ingredients " + newForm.ingredients)
+    console.log("user " + req.body.owner)
+
+    
+
+    var instructionUpdate = {
+        $set: {"instructions": newForm.instructions}
+    };
+
+    var descriptionUpdate = {
+        $set: {"description": newForm.description}
+    };
+
+    var ingredientUpdate = {
+        $set:{"ingredients": newForm.ingredients}
+    };
+
+    if (newForm.instructions !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,instructionUpdate);
+    }
+
+    if (newForm.description !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,descriptionUpdate);
+    }
+
+    if (newForm.ingredients !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,ingredientUpdate);
+    }
+
+    newPersonalRecipesList = []
+    for (var i = 0; i < req.body.newList.length; i += 8) {
+        newSubList = []
+        newSubList.push(req.body.newList[i])
+        newSubList.push(req.body.newList[i + 1])
+        newSubList.push(req.body.newList[i + 2])
+        newSubList.push(req.body.newList[i + 3])
+        newSubList.push(req.body.newList[i + 4])
+        newSubList.push(req.body.newList[i + 5])
+        newSubList.push(req.body.newList[i + 6])
+        newSubList.push(req.body.newList[i + 7])
+
+        console.log(newSubList)
+        newPersonalRecipesList.push(newSubList)
+    }
+    
+    console.log(newPersonalRecipesList)
+
+    var update = {
+        $set: {"personalRecipes": newPersonalRecipesList}
+    }
+
+    var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(userForm, update);
+    res.send(result);
 });
+
 app.post('/addIngredients', async (req,res) => {
     const form = {
         owner: req.body.user,
