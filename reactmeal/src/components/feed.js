@@ -1,8 +1,9 @@
 import { TopNav } from '../topNav';
-import { Box, Button, VStack, Text, Container, 
-    Input, Image, Center, Badge, HStack, 
-    FormLabel, Divider} from '@chakra-ui/react'
+import { Box, Button, VStack, Text, Container, Input, Image, Center, Tabs, TabList, Tab,
+    Badge, HStack, FormLabel, Divider} from '@chakra-ui/react'
 import React, { useState } from "react";
+import { CategoryNav } from "../categoryNav";
+import { FindByDifficulty } from '../findRecipesByDifficulty';
 import Axios from "axios";
 
 export const Feed = () => {
@@ -23,7 +24,7 @@ export const Feed = () => {
 			}
 		}); 
 	}
-
+    var recipeId = "RecipeId";
     var name = "Selected Name";
     var owner = "Selected Owner";
     var rating = "Selected Rating";
@@ -31,7 +32,6 @@ export const Feed = () => {
     var instruct = <Text>Selected Instructions</Text>;
     var descript = <Text>Selected Descriptions</Text>;
     let displayedComments = [<Text>Selected Comments</Text>];
-
     async function clickRecipe(e) {
         e.preventDefault();
         var buttonId = e.target.id;
@@ -46,21 +46,18 @@ export const Feed = () => {
         var result = await Axios.post('http://localhost:5000/getRatings', {
             recipeId: feed[buttonId]
         });
-        rating = "Rating: "+parseInt(result.data.rating);
-        var result = await Axios.post('http://localhost:5000/getComments', {
+        console.log(result);
+        rating = "Rating: "+parseInt(result);
+        result = await Axios.post('http://localhost:5000/getComments', {
             _id: id,
             recipeId: feed[buttonId]
         });
         let temp = result.data;
         displayedComments = [];
-        if(temp[0] !== "No Comments") {
-            for(var i = 0; i < result.data.length; i++) {
-                var first = ""+temp[i][1];
-                var second = " -"+temp[i][0];
-                displayedComments.push(first + second);
-            }
-        }else{
-            displayedComments[0] = temp[0];
+        for(var i = 0; i < result.data.length; i++) {
+            var first = ""+temp[i][1];
+            var second = " -"+temp[i][0];
+            displayedComments.push(first + second);
         }
         document.getElementById("name").innerHTML = name;
         document.getElementById("owner").innerHTML = owner;
@@ -74,13 +71,12 @@ export const Feed = () => {
     var id = localStorage.getItem('id');
     var feed = localStorage.getItem('feed').split(",");
     let newFeed = [];
-    
     if(feed[0] !== "") { 
         for(var i = 0; i < feed.length; i+=8) {
             let temp = [];
-            //if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== false){
-            //    feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
-            //}
+            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== true){
+                feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
+            }
             temp.push(
                 <Box borderRadius="lg" border="1px" p="10px" w="100%">
                     <HStack>
@@ -107,7 +103,7 @@ export const Feed = () => {
                                     <Input id={i+2} variant="flushed" placeholder='Rating / 5'/>
                                     <Button id={i+3} onClick={setRanking}>Rate</Button>
                                 </Center>
-                                <Button id={i+4} border="1px" bg="transparent" w="100%">Favorite</Button>
+                                <Button id={i+4} onClick={sendRequest} border="1px" bg="transparent" w="100%">Favorite</Button>
                             </VStack>
                         </Box>
                     </HStack>
@@ -145,13 +141,52 @@ export const Feed = () => {
                 recipeId: iD,
                 rating: r
             });
+            console.log(result.data);
         }
         document.getElementById(buttonId-1).value = "";
     }
 
+    function sendRequest(e) {
+        console.log("here is a string" + e)
+        likePost(e);
+    }
+
+    const [userForm, setUserForm] = useState({
+        user: ''
+	})
+
+    const [recipeForm, setRecipeForm] = useState({
+        recipe: ''
+    })
+
+    async function likePost(e) {
+		e.preventDefault();
+        console.log("sending");
+        console.log(localStorage.getItem('username'))
+        console.log(userForm)
+        setUserForm(localStorage.getItem('username'))
+        setRecipeForm("Cheese")
+        console.log("recipe name: " + recipeForm)
+        var result = await Axios.post('http://localhost:5000/arrayTest', {
+            user: localStorage.getItem("username"),
+            recipe: recipeForm,
+            id: formValue.recipeId
+        })
+        .then(response => {
+            console.log(response.data.likedRecipes)
+        })
+        .catch(error => {
+            console.log(error.data)
+            console.log("pain")
+            alert("pain")
+        })
+	}
+
     return(<>
         <Container maxW='100%'>
             <TopNav/>
+            
+            <CategoryNav/>
             <Center>
             <Center>
                 <Box border="1px" borderRadius="lg">
@@ -219,6 +254,8 @@ export const Feed = () => {
                         </Box>
                     </HStack>
                 </Box>
+                
+                
             </Center>
             </Center>
         </Container>
