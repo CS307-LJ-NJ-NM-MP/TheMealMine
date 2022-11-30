@@ -792,6 +792,9 @@ app.post('/updateRecipe', async (req,res) => {
         owner: req.body.owner,
         name: req.body.name
     }
+    const userForm = {
+        user: req.body.username
+    }
 
 
 
@@ -827,8 +830,29 @@ app.post('/updateRecipe', async (req,res) => {
         var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,ingredientUpdate);
     }
 
+    newPersonalRecipesList = []
+    for (var i = 0; i < req.body.newList.length; i += 8) {
+        newSubList = []
+        newSubList.push(req.body.newList[i])
+        newSubList.push(req.body.newList[i + 1])
+        newSubList.push(req.body.newList[i + 2])
+        newSubList.push(req.body.newList[i + 3])
+        newSubList.push(req.body.newList[i + 4])
+        newSubList.push(req.body.newList[i + 5])
+        newSubList.push(req.body.newList[i + 6])
+        newSubList.push(req.body.newList[i + 7])
 
-    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+        console.log(newSubList)
+        newPersonalRecipesList.push(newSubList)
+    }
+    
+    console.log(newPersonalRecipesList)
+
+    var update = {
+        $set: {"personalRecipes": newPersonalRecipesList}
+    }
+
+    var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(userForm, update);
     res.send(result);
 });
 
