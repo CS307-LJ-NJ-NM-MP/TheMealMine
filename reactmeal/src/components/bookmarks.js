@@ -183,6 +183,20 @@ export function Bookmarks() {
         console.log("ingredients " + editFormValue.recipeIngredients)
         console.log("description " + editFormValue.recipeDescription)
 
+        var index = newContributedRecipesList.indexOf(editFormValue.recipeName)
+
+        if (editFormValue.recipeInstructions !== '') {
+            newContributedRecipesList[index + 2] = editFormValue.recipeInstructions
+        }
+        if (editFormValue.recipeIngredients !== '') {
+            newContributedRecipesList[index + 4] = editFormValue.recipeIngredients
+        }
+        if (editFormValue.recipeDescription !== '') {
+            newContributedRecipesList[index + 3] = editFormValue.recipeDescription
+        }
+
+        setList(newContributedRecipesList)
+
 
         var result = await Axios.post('http://localhost:5000/updateRecipe', {
 
@@ -191,18 +205,19 @@ export function Bookmarks() {
             ingredients: editFormValue.recipeIngredients,
             description: editFormValue.recipeDescription,
             owner: id,
-            username: username
+            username: username,
+            newList: newContributedRecipesList
 
         });
 
-        console.log(result.data.name)
+        console.log(result.data.personalRecipes)
 
         window.location.reload(false);
     }
 
     
     const [newContributedRecipesList, setList] = useState([])
-    const [oldRecipe, setOldRecipe] = useState([])
+
 
     async function findContributedRecipes(e) {
         e.preventDefault()
@@ -211,7 +226,17 @@ export function Bookmarks() {
         })
         var newList = list.data
         var len = newList.length;
-        setList(newList)
+        var newList = list.data
+        var finalList = []
+        var len = newList.length;
+        for (var i = 0; i < len; i++) {
+            for (var j = 0; j < newList[i].length; j++) {
+                finalList.push(newList[i][j])
+            }
+        }
+
+        console.log(finalList)
+        setList(finalList)
 
     }
 
@@ -221,48 +246,48 @@ export function Bookmarks() {
 
         var len = newContributedRecipesList.length;
 
-        for(j = 0; j < len; j++) {
+        for(j = 0; j < len; j += 8) {
             let temp = [];
             if(newContributedRecipesList[j] === undefined){break;}
-            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(newContributedRecipesList[j][4]) !== true){
-                newContributedRecipesList[j][4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
+            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(newContributedRecipesList[j + 4]) !== true){
+                newContributedRecipesList[j + 4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
             }
 
             temp.push( 
                 <Box w="500px" border="1px" borderRadius="lg">
                     <HStack p={1}>
-                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j][4]} onClick={clickRecipe}/>
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]} onClick={clickRecipe}/>
                         <VStack spacing="15px" w="90%">
                             <Input 
                             name="recipeName"
                             w="90%" 
                             variant="flushed" 
-                            placeholder={"Re-Enter Title: " + newContributedRecipesList[j][3]}
+                            placeholder={"Re-Enter Title: " + newContributedRecipesList[j + 3]}
                             onChange={handleEdit}
                             />
                             <Textarea 
                             name="recipeDescription"
                             w="90%" 
-                            variant="flushed" p
-                            laceholder={"Description: " + newContributedRecipesList[j][6]}
+                            variant="flushed" 
+                            placeholder={"Description: " + newContributedRecipesList[j + 6]}
                             onChange={handleEdit}
                             />
                             <Input 
                             name="recipeIngredients"
                             w="90%" 
                             variant="flushed" 
-                            placeholder={"Ingredients: " + newContributedRecipesList[j][7]}
+                            placeholder={"Ingredients: " + newContributedRecipesList[j + 7]}
                             onChange={handleEdit}
                             />
                             <Input
                             name="recipeInstructions"
                             w="90%"
                             variant="flushed"
-                            placeholder={"Instructions: " + newContributedRecipesList[j][5]}
+                            placeholder={"Instructions: " + newContributedRecipesList[j + 5]}
                             onChange={handleEdit}
                             />
                             <HStack spacing="80px">
-                                <Text>Likes: {newContributedRecipesList[j][1]}</Text>
+                                <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
                                 <Text>Rating: </Text>
                                 <Text>Category: </Text>
                             </HStack>
