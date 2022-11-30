@@ -76,6 +76,7 @@ export const Feed = () => {
     let newFeed = [];
     
     if(feed[0] !== "") { 
+        console.log(feed)
         for(var i = 0; i < feed.length; i+=8) {
             let temp = [];
             //if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== false){

@@ -28,6 +28,16 @@ app.listen(port);
 
 
 
+app.post('/findContributedRecipes', async(req, res) => {
+    const form = {
+
+        user: req.body.user
+    }
+    
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
+
+    res.send(result.personalRecipes);
+})
 
 app.post('/findByCuisine', async(req, res) => {
     console.log(req.body.cuisine);
@@ -770,9 +780,58 @@ app.post('/addToFeeds', async (req) => {
 });
 
 app.post('/updateRecipe', async (req,res) => {
-    console.log("Place Update Call Here");
-    res.send("Finished");
+
+    const newForm = {
+        name: req.body.name,
+        instructions: req.body.instructions,
+        description: req.body.description,
+        ingredients: req.body.ingredients
+    }
+    
+    const form = {
+        owner: req.body.owner,
+        name: req.body.name
+    }
+
+
+
+    console.log("name " + newForm.name)
+    console.log("instructions " + newForm.instructions)
+    console.log("description " + newForm.description)
+    console.log("ingredients " + newForm.ingredients)
+    console.log("user " + req.body.owner)
+
+    
+
+    var instructionUpdate = {
+        $set: {"instructions": newForm.instructions}
+    };
+
+    var descriptionUpdate = {
+        $set: {"description": newForm.description}
+    };
+
+    var ingredientUpdate = {
+        $set:{"ingredients": newForm.ingredients}
+    };
+
+    if (newForm.instructions !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,instructionUpdate);
+    }
+
+    if (newForm.description !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,descriptionUpdate);
+    }
+
+    if (newForm.ingredients !== '') {
+        var result = await client.db("TheMealMine").collection("Recipes").updateOne(form,ingredientUpdate);
+    }
+
+
+    var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
+    res.send(result);
 });
+
 app.post('/addIngredients', async (req,res) => {
     const form = {
         owner: req.body.user,
