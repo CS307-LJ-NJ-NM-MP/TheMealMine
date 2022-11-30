@@ -57,19 +57,19 @@ export function TopNav() {
         if(username !== "Guest" && password !== "Guest"){
             var result = await Axios.post('http://localhost:5000/getFriends', {
                 _id: id
-		    }); 
-            let friends = result.data;
-            for(var i = 0; i < friends.length; i++){
-                result = await Axios.post('http://localhost:5000/getFriendRanks', {
-                    _id: friends[i]
-                });
-                console.log(parseInt(result.data.ranking));
-                var rank = result.data.ranking + "";
-                let temp = [];
-                temp.push(result.data.user);
-                temp.push(rank);
-                friends[i] = temp;
-            }
+        }); 
+        let friends = result.data;
+        for(var i = 0; i < friends.length; i++){
+            result = await Axios.post('http://localhost:5000/getFriendRanks', {
+                _id: friends[i]
+            });
+            console.log(result.data);
+            let temp = [];
+            temp.push(result.data.user);
+            temp.push(result.data.ranking);
+            temp.push(result.data.image);
+            friends[i] = temp;
+        }
             localStorage.setItem('friends',friends);
             window.location = "/friends";
         }

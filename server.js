@@ -374,56 +374,44 @@ app.post('/addCategory', async(req, res) => {
     
     var projection = {categories: 1};
     result = await client.db("TheMealMine").collection("UserAccounts").findOne(form,projection);
-//    console.log("list " + result.data.likedBy)
     res.send(result);
 })
 
-//CHECKS IF USER IS IN BLOCKED LIST.
-//FriendsPage calls this around line 289
 app.post('/findTheUserReg', async(req, res) => {
-    console.log(req.body.search);
     if (req.body.search === '') {
-        res.status(400).send('query required');
+        res.send(null);
     }
-    const form = {
-        user: req.body.search
-    };
-    //const projection = {user: 1};
-    var string = "" + form.user;
+    var form;
+    if(isNaN(req.body.search)){
+        form = {
+            user: { $regex : req.body.search },
+            blockedList: { $ne: st }
+        }
+    }else{
+        var string = parseInt(req.body.search);
+        form = {
+            ranking: string,
+            blockedList: { $ne: st }
+        }
+    }
     var list = []
-    var result;
     var st = "" + req.body.user;
-    console.log("cant include: " + st);
-    await client.db("TheMealMine").collection("UserAccounts").find(  {
-           
-                //Tries to find all users that match regex and whose blocked List
-                user: { $regex : string }, 
-                //{ $elemMatch: { blockedList : { $ne: st } } } //Hopefully this works   
-                blockedList: { $ne: st }}
+    await client.db("TheMealMine").collection("UserAccounts").find(form
         ).toArray(function(err, docs) {
         docs.forEach(function(doc) {
-            var newString = "" + doc.user
-            list.push(newString)
-        }
-        );
-        //console.log(list);
+            if(doc.privacy + "" !== "Private"){
+                list.push([doc._id,doc.image,doc.user,doc.ranking]);
+            }
+        });
         if (list.length == 0) {
             res.send(null);
-        }
-        else {
-            
+        }else {
             res.send(list);
-            console.log("Sending list: " + list);
         }
     });
-   // console.log("Now i got here");
-    //Now check each name to see if "user" is in their blockedList
-    //Send the list
-    
 });
 
 app.post('/findTheRecReg', async(req, res) => {
-    console.log(req.body.search);
     if (req.body.search === '') {
         res.status(400).send('query required');
     }
