@@ -267,7 +267,7 @@ app.post('/getRatings', async(req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body.recipeId)}
     var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
-    res.send(result);
+    res.send(result.rating);
 });
 app.post('/setRecipeRating', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
@@ -506,7 +506,7 @@ app.post('/getFeed', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-    console.log(result.feed);
+    console.log(result);
     res.send(result.feed);
 });
 
@@ -665,7 +665,7 @@ app.post('/addRecipes', async (req,res) => {
         instructions: req.body.instructions,
         ingredients: req.body.ingredients,
         description: req.body.description,
-        comments: ["No Comments"],
+        comments: [],
         likes: 0
     }
     var result = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
@@ -703,19 +703,11 @@ app.post('/postComment', async (req,res) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body.recipeId)}
     var result = await client.db("TheMealMine").collection("Recipes").findOne(form);
-    let newArr = [];
-    if(result.comments[0] === "No Comments") {
-        let temp = [];
-        temp.push(req.body.user);
-        temp.push(req.body.comments);
-        newArr = result.comments;
-        newArr[0] = temp;
-    }else{
-        let temp = [];
-        temp.push(req.body.user); temp.push(req.body.comments); 
-        newArr = result.comments;
-        newArr.unshift(temp);
-    }
+    
+    let temp = [];
+    temp.push(req.body.user); temp.push(req.body.comments); 
+    let newArr = result.comments;
+    newArr.unshift(temp);
     var update = {$set:{"comments": newArr}};
     await client.db("TheMealMine").collection("Recipes").updateOne(form,update);
 });
