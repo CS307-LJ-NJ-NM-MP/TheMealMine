@@ -11,7 +11,7 @@ export const Feed = () => {
         recipeId: '',
         rating: '',
 	});
-
+    var noNoWords = ["iu", "ass", "bitch", "stupid"];
 
     const handleChange = (e) => {
 		let value = e.target.value;
@@ -43,6 +43,7 @@ export const Feed = () => {
         ingred = feed[buttonId+7];
         instruct = feed[buttonId+5];
         formValue.recipeId = feed[buttonId];
+        //I think the call below is causing an error.
         var result = await Axios.post('http://localhost:5000/getRatings', {
             recipeId: feed[buttonId]
         });
@@ -123,12 +124,41 @@ export const Feed = () => {
     var username = localStorage.getItem('username');
     async function postComment(e) {
         e.preventDefault();
+        /* Maddie's code for content moderation below*/
+        //console.log(formValue.comment);
+        var cmt = formValue.comment.toLowerCase();
+       // console.log("Lowercase: " + cmt);
+        var appropriate = noNoWords.every(word => {
+            //True means there is no bad word ; False means there is a bad word
+            //If the comment does not contain word
+            if (!cmt.includes(word)) { return true; }
+            //If the comment starts with word
+            if (cmt.startsWith(word + " ")) { 
+               // console.log("Oopsies, the word: " + word + " is icky!");
+                return false; 
+            }
+            if (cmt.endsWith(" " + word)) {
+                //console.log("Oopsies, it ends with a bad word: " + word);
+                return false;
+            }
+            if (cmt.includes(" " + word + " ")) {
+                //console.log("Hey Potty Mouth! " + word + " is a bad word! Fuckhead.");
+                return false;
+            }
+            //There can be cases made for punctuation not included as well.
+            return true;
+        });
+       // console.log("isAppropriate: " + appropriate);
+        if (!appropriate) {
+            alert("Hey! You can't post that because it's a bad word!");
+        } else {
         Axios.post('http://localhost:5000/postComment', {
             user: username,
             recipeId: formValue.recipeId,
             comments: formValue.comment
         });
         document.getElementById("comment").value = "";
+        }
     }
     async function setRanking(e) {
         e.preventDefault();
