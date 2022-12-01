@@ -33,7 +33,9 @@ export function Bookmarks() {
         instructDoc: '',
         descriptDoc: '',
         categories: '',
-        prepTime: ''
+        prepTime: '',
+        difficulty: '',
+        cuisine: '',
 	})
     const handleChange = (e) => {
 		let value = e.target.value;
@@ -57,7 +59,9 @@ export function Bookmarks() {
             description: formValue.description,
             categories: formValue.categories,
             username: username,
-            prepTime: formValue.prepTime
+            prepTime: formValue.prepTime,
+            difficulty: formValue.difficulty,
+            cuisine: formValue.cuisine
 
 		});
         Axios.post('http://localhost:5000/addToFeeds', {
@@ -368,6 +372,8 @@ export function Bookmarks() {
                                     <Textarea name="description" w="100%" variant="flushed" placeholder='Enter Description' onChange={handleChange}/>
                                     <Textarea name="categories" w="100%" variant="flushed" placeholder='Enter Categories' onChange={handleChange}/>
                                     <Textarea name="prepTime" w="100%" variant="flushed" placeholder='Enter Prep Time in Hours' onChange={handleChange}/>
+                                    <Textarea name="difficulty" w="100%" variant="flushed" placeholder='Enter Difficulty 1-5' onChange={handleChange}/>
+                                    <Textarea name="cuisine" w="100%" variant="flushed" placeholder='Enter Cuisine' onChange={handleChange}/>
                                     <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
                                 </VStack>
                             </Center>
