@@ -358,25 +358,13 @@ function SearchRecipes() {
 
                 <Stack>
                     <VStack>
-                        <Input id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
-                        <DisplayAllSearch />
-                    </VStack>
-                    <Center>
                         <FindByDifficulty/>
-                    </Center>
-                    <Center>
                         <FindByCuisine/>
-                    </Center>
-                    <Center>
                         <FindByPrepTime/>
-                    </Center>
+                    </VStack>
 
 
                     <HStack>
-                        <Text fontWeight="bold"> My Friends</Text>
-                        <VStack>
-                                <DisplayAllFriends />
-                        </VStack>
                         <VStack>
                             <Select placeholder='Select Allergy/Dietary restriction'>
                                 <option value='option1'>Vegan</option>
@@ -389,19 +377,6 @@ function SearchRecipes() {
                                 <option value='option3'>3</option>
                                 <option value='option4'>4</option>
                                 <option value='option5'>5</option>
-                            </Select>
-                            <Select placeholder='Select Difficulty'>
-                                <option value='option1'>1</option>
-                                <option value='option2'>2</option>
-                                <option value='option3'>3</option>
-                                <option value='option4'>4</option>
-                                <option value='option5'>5</option>
-                            </Select>
-                            <Select placeholder='Select Cuisine'>
-                                <option value='option1'>Chinese</option>
-                                <option value='option2'>Italian</option>
-                                <option value='option3'>Mexican</option>
-                                <option value='option4'>Indian</option>
                             </Select>
                         </VStack>
                         
