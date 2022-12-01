@@ -288,8 +288,7 @@ export function Bookmarks() {
                             />
                             <HStack spacing="80px">
                                 <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
-                                <Text>Rating: </Text>
-                                <Text>Category: </Text>
+                                <Text>Categories: </Text>
                             </HStack>
                         </VStack>
                     </HStack>
