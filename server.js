@@ -96,6 +96,39 @@ app.post('/findByPrepTime', async(req, res) => {
     });
 });
 
+
+app.post('/findByRating', async(req, res) => {
+    console.log(req.body.search);
+    if (req.body.search === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        rating: req.body.rating
+    };
+    var string = "" + form.rating;
+    var ratingInt = parseInt(string)
+    var list = []
+    var array = await client.db("TheMealMine").collection("Recipes").find({
+        rating: {
+            $gte : ratingInt
+        }
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0 || ratingInt > 5) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
+
+
+
 app.post('/findByDifficulty', async(req, res) => {
     console.log(req.body.search);
     if (req.body.search === '') {
@@ -787,6 +820,7 @@ app.post('/addRecipeToUser', async (req,res) => {
     temp.push(req.body.instructions);
     temp.push(req.body.description);
     temp.push(req.body.ingredients);
+    temp.push(req.body.categories);
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
@@ -907,7 +941,7 @@ app.post('/updateRecipe', async (req,res) => {
     }
 
     newPersonalRecipesList = []
-    for (var i = 0; i < req.body.newList.length; i += 8) {
+    for (var i = 0; i < req.body.newList.length; i += 9) {
         newSubList = []
         newSubList.push(req.body.newList[i])
         newSubList.push(req.body.newList[i + 1])
@@ -917,6 +951,7 @@ app.post('/updateRecipe', async (req,res) => {
         newSubList.push(req.body.newList[i + 5])
         newSubList.push(req.body.newList[i + 6])
         newSubList.push(req.body.newList[i + 7])
+        newSubList.push(req.body.newList[i + 8])
 
         console.log(newSubList)
         newPersonalRecipesList.push(newSubList)
