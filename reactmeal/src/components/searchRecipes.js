@@ -10,7 +10,7 @@ import { FindByCuisine } from '../findRecipesByCuisine';
 import { FindByPrepTime } from "../findRecipesByPrep";
 import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
-
+import { FindByRating } from '../findRecipesByRating'
 function SearchRecipes() {
     var username = localStorage.getItem('username');
     const [doRender, setDoRender] = useState("no");
@@ -361,6 +361,7 @@ function SearchRecipes() {
                         <FindByDifficulty/>
                         <FindByCuisine/>
                         <FindByPrepTime/>
+                        <FindByRating/>
                     </VStack>
 
 

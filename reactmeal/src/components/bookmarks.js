@@ -7,6 +7,7 @@ import { Button, VStack, Text, Box, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react';
+import cookbookBackground from '../imgs/cookingBackground.jpeg'
 
 export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -84,7 +85,8 @@ export function Bookmarks() {
             instructions: formValue.instructions,
             ingredients: formValue.ingredients,
             description: formValue.description,
-            favorites: 0
+            favorites: 0,
+            categories: formValue.categories
         });
         console.log(result2.data.personalRecipes);
         contributedRecipes = [];
@@ -106,6 +108,9 @@ export function Bookmarks() {
             temp.push(result2.data.personalRecipes[i][7]);
             /* id */
             temp.push(result2.data.personalRecipes[i][0]);
+            /* categories */
+            temp.push(result2.data.personalRecipes[i][8])
+            
             contributedRecipes.push(temp);
         }
         localStorage.setItem('ranking',result2.data.ranking);
@@ -256,7 +261,7 @@ export function Bookmarks() {
 
         var len = newContributedRecipesList.length;
 
-        for(j = 0; j < len; j += 8) {
+        for(j = 0; j < len; j += 9) {
             let temp = [];
             if(newContributedRecipesList[j] === undefined){break;}
             if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(newContributedRecipesList[j + 4]) !== true){
@@ -298,7 +303,9 @@ export function Bookmarks() {
                             />
                             <HStack spacing="80px">
                                 <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
-                                <Text>Categories: </Text>
+                                <Text>Categories: {
+                                newContributedRecipesList[j + 8].replace(/,/g, ", ")
+                                }</Text>
                             </HStack>
                         </VStack>
                     </HStack>
@@ -318,8 +325,23 @@ export function Bookmarks() {
     return (
     <body onLoad={findContributedRecipes}>
     <ChakraProvider>
-        <Container maxW='100%'>
+        <Container
+        maxW='100%'
+        backgroundRepeat="no-repeat"
+        bgSize="100%"
+        backgroundImage={cookbookBackground}
+        align="center"
+        >
             <TopNav/>
+            <Box
+                m="2%"
+                bg="white" w='45%'
+                p={12}
+                borderRadius='lg' borderWidth="1 px"
+                alignContent={"center"}
+                alignItems="center">
+
+
                 <Center>
                     <FormLabel>Favorited Recipes</FormLabel>
                 </Center>
@@ -379,6 +401,7 @@ export function Bookmarks() {
                             </Center>
                     </ModalContent>
                 </Modal>;
+                </Box>
         </Container>
     </ChakraProvider>
     </body>
