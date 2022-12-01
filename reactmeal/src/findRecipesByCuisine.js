@@ -1,23 +1,19 @@
 import React, { useState } from "react";
-//import Data from "../src/mockdata.json"
 import Axios from "axios";
-import {Button, Container, Input, Center } from '@chakra-ui/react'
+import {Button, Container, Input, Center, VStack, 
+    Box} from '@chakra-ui/react'
 
 export const FindByCuisine = () => {
-
-    const [query, setQuery] = useState("");
-    const [textOut, setTextOut] = useState("");
     const [finalList, setList] = useState([]);
     const recipeItems = finalList.map((name) => 
-        <li>
+        <VStack w="80%">
             {name}
-        </li>
+        </VStack>
     )
     const blankList = []
 
     function sendRequest(e) {
         findRecipes(e);
-        console.log("here is new string" + query)
     }
 
     const [formValue, setFormValue] = useState({
@@ -35,55 +31,50 @@ export const FindByCuisine = () => {
 
     async function findRecipes(e) {
 		e.preventDefault();
-        console.log("sending");
 		if(formValue.cuisine !== '') {
-            console.log("valid: " + formValue.cuisine);
-			var result = await Axios.post('http://localhost:5000/findByCuisine', {
+			await Axios.post('http://localhost:5000/findByCuisine', {
 				cuisine: formValue.cuisine,  
-			})
-            .then(response => {
-                console.log("result: " + response);
+			}).then(response => {
                 if (response.data.length != 0) {
                     response.data.sort((a, b) => a.name - b.name)
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {
-                        recipeArray.push(response.data[i].name)
-                        console.log("name " + response.data[i].name)
+                        recipeArray.push(
+                            <Box m="5px 0 5px 0" w="90%">
+                                <Center>
+                                    <Button w="100%">{response.data[i].name}</Button>
+                                </Center>    
+                            </Box>
+                        );
                     }
                     setList(recipeArray)
                 }
                 else {
-                    setList(blankList)
-                    alert("error")
+                    setList(blankList);
                 }
 
-            })
-            .catch(error => {
-                console.log(error.data)
-                alert("errors out the ass");
             });
 		}
         else {
-            setList(blankList)
-            alert ("No query");
+            setList(blankList);
         }
 	}
    
-    return (
-        <>
-            <Container className="cuisine">
+    return (<>
+            <Box w="100%">
                 <Center>
-                <Input
-                    type="text" 
-                    placeholder = "Enter cuisine name"
-                    name={"cuisine"}
-                    variant="flushed"
-                    onChange={handleChange('cuisine')}
-                />
-                <Button onClick={sendRequest} id="categoryButton">Search by Cuisine</Button>
+                    <Input m="0 5px 0 0" w="200px" type="text" 
+                        placeholder = "Enter cuisine name"
+                        name={"cuisine"}
+                        variant="flushed"
+                        onChange={handleChange('cuisine')}
+                    />
+                    <Button w="200px" onClick={sendRequest} id="categoryButton">Search by Cuisine</Button>
                 </Center>
+                </Box> 
+            <Box padding="5px" w="100%">
                 {recipeItems}
-            </Container>
+            </Box>
         </>
     );
 }
