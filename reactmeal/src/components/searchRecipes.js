@@ -9,7 +9,7 @@ import { FindByCuisine } from '../findRecipesByCuisine';
 import { FindByPrepTime } from "../findRecipesByPrep";
 import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
-
+import { FindByRating } from '../findRecipesByRating'
 function SearchRecipes() {
     var username = localStorage.getItem('username');
     const [setDoRender] = useState("no");
@@ -98,14 +98,38 @@ function SearchRecipes() {
             align="center"
         >
             <TopNav/>      
-            <Box padding="10px" m="30px 0 0 0" bg="white" 
-                borderRadius='lg' borderWidth="1 px" w="40%"
-            >
-                <VStack>
-                    <Box w="100%">
-                        <VStack padding="5px">
-                            <Input w="50%" id="searchBar" name="searchBar" placeholder="Search for recipes" onChange={search}/>
-                            <DisplayAllSearch />
+            <Box 
+            m="2%"
+            bg="white" w='69%'
+            p={4}
+            borderRadius='lg' borderWidth="1 px"
+            alignContent={"center"}
+            alignItems="center">
+
+                <Stack>
+                    <VStack>
+                        <FindByDifficulty/>
+                        <FindByCuisine/>
+                        <FindByPrepTime/>
+                        <FindByRating/>
+                    </VStack>
+
+
+                    <HStack>
+                        <VStack>
+                            <Select placeholder='Select Allergy/Dietary restriction'>
+                                <option value='option1'>Vegan</option>
+                                <option value='option2'>Vegetarian</option>
+                                <option value='option3'>No Wheat</option>
+                            </Select>
+                            <Select placeholder='Select Rating'>
+                                <option value='option1'>1</option>
+                                <option value='option2'>2</option>
+                                <option value='option3'>3</option>
+                                <option value='option4'>4</option>
+                                <option value='option5'>5</option>
+                            </Select>
+
                         </VStack>
                     </Box>
                     <FindByDifficulty/>
