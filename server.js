@@ -675,6 +675,8 @@ app.post('/addRecipes', async (req,res) => {
         categoryArray = []
     }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
+    const difficultyInt = parseInt(req.body.difficulty)
+
     const recipe = {
         name: req.body.name,
         owner: req.body._id,
@@ -686,7 +688,9 @@ app.post('/addRecipes', async (req,res) => {
         comments: ["No Comments"],
         likes: 0,
         categories: categoryArray,
-        prepTime: prepTimeInHrs
+        prepTime: prepTimeInHrs,
+        difficulty: difficultyInt,
+        cuisine: req.body.cuisine
     }
 
     var resultingRecipe = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
