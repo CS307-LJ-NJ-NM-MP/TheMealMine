@@ -106,7 +106,7 @@ function SearchRecipes() {
             alignContent={"center"}
             alignItems="center">
 
-                <Stack>
+                <VStack>
                     <VStack>
                         <FindByDifficulty/>
                         <FindByCuisine/>
@@ -114,8 +114,7 @@ function SearchRecipes() {
                         <FindByRating/>
                     </VStack>
 
-
-                    <HStack>
+                    <Box>
                         <VStack>
                             <Select placeholder='Select Allergy/Dietary restriction'>
                                 <option value='option1'>Vegan</option>

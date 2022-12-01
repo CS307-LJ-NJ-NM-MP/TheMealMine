@@ -16,9 +16,6 @@ export function Bookmarks() {
     let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
     let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
 
-
-
-    
     let stack1 = [];
     let stack2 = [];
 
@@ -166,10 +163,6 @@ export function Bookmarks() {
         nDoc = document.getElementById("description");
         nDoc.value = ""; nDoc.setAttribute('placeholder',descript);
     }
-    var titleId = 0
-    var descId = 0
-
-
     const handleEdit = (e) => {
 		let value = e.target.value;
         console.log("new text: " + value)
@@ -254,9 +247,6 @@ export function Bookmarks() {
         setList(finalList)
 
     }
-
-
-
     if(newContributedRecipesList[0] !== []){
 
         var len = newContributedRecipesList.length;
@@ -264,10 +254,6 @@ export function Bookmarks() {
         for(j = 0; j < len; j += 9) {
             let temp = [];
             if(newContributedRecipesList[j] === undefined){break;}
-            if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(newContributedRecipesList[j + 4]) !== true){
-                newContributedRecipesList[j + 4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
-            }
-
             temp.push( 
                 <Box w="500px" border="1px" borderRadius="lg">
                     <HStack p={1}>
@@ -304,7 +290,7 @@ export function Bookmarks() {
                             <HStack spacing="80px">
                                 <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
                                 <Text>Categories: {
-                                newContributedRecipesList[j + 8].replace(/,/g, ", ")
+                                newContributedRecipesList[j + 8]
                                 }</Text>
                             </HStack>
                         </VStack>

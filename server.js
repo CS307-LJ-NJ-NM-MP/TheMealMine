@@ -709,14 +709,14 @@ app.post('/addRecipes', async (req,res) => {
     }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
     const difficultyInt = parseInt(req.body.difficulty)
-
+    let temp = req.body.ingredients.split(",");
     const recipe = {
         name: req.body.name,
         owner: req.body._id,
         image: req.body.image,
         rating: 0,
         instructions: req.body.instructions,
-        ingredients: req.body.ingredients,
+        ingredients: temp,
         description: req.body.description,
         comments: ["No Comments"],
         likes: 0,
@@ -799,9 +799,6 @@ app.post('/addRecipes', async (req,res) => {
         
         }
     }
-
-
-
     res.send(resultingRecipe);   
 });
 app.post('/addRecipeToUser', async (req,res) => {
@@ -890,12 +887,12 @@ app.post('/addToFeeds', async (req) => {
 });
 
 app.post('/updateRecipe', async (req,res) => {
-
+    let temp = req.body.ingredients.split(",");
     const newForm = {
         name: req.body.name,
         instructions: req.body.instructions,
         description: req.body.description,
-        ingredients: req.body.ingredients
+        ingredients: temp
     }
     
     const form = {
