@@ -9,6 +9,8 @@ import { FindByPrepTime } from "../findRecipesByPrep";
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
 import { FindByAllergens } from '../findRecipesByAllergens'
+import { FindByPantry } from '../findRecipesByPantry';
+
 import Axios from "axios";
 
 
@@ -69,6 +71,7 @@ function SearchRecipes() {
                             <FindByPrepTime/>
                             <FindByRating/>
                             <FindByAllergens/>
+                            <FindByPantry/>
                         </VStack>
                     </Box>
                     <Box m="0 0 0 20px" h="500px">
