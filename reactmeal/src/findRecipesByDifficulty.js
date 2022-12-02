@@ -29,6 +29,30 @@ export const FindByDifficulty = () => {
 		})
     }
 
+    async function addReccomend(e) {
+        //e.preventDefault();
+        console.log(e.target.id)
+        console.log('username:'+localStorage.getItem('username'))
+        var result = await Axios.post('http://localhost:5000/findUser', {
+				user: localStorage.getItem('username'),  
+			});
+        
+        var result3 = await Axios.post('http://localhost:5000/findByDifficulty', {
+            difficulty: formValue.difficulty,  
+        });
+
+        var recentsUsername = localStorage.getItem('username')
+        var recipeName = result3.data[e.target.id].name
+
+        var result4 = await Axios.post('http://localhost:5000/addToRecents', {
+            user: recentsUsername,
+            recentlyViewed: recipeName
+        })
+
+        console.log('results:'+ result4.data.recentlyViewed);
+
+    }
+
     async function findRecipe(e) {
 		e.preventDefault();
         console.log("sending");
@@ -39,13 +63,13 @@ export const FindByDifficulty = () => {
 			}).then(response => {
                 console.log("result: " + response);
                 if (response.data.length !== 0) {
-                    response.data.sort((a, b) => a.difficulty - b.difficulty)
+                  //  response.data.sort((a, b) => a.difficulty - b.difficulty)
                     console.log(response.data[0].difficulty)
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
                             <Box m="5px 0 5px 0">
-                                <Button>{response.data[i].name} Difficulty: {response.data[i].difficulty}</Button>        
+                                <Button id={i} onClick={addReccomend}>{response.data[i].name} Difficulty: {response.data[i].difficulty}</Button>        
                             </Box>
                         );
                     }
