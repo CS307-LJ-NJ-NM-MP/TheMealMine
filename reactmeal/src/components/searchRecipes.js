@@ -10,6 +10,7 @@ import { FindByPrepTime } from "../findRecipesByPrep";
 import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
+import { FindByAllergens } from '../findRecipesByAllergens'
 function SearchRecipes() {
     var friendsList = [];
 
@@ -50,16 +51,8 @@ function SearchRecipes() {
                         <FindByCuisine/>
                         <FindByPrepTime/>
                         <FindByRating/>
+                        <FindByAllergens/>
                     </VStack>
-                    <Box w="100%" padding="5px">
-                            <VStack w="50%">
-                                <Select placeholder='Select Allergy/Dietary restriction'>
-                                    <option value='option1'>Vegan</option>
-                                    <option value='option2'>Vegetarian</option>
-                                    <option value='option3'>No Wheat</option>
-                                </Select>
-                            </VStack>
-                    </Box>
                     
                 </VStack>
             </Box>
