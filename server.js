@@ -27,57 +27,6 @@ app.use(express.json());
 app.listen(port);
 
 
-app.post('/updateRecipeFeed', async (req, res) => {
-    var ObjectId = require('mongodb').ObjectId;
-    const form = {_id: new ObjectId(req.body._id)}
-    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
-
-    let friends = result.friends;
-    if(friends!==undefined) {
-        console.log("you have friends")
-        for(var i = 0; i < friends.length; i++) {
-            var ObjectId = require('mongodb').ObjectId;
-            const form2 = {_id: new ObjectId(friends[i])}
-            result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
-            var oldFeed = result.feed
-            var tempFeed = []
-            var newFeed = []
-            for (var i = 0; i < oldFeed.length; i++) {
-                for (var j = 0; j < oldFeed[i].length; j++) {
-                    tempFeed.push(oldFeed[i][j])
-                }
-            }
-
-            var index = tempFeed.indexOf(req.body.name)
-            if (req.body.instructions !== '') {
-                tempFeed[index + 2] = req.body.instructions
-            }
-            if (req.body.description !== '') {
-                tempFeed[index + 3] = req.body.description
-            }
-            if (req.body.ingredients !== '') {
-                tempFeed[index + 4] = req.body.ingredients
-            }
-
-            for (var j = 0; j < tempFeed.length; j+=8) {
-                var subList = []
-                subList.push(tempFeed[j])
-                subList.push(tempFeed[j + 1])
-                subList.push(tempFeed[j + 2])
-                subList.push(tempFeed[j + 3])
-                subList.push(tempFeed[j + 4])
-                subList.push(tempFeed[j + 5])
-                subList.push(tempFeed[j + 6])
-                subList.push(tempFeed[j + 7])
-                newFeed.push(subList)
-            }
-
-            var update = {$set:{"feed": newFeed}};
-            result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
-        }
-    }
-});
-
 app.post('/findUserById', async(req, res) => {
     var ObjectId = require('mongodb').ObjectId;
 
@@ -1219,7 +1168,63 @@ app.post('/updateRecipe', async (req,res) => {
         $set: {"personalRecipes": newPersonalRecipesList}
     }
 
+
     var result = await client.db("TheMealMine").collection("UserAccounts").updateOne(userForm, update);
+
+    var ObjectId = require('mongodb').ObjectId;
+
+    const idForm = {_id: new ObjectId(req.body._id)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(idForm);
+
+    let friends = result.friends;
+    if(friends!==undefined) {
+        console.log("you have friends")
+        for(var i = 0; i < friends.length; i++) {
+            var ObjectId = require('mongodb').ObjectId;
+            const form2 = {_id: new ObjectId(friends[i])}
+            result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
+            var oldFeed = result.feed
+            var tempFeed = []
+            var newFeed = []
+            for (var i = 0; i < oldFeed.length; i++) {
+                for (var j = 0; j < oldFeed[i].length; j++) {
+                    tempFeed.push(oldFeed[i][j])
+                }
+            }
+
+            var index = tempFeed.indexOf(req.body.name)
+            if (index !== 0) {
+                if (req.body.instructions !== '') {
+                    tempFeed[index + 2] = req.body.instructions
+                }
+                if (req.body.description !== '') {
+                    tempFeed[index + 3] = req.body.description
+                }
+                if (req.body.ingredients !== '') {
+                    tempFeed[index + 4] = req.body.ingredients
+                }
+    
+            }
+
+            for (var j = 0; j < tempFeed.length; j+=8) {
+                var subList = []
+                subList.push(tempFeed[j])
+                subList.push(tempFeed[j + 1])
+                subList.push(tempFeed[j + 2])
+                subList.push(tempFeed[j + 3])
+                subList.push(tempFeed[j + 4])
+                subList.push(tempFeed[j + 5])
+                subList.push(tempFeed[j + 6])
+                subList.push(tempFeed[j + 7])
+                newFeed.push(subList)
+            }
+
+            var update = {$set:{"feed": newFeed}};
+            result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
+        }
+    }
+
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(idForm);
     res.send(result);
 });
 
