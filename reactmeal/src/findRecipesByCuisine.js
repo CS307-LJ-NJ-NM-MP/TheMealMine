@@ -41,8 +41,7 @@ export const FindByCuisine = () => {
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
                             <Box m="5px 0 5px 0">
-                                    <Button>{response.data[i].name}</Button>
-                                
+                                <Button>{response.data[i].name}</Button>
                             </Box>
                         );
                     }
