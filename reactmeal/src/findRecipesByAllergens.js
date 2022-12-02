@@ -76,8 +76,7 @@ export const FindByAllergens = () => {
                         recipeArray.push(
 
                             <Box m="5px 0 5px 0">
-                                    <Button id={i} onClick={addReccomend} w="100%">Recipe Name: {response.data[i].name} Allergens: {allergenString}</Button>  
-
+                                    <Button w="100%">{response.data[i].name} Allergens: {allergenString}</Button>  
                             </Box>
                         );
                     }
