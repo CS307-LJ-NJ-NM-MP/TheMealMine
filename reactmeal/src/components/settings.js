@@ -63,6 +63,7 @@ export function Settings() {
     }
     async function publicChange(e) {
         e.preventDefault();
+        console.log("changing to public")
         formValue.privacy = "Public";
         var result = await Axios.post('http://localhost:5000/updateSettings', {
 			_id: id,
@@ -99,6 +100,7 @@ export function Settings() {
         privacySetting = "Public";
         formValue.privacy = '';
         document.getElementById("privacyLabel").innerHTML = "Current Status: " + privacySetting;
+        console.log("it's public now")
     }
     async function rememberChange(e) {
         e.preventDefault();

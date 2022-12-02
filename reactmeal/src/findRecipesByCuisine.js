@@ -29,6 +29,31 @@ export const FindByCuisine = () => {
 		})
     }
 
+
+    async function addReccomend(e) {
+        //e.preventDefault();
+        console.log(e.target.id)
+        console.log('username:'+localStorage.getItem('username'))
+        var result = await Axios.post('http://localhost:5000/findUser', {
+				user: localStorage.getItem('username'),  
+			});
+        
+        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
+            cuisine: formValue.cuisine,  
+        });
+
+        var recentsUsername = localStorage.getItem('username')
+        var recipeName = result3.data[e.target.id].name
+
+        var result4 = await Axios.post('http://localhost:5000/addToRecents', {
+            user: recentsUsername,
+            recentlyViewed: recipeName
+        })
+
+        console.log('results:'+ result4.data.recentlyViewed);
+
+    }
+
     async function findRecipes(e) {
 		e.preventDefault();
 		if(formValue.cuisine !== '') {
@@ -41,8 +66,9 @@ export const FindByCuisine = () => {
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
                             <Box m="5px 0 5px 0">
-                                    <Button>{response.data[i].name}</Button>
-                                
+
+                                <Button id={i} onClick={addReccomend}>{response.data[i].name}</Button>
+
                             </Box>
                         );
                     }

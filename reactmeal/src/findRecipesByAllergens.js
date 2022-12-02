@@ -6,7 +6,7 @@ import {Button, Container, Input, Center, VStack,
 export const FindByAllergens = () => {
     const [finalList, setList] = useState([]);
     const recipeItems = finalList.map((name) => 
-        <VStack w="80%">
+        <VStack>
             {name}
         </VStack>
     )
@@ -27,6 +27,30 @@ export const FindByAllergens = () => {
 				[name]: event.target.value,
 			}
 		})
+    }
+
+    async function addReccomend(e) {
+        //e.preventDefault();
+        console.log(e.target.id)
+        console.log('username:'+localStorage.getItem('username'))
+        var result = await Axios.post('http://localhost:5000/findUser', {
+				user: localStorage.getItem('username'),  
+			});
+        
+        var result3 = await Axios.post('http://localhost:5000/findByAllergens', {
+            allergens: formValue.allergens,  
+        });
+
+        var recentsUsername = localStorage.getItem('username')
+        var recipeName = result3.data[e.target.id].name
+
+        var result4 = await Axios.post('http://localhost:5000/addToRecents', {
+            user: recentsUsername,
+            recentlyViewed: recipeName
+        })
+
+        console.log('results:'+ result4.data.recentlyViewed);
+
     }
 
     async function findRecipes(e) {
@@ -50,10 +74,9 @@ export const FindByAllergens = () => {
 
                         }
                         recipeArray.push(
-                            <Box m="5px 0 5px 0" w="90%">
-                                <Center>
-                                    <Button w="100%">Recipe Name: {response.data[i].name} Allergens: {allergenString}</Button>
-                                </Center>    
+
+                            <Box m="5px 0 5px 0">
+                                    <Button w="100%">{response.data[i].name} Allergens: {allergenString}</Button>  
                             </Box>
                         );
                     }
@@ -82,8 +105,19 @@ export const FindByAllergens = () => {
                     <Button w="200px" onClick={sendRequest} id="allergyButton">Search by allergen</Button>
                 </Center>
                 </Box> 
-            <Box padding="5px" w="100%">
-                {recipeItems}
+                <Box padding="5px">
+                <VStack m="10px 10px 10px 10px" maxH="150px" overflow="hidden" overflowY="scroll"
+                    sx={{
+                        '&::-webkit-scrollbar': {
+                        width: '0px',
+                        backgroundColor: `transparent`,
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `transparent`,
+                        },
+                    }}>
+                    {recipeItems}
+                </VStack>
             </Box>
         </>
     );

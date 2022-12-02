@@ -364,7 +364,16 @@ function FriendsPage() {
                                     <Button id="descending" onClick={descending}>Descending</Button>
                                 </HStack>
                                 <Divider/>
-                                <VStack>
+                                <VStack m="10px 10px 0 10px" maxH="200px" overflow="hidden" overflowY="scroll"
+                                    sx={{
+                                        '&::-webkit-scrollbar': {
+                                        width: '0px',
+                                        backgroundColor: `transparent`,
+                                        },
+                                        '&::-webkit-scrollbar-thumb': {
+                                        backgroundColor: `transparent`,
+                                        },
+                                    }}>
                                     {friends}
                                 </VStack>
                             </VStack>
