@@ -6,7 +6,7 @@ import {Button, Container, Input, Center, VStack,
 export const FindByAllergens = () => {
     const [finalList, setList] = useState([]);
     const recipeItems = finalList.map((name) => 
-        <VStack w="80%">
+        <VStack>
             {name}
         </VStack>
     )
@@ -74,10 +74,10 @@ export const FindByAllergens = () => {
 
                         }
                         recipeArray.push(
-                            <Box m="5px 0 5px 0" w="90%">
-                                <Center>
-                                    <Button id={i} onClick={addReccomend} w="100%">Recipe Name: {response.data[i].name} Allergens: {allergenString}</Button>
-                                </Center>    
+
+                            <Box m="5px 0 5px 0">
+                                    <Button id={i} onClick={addReccomend} w="100%">Recipe Name: {response.data[i].name} Allergens: {allergenString}</Button>  
+
                             </Box>
                         );
                     }
@@ -106,8 +106,19 @@ export const FindByAllergens = () => {
                     <Button w="200px" onClick={sendRequest} id="allergyButton">Search by allergen</Button>
                 </Center>
                 </Box> 
-            <Box padding="5px" w="100%">
-                {recipeItems}
+                <Box padding="5px">
+                <VStack m="10px 10px 10px 10px" maxH="150px" overflow="hidden" overflowY="scroll"
+                    sx={{
+                        '&::-webkit-scrollbar': {
+                        width: '0px',
+                        backgroundColor: `transparent`,
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `transparent`,
+                        },
+                    }}>
+                    {recipeItems}
+                </VStack>
             </Box>
         </>
     );

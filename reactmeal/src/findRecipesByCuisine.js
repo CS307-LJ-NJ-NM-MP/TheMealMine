@@ -66,8 +66,9 @@ export const FindByCuisine = () => {
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
                             <Box m="5px 0 5px 0">
-                                    <Button id={i} onClick={addReccomend}>{response.data[i].name}</Button>
-                                
+
+                                <Button id={i} onClick={addReccomend}>{response.data[i].name}</Button>
+
                             </Box>
                         );
                     }
