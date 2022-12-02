@@ -13,8 +13,8 @@ export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
     var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
-    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
-    let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
+//    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
+
 
     let stack1 = [];
     let stack2 = [];
@@ -90,26 +90,104 @@ export function Bookmarks() {
         window.location.reload(false);
 
     }
+
+    const [favoriteRecipes, setFavoriteRecipes] = useState([])
+
+    async function findFavoriteRecipes(e) {
+        e.preventDefault()
+        //Find the favorite recipes list
+        console.log("user id")
+        console.log(id)
+        var result = await Axios.post('http://localhost:5000/findFavoriteRecipes', {
+            userId: id
+        })
+        console.log(result.data)
+
+        var recipeArray = []
+
+        for (var i = 0; i < result.data.length; i++) {
+            //find the recipe
+            var recipe = await Axios.post('http://localhost:5000/findRecipeById', {
+                recipeId: result.data[i]
+            })
+
+            console.log("recipe name")
+            console.log(recipe.data.name)
+
+            //find the recipe owner
+            var recipeOwner = await Axios.post('http://localhost:5000/findUserById', {
+                userId: recipe.data.owner
+            })
+
+            //add favorite recipes
+            recipeArray.push(recipe.data.name)
+            recipeArray.push(recipeOwner.data)
+            recipeArray.push(recipe.data.description)
+            recipeArray.push(recipe.data.likes)
+            recipeArray.push(recipe.data.image)
+            recipeArray.push(recipe.data.ingredients.join())
+            recipeArray.push(recipe.data.instructions)
+            if (recipe.data.prepTime > 1) {
+               var string = "" + recipe.data.prepTime + " hrs"
+               recipeArray.push(string)
+            }
+            else if (recipe.data.prepTime == 1) {
+                var string = "" + recipe.data.prepTime + " hr"
+                recipeArray.push(string)
+            }
+            else {
+                var timeInMins = recipe.data.prepTime * 60
+                var string = "" + timeInMins + " mins"
+                recipeArray.push(string)
+            }
+
+        }
+        setFavoriteRecipes(recipeArray)
+        console.log(favoriteRecipes)
+    }
+
+
     if(favoriteRecipes[0] !== ''){
         var len = favoriteRecipes.length;
-        for(var i = 0; i < len; i+=40){
+
+        for(var j = 0; j < len; j+=8){
             let temp = [];
-            for(var j = i; j < i+40; j+=8) {
-                if(favoriteRecipes[j] === undefined) {break;}
-                const element = 
-                        <HStack spacing="10px">
-                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
-                            <VStack>
-                                <Text w="100px">{favoriteRecipes[j+1]}</Text>
-                                <Text w="100px">{favoriteRecipes[j+2]}</Text>
-                                <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
-                                <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
-                            </VStack>
-                        </HStack>;
-                temp.push(element);
+            if(favoriteRecipes[j] === undefined) 
+            {
+                break;
             }
-            stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
+            temp.push( 
+                <Box w="400px" border="1px" borderRadius="lg">
+                    <HStack p={1}>
+
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={favoriteRecipes[j + 4]}/>
+                        <VStack spacing="15px" w="90%">
+                            <Text w="300px" >{favoriteRecipes[j]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Chef: {favoriteRecipes[j + 1]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Description: {favoriteRecipes[j+2]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Ingredients: {favoriteRecipes[j+5]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Instructions: {favoriteRecipes[j+6]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <HStack spacing="80px">
+                                <Text>Likes: {favoriteRecipes[j + 3]}</Text>
+                                <Text>Prep Time: {favoriteRecipes[j + 7]}</Text>
+                            </HStack>
+                        </VStack>
+                    </HStack>
+                    <Center>
+                        <Divider w="90%" p="5px" />
+                    </Center>
+                </Box>
+            );
+            stack1.push(temp)
         }
+
+
+
     }
 
     const handleEdit = (e) => {
@@ -147,7 +225,7 @@ export function Bookmarks() {
         }
 
         setList(newContributedRecipesList)
-
+        
         await Axios.post('http://localhost:5000/updateRecipe', {
             name: editFormValue.recipeName,
             instructions: editFormValue.recipeInstructions,
@@ -159,10 +237,17 @@ export function Bookmarks() {
 
         });
 
+
+
         window.location.reload(false);
     }
 
     const [newContributedRecipesList, setList] = useState([])
+
+    async function findAllRecipes(e) {
+        findFavoriteRecipes(e)
+        findContributedRecipes(e)
+    }
 
     async function findContributedRecipes(e) {
         e.preventDefault()
@@ -241,7 +326,7 @@ export function Bookmarks() {
         }
     }
     return (
-    <body onLoad={findContributedRecipes}>
+    <body onLoad={findAllRecipes}>
     <ChakraProvider>
         <Container
         maxW='100%'
