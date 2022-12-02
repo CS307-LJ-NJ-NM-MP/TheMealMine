@@ -30,6 +30,30 @@ export const FindByPrepTime = () => {
 		})
     }
 
+    async function addReccomend(e) {
+        //e.preventDefault();
+        console.log(e.target.id)
+        console.log('username:'+localStorage.getItem('username'))
+        var result = await Axios.post('http://localhost:5000/findUser', {
+				user: localStorage.getItem('username'),  
+			});
+        
+        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
+            cuisine: formValue.cuisine,  
+        });
+
+        var recentsUsername = localStorage.getItem('username')
+        var recipeName = result3.data[e.target.id].name
+
+        var result4 = await Axios.post('http://localhost:5000/addToRecents', {
+            user: recentsUsername,
+            recentlyViewed: recipeName
+        })
+
+        console.log('results:'+ result4.data.recentlyViewed);
+
+    }
+
     async function findRecipe(e) {
 		e.preventDefault();
 		if(formValue.prepTime !== '') {
@@ -45,7 +69,7 @@ export const FindByPrepTime = () => {
                             recipeArray.push(
                                 <Box m="5px 0 5px 0" w="90%">
                                     <Center>
-                                        <Button w="100%">{response.data[i].name} Prep Time: {response.data[i].prepTime} </Button>
+                                        <Button id={i} onClick={addReccomend} w="100%">{response.data[i].name} Prep Time: {response.data[i].prepTime} </Button>
                                     </Center>    
                                 </Box>
                             );
@@ -55,7 +79,7 @@ export const FindByPrepTime = () => {
                             recipeArray.push(
                                 <Box m="5px 0 5px 0" w="90%">
                                     <Center>
-                                        <Button w="100%">{response.data[i].name} Prep Time: {timeInMins} mins</Button>
+                                        <Button id={i} onClick={addReccomend} w="100%">{response.data[i].name} Prep Time: {timeInMins} mins</Button>
                                     </Center>    
                                 </Box>  
                             );
@@ -63,7 +87,7 @@ export const FindByPrepTime = () => {
                         else {
                             recipeArray.push(
                                 <Box m="5px 0 5px 0">
-                                    <Button>{response.data[i].name} Prep Time: {response.data[i].prepTime} hrs</Button>    
+                                    <Button id={i} onClick={addReccomend}>{response.data[i].name} Prep Time: {response.data[i].prepTime} hrs</Button>    
                                 </Box>
                             );
                         }
