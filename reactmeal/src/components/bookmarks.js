@@ -191,6 +191,7 @@ export function Bookmarks() {
     }
 
     const handleEdit = (e) => {
+        console.log(editFormValue)
 		let value = e.target.value;
 		let name = e.target.name;
 		setEditFormValue((prevState) => {
@@ -225,17 +226,23 @@ export function Bookmarks() {
         }
 
         setList(newContributedRecipesList)
+
+
         
-        await Axios.post('http://localhost:5000/updateRecipe', {
+        var result = await Axios.post('http://localhost:5000/updateRecipe', {
             name: editFormValue.recipeName,
             instructions: editFormValue.recipeInstructions,
             ingredients: editFormValue.recipeIngredients,
             description: editFormValue.recipeDescription,
             owner: id,
             username: username,
-            newList: newContributedRecipesList
+            newList: newContributedRecipesList,
+            _id: id
 
         });
+
+
+        console.log(result.data)
 
 
 
