@@ -225,8 +225,10 @@ export function Bookmarks() {
         }
 
         setList(newContributedRecipesList)
+
+
         
-        await Axios.post('http://localhost:5000/updateRecipe', {
+        var result = await Axios.post('http://localhost:5000/updateRecipe', {
             name: editFormValue.recipeName,
             instructions: editFormValue.recipeInstructions,
             ingredients: editFormValue.recipeIngredients,
@@ -236,6 +238,16 @@ export function Bookmarks() {
             newList: newContributedRecipesList
 
         });
+
+        result = await Axios.post('http://localhost:5000/updateRecipeFeed', {
+            name: editFormValue.recipeName,
+            instructions: editFormValue.recipeInstructions,
+            ingredients: editFormValue.recipeIngredients,
+            description: editFormValue.recipeDescription,
+            _id: id
+        });
+
+        console.log(result.data)
 
 
 
