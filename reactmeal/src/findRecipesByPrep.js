@@ -88,9 +88,9 @@ export const FindByPrepTime = () => {
             <Center>
             <Input m="0 5px 0 0" w="200px" type="text" 
                         placeholder = "Enter prep time (hrs)"
-                        name={"preptime"}
+                        name={"prepTime"}
                         variant="flushed"
-                        onChange={handleChange('preptime')}
+                        onChange={handleChange('prepTime')}
                     />
             <Button w="200px" onClick={sendRequest} id="categoryButton">Search by prepTime</Button>
             </Center>

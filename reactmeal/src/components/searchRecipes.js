@@ -73,32 +73,11 @@ function SearchRecipes() {
                     <FindByCuisine/>
                     <FindByPrepTime/>
                     <Box w="100%" padding="5px">
-                        
                             <VStack w="50%">
                                 <Select placeholder='Select Allergy/Dietary restriction'>
                                     <option value='option1'>Vegan</option>
                                     <option value='option2'>Vegetarian</option>
                                     <option value='option3'>No Wheat</option>
-                                </Select>
-                                <Select placeholder='Select Rating'>
-                                    <option value='option1'>1</option>
-                                    <option value='option2'>2</option>
-                                    <option value='option3'>3</option>
-                                    <option value='option4'>4</option>
-                                    <option value='option5'>5</option>
-                                </Select>
-                                <Select placeholder='Select Difficulty'>
-                                    <option value='option1'>1</option>
-                                    <option value='option2'>2</option>
-                                    <option value='option3'>3</option>
-                                    <option value='option4'>4</option>
-                                    <option value='option5'>5</option>
-                                </Select>
-                                <Select placeholder='Select Cuisine'>
-                                    <option value='option1'>Chinese</option>
-                                    <option value='option2'>Italian</option>
-                                    <option value='option3'>Mexican</option>
-                                    <option value='option4'>Indian</option>
                                 </Select>
                             </VStack>
                     </Box>
@@ -110,3 +89,4 @@ function SearchRecipes() {
     ); 
 }
 export default SearchRecipes;
+
