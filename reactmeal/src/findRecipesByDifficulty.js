@@ -37,8 +37,8 @@ export const FindByDifficulty = () => {
 				user: localStorage.getItem('username'),  
 			});
         
-        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
-            cuisine: formValue.cuisine,  
+        var result3 = await Axios.post('http://localhost:5000/findByDifficulty', {
+            difficulty: formValue.difficulty,  
         });
 
         var recentsUsername = localStorage.getItem('username')
@@ -63,7 +63,7 @@ export const FindByDifficulty = () => {
 			}).then(response => {
                 console.log("result: " + response);
                 if (response.data.length !== 0) {
-                    response.data.sort((a, b) => a.difficulty - b.difficulty)
+                  //  response.data.sort((a, b) => a.difficulty - b.difficulty)
                     console.log(response.data[0].difficulty)
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {

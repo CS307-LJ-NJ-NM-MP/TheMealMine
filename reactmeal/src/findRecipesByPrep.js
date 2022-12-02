@@ -38,8 +38,8 @@ export const FindByPrepTime = () => {
 				user: localStorage.getItem('username'),  
 			});
         
-        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
-            cuisine: formValue.cuisine,  
+        var result3 = await Axios.post('http://localhost:5000/findByPrepTime', {
+            prepTime: formValue.prepTime,  
         });
 
         var recentsUsername = localStorage.getItem('username')
@@ -62,7 +62,7 @@ export const FindByPrepTime = () => {
 			})
             .then(response => {
                 if (response.data.length !== 0) {
-                    response.data.sort((a, b) => a.prepTime - b.prepTime)
+//                    response.data.sort((a, b) => a.prepTime - b.prepTime)
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {
                         if (response.data[i].prepTime == 1) {

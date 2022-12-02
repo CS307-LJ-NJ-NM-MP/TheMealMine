@@ -37,8 +37,8 @@ export const FindByRating = () => {
 				user: localStorage.getItem('username'),  
 			});
         
-        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
-            cuisine: formValue.cuisine,  
+        var result3 = await Axios.post('http://localhost:5000/findByrating', {
+            rating: formValue.rating,  
         });
 
         var recentsUsername = localStorage.getItem('username')
@@ -61,7 +61,7 @@ export const FindByRating = () => {
 			})
             .then(response => {
                 if (response.data.length !== 0) {
-                    response.data.sort((a, b) => b.rating - a.rating)
+                  //  response.data.sort((a, b) => b.rating - a.rating)
                     console.log(response.data[0].rating)
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {

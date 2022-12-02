@@ -37,8 +37,8 @@ export const FindByAllergens = () => {
 				user: localStorage.getItem('username'),  
 			});
         
-        var result3 = await Axios.post('http://localhost:5000/findByCuisine', {
-            cuisine: formValue.cuisine,  
+        var result3 = await Axios.post('http://localhost:5000/findByAllergens', {
+            allergens: formValue.allergens,  
         });
 
         var recentsUsername = localStorage.getItem('username')
