@@ -87,7 +87,7 @@ export const Feed = () => {
 
     if(feed[0] !== "") { 
         console.log(feed)
-        for(var i = 0; i < feed.length; i+=9) {
+        for(var i = 0; i < feed.length; i+=10) {
             let temp = [];
             //if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== false){
             //    feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
