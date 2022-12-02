@@ -87,33 +87,8 @@ export function Bookmarks() {
             favorites: 0,
             categories: formValue.categories
         });
-        contributedRecipes = [];
-        for(var i = 0; i < result2.data.personalRecipes.length; i++){
-            let temp = [];
-            /* img */
-            temp.push(result2.data.personalRecipes[i][4]);
-            /* name */
-            temp.push(result2.data.personalRecipes[i][3]);
-            /* owner */
-            temp.push(result2.data.personalRecipes[i][2]);
-            /* favorites */
-            temp.push(result2.data.personalRecipes[i][1]);
-            /* description */
-            temp.push(result2.data.personalRecipes[i][6]);
-            /* instructions */
-            temp.push(result2.data.personalRecipes[i][5]);
-            /* ingredients */
-            temp.push(result2.data.personalRecipes[i][7]);
-            /* id */
-            temp.push(result2.data.personalRecipes[i][0]);
-            /* categories */
-            temp.push(result2.data.personalRecipes[i][8])
-            
-            contributedRecipes.push(temp);
-        }
-        localStorage.setItem('ranking',result2.data.ranking);
-        localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
+
     }
     if(favoriteRecipes[0] !== ''){
         var len = favoriteRecipes.length;
@@ -136,34 +111,7 @@ export function Bookmarks() {
             stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
         }
     }
-    var recipeId = "RecipeId";
-    var name = "Selected Name";
-    var image = "Selected Image";
-    var ingred = "Selected Ingredients";
-    var instruct = "Selected Instructions";
-    var descript = "Selected Descriptions";
-    async function clickRecipe(e) {
-        e.preventDefault();
-        var buttonId = e.target.name;
-        buttonId = parseInt(buttonId);
-        recipeId = contributedRecipes[buttonId+7]
 
-        name = contributedRecipes[buttonId+1];
-        image = contributedRecipes[buttonId];
-        descript = contributedRecipes[buttonId+4];
-        ingred = contributedRecipes[buttonId+6];
-        instruct = contributedRecipes[buttonId+5];
-        var nDoc = document.getElementById("name");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',name);
-        nDoc = document.getElementById("image");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',image);
-        nDoc = document.getElementById("ingredients");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',ingred);
-        nDoc = document.getElementById("instructions");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',instruct);
-        nDoc = document.getElementById("description");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',descript);
-    }
     const handleEdit = (e) => {
 		let value = e.target.value;
 		let name = e.target.name;
@@ -243,7 +191,7 @@ export function Bookmarks() {
             temp.push( 
                 <Box w="500px" border="1px" borderRadius="lg">
                     <HStack p={1}>
-                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]} onClick={clickRecipe}/>
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]}/>
                         <VStack spacing="15px" w="90%">
                             <Input 
                             name="recipeName"
@@ -379,3 +327,33 @@ export function Bookmarks() {
 }
 
 export default Bookmarks;
+
+/*
+        contributedRecipes = [];
+        for(var i = 0; i < result2.data.personalRecipes.length; i++){
+            let temp = [];
+            //img
+            temp.push(result2.data.personalRecipes[i][4]);
+            //name
+            temp.push(result2.data.personalRecipes[i][3]);
+            //owner
+            temp.push(result2.data.personalRecipes[i][2]);
+            //favorites
+            temp.push(result2.data.personalRecipes[i][1]);
+            //description
+            temp.push(result2.data.personalRecipes[i][6]);
+            //instructions
+            temp.push(result2.data.personalRecipes[i][5]);
+            //ingredients
+            temp.push(result2.data.personalRecipes[i][7]);
+            //id
+            temp.push(result2.data.personalRecipes[i][0]);
+            //
+            temp.push(result2.data.personalRecipes[i][8])
+            
+            contributedRecipes.push(temp);
+        }
+        localStorage.setItem('ranking',result2.data.ranking);
+        localStorage.setItem('contributedRecipes',contributedRecipes);
+
+*/

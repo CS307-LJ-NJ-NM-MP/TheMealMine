@@ -886,8 +886,7 @@ app.post('/addRecipeToUser', async (req,res) => {
         temp.push("None")
     }
 
-    temp.push(req.body.categories);
-    temp.push(comments);
+//    temp.push(comments);
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
