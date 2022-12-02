@@ -59,7 +59,9 @@ export function Bookmarks() {
             username: username,
             prepTime: formValue.prepTime,
             difficulty: formValue.difficulty,
-            cuisine: formValue.cuisine
+            cuisine: formValue.cuisine,
+            allergens: formValue.allergens
+
 
 		});
         Axios.post('http://localhost:5000/addToFeeds', {
@@ -382,6 +384,7 @@ export function Bookmarks() {
                                     <Textarea name="prepTime" w="100%" variant="flushed" placeholder='Enter Prep Time in Hours' onChange={handleChange}/>
                                     <Textarea name="difficulty" w="100%" variant="flushed" placeholder='Enter Difficulty 1-5' onChange={handleChange}/>
                                     <Textarea name="cuisine" w="100%" variant="flushed" placeholder='Enter Cuisine' onChange={handleChange}/>
+                                    <Textarea name="allergens" w="100%" variant="flushed" placeholder='Enter Allergens & Dietary Restrictions' onChange={handleChange}/>
                                     <Button w="100%" borderRadius="lg" onClick={addRecipe}>Add</Button>
                                 </VStack>
                             </Center>

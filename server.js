@@ -707,6 +707,10 @@ app.post('/addRecipes', async (req,res) => {
     if (categoryArray == '') {
         categoryArray = []
     }
+    let allergensArray = req.body.allergens.split(",")
+    if (allergensArray == '') {
+        allergensArray = []
+    }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
     const difficultyInt = parseInt(req.body.difficulty)
     let temp = req.body.ingredients.split(",");
@@ -723,7 +727,8 @@ app.post('/addRecipes', async (req,res) => {
         categories: categoryArray,
         prepTime: prepTimeInHrs,
         difficulty: difficultyInt,
-        cuisine: req.body.cuisine
+        cuisine: req.body.cuisine,
+        allergens: allergensArray
     }
 
     var resultingRecipe = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
