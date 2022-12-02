@@ -739,7 +739,7 @@ app.post('/addRecipes', async (req,res) => {
     }
     else {
         console.log("there be categories yargh")
-        console.log(rea.body.categories)
+        console.log(req.body.categories)
         temporaryCategoryArray = req.body.categories.split(",")
         for (var i = 0; i < req.body.categories.length; i++) {
             categoryArray.push(temporaryCategoryArray[i])
@@ -760,8 +760,7 @@ app.post('/addRecipes', async (req,res) => {
             for (var i = 0; i < allergensArray.length; i++) {
                 finalAllergyList.push(allergensArray[i])
             }
-            console.log("there are allergies")
-            console.log(finalAllergyList)
+
         }
         else {
             console.log("no allergies")
@@ -770,8 +769,7 @@ app.post('/addRecipes', async (req,res) => {
     const prepTimeInHrs = parseFloat(req.body.prepTime)
     const difficultyInt = parseInt(req.body.difficulty)
     let temp = req.body.ingredients.split(",");
-    console.log("categories")
-    console.log(categoryArray)
+
     const recipe = {
         name: req.body.name,
         owner: req.body._id,
@@ -934,6 +932,7 @@ app.post('/addToFeeds', async (req) => {
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     let friends = result.friends;
     if(friends!==undefined) {
+        console.log("you have friends")
         for(var i = 0; i < friends.length; i++) {
             var ObjectId = require('mongodb').ObjectId;
             const form2 = {_id: new ObjectId(friends[i])}
@@ -947,7 +946,9 @@ app.post('/addToFeeds', async (req) => {
             temp.push(req.body.instructions);
             temp.push(req.body.description);
             temp.push(req.body.ingredients);
+            console.log(temp)
             let feed = result.feed;
+            console.log(feed)
             feed.unshift(temp);
             var update = {$set:{"feed": feed}};
             result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form2,update);
