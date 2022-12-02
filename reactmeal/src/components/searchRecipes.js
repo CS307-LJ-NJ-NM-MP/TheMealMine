@@ -10,24 +10,8 @@ import { FindByPrepTime } from "../findRecipesByPrep";
 import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
-function SearchRecipes() {    
 import { FindByAllergens } from '../findRecipesByAllergens'
-function SearchRecipes() {
-    var friendsList = [];
-
-    var iS = localStorage.getItem('isSearching');
-
-    if (iS === "no") {
-			var userFriendsList = localStorage.getItem('friendsList');
-			if(userFriendsList !== null) {
-			    friendsList = userFriendsList.split(",");
-			} else {
-				friendsList = [];
-			}
-    } else {
-        friendsList = localStorage.getItem('searchingFriends').split(",");
-    }
-
+function SearchRecipes() {    
     return(
         <Container
             maxW = '100%'
