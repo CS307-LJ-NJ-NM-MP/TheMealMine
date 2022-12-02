@@ -843,6 +843,7 @@ app.post('/addRecipeToUser', async (req,res) => {
     let personalRecipes = result.personalRecipes;
     var ranking = result.ranking+1;
     var contributions = result.contributions+1;
+    let comments = ["No comments"];
     let temp = [];
     temp.push(req.body.recipeId);
     temp.push(req.body.favorites);
@@ -853,6 +854,7 @@ app.post('/addRecipeToUser', async (req,res) => {
     temp.push(req.body.description);
     temp.push(req.body.ingredients);
     temp.push(req.body.categories);
+    temp.push(comments);
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
@@ -894,6 +896,18 @@ app.post('/getComments',async (req,res) => {
     res.send(result.comments);
 });
 
+app.post('/addToFavorites',async (req,res) => {
+    console.log(req.body.userId);
+    console.log(req.body.recipeId);
+    var ObjectId = require('mongodb').ObjectId;
+    const form = {_id: new ObjectId(req.body.userId)}
+    var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
+    let temp = result.favoriteRecipes;
+    temp.push(req.body.recipeId);
+    var update = {$set:{"favoriteRecipes": temp}};
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
+});
+
 app.post('/addToFeeds', async (req) => {
     var ObjectId = require('mongodb').ObjectId;
     const form = {_id: new ObjectId(req.body._id)}
@@ -905,6 +919,7 @@ app.post('/addToFeeds', async (req) => {
             const form2 = {_id: new ObjectId(friends[i])}
             result = await client.db("TheMealMine").collection("UserAccounts").findOne(form2);
             let temp = [];
+            let comments = ["No Comments"];
             temp.push(req.body.recipeId);
             temp.push(req.body.favorites);
             temp.push(req.body.owner);
@@ -913,6 +928,7 @@ app.post('/addToFeeds', async (req) => {
             temp.push(req.body.instructions);
             temp.push(req.body.description);
             temp.push(req.body.ingredients);
+            temp.push(comments);
             let feed = result.feed;
             feed.unshift(temp);
             var update = {$set:{"feed": feed}};
@@ -920,6 +936,7 @@ app.post('/addToFeeds', async (req) => {
         }
     }
 });
+
 
 app.post('/updateRecipe', async (req,res) => {
     let temp = req.body.ingredients.split(",");
@@ -937,16 +954,6 @@ app.post('/updateRecipe', async (req,res) => {
     const userForm = {
         user: req.body.username
     }
-
-
-
-    console.log("name " + newForm.name)
-    console.log("instructions " + newForm.instructions)
-    console.log("description " + newForm.description)
-    console.log("ingredients " + newForm.ingredients)
-    console.log("user " + req.body.owner)
-
-    
 
     var instructionUpdate = {
         $set: {"instructions": newForm.instructions}

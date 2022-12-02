@@ -76,9 +76,18 @@ export const Feed = () => {
     var feed = localStorage.getItem('feed').split(",");
     let newFeed = [];
     
+    async function likeRecipe(e) {
+        e.preventDefault();
+        var value = parseInt(e.target.id) - 4;
+        await Axios.post('http://localhost:5000/addToFavorites', {
+            userId: id,
+            recipeId: feed[value]
+        });
+    }
+
     if(feed[0] !== "") { 
         console.log(feed)
-        for(var i = 0; i < feed.length; i+=8) {
+        for(var i = 0; i < feed.length; i+=9) {
             let temp = [];
             //if(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(feed[i+4]) !== false){
             //    feed[i+4] = "https://180dc.org/wp-content/uploads/2016/08/default-profile.png";
@@ -109,7 +118,7 @@ export const Feed = () => {
                                     <Input id={i+2} variant="flushed" placeholder='Rating / 5'/>
                                     <Button id={i+3} onClick={setRanking}>Rate</Button>
                                 </Center>
-                                <Button id={i+4} border="1px" bg="transparent" w="100%">Favorite</Button>
+                                <Button id={i+4} onClick={likeRecipe} border="1px" bg="transparent" w="100%">Favorite</Button>
                             </VStack>
                         </Box>
                     </HStack>
