@@ -1229,52 +1229,30 @@ app.post('/findUser', async (req, res) => {
     res.send(result);    
 });
 app.post('/removeNotif', async (req, res) => {
-   
     var result =  await client.db("TheMealMine").collection("UserAccounts").updateOne(
         { user: req.body.user  },
         { $pull: {'notifications':req.body.message}  }
     );
-    /*result =  await client.db("TheMealMine").collection("UserAccounts").findOne(
-        { user: req.body.user }
-    );*/
-    
 });
 
-/*
-app.post('/postComment', async(req, res) => {
-    const commentForm = {
-        user: req.body.user,
-        comment: req.body.comment
-    }
+//Used in findRecipesByPantry.js
+app.post('/findRecipeWithPantry', async (req, res) => {
+    var list = []
+    var result =  await client.db("TheMealMine").collection("Recipes").find().toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc.name)
+        })
+        if (list.length === 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });; 
+     
+});
 
-    const newForm = {
-        user: req.body.user
-    }
-    const recipeForm = {
-        name: req.body.recipe
-    }
-    
-    console.log("user " + commentForm.user)
-    console.log("rec " + req.body.recipe)
-    console.log("comment " + req.body.comment)
-    console.log("recipe btw " + recipeForm.name)
-
-
-    var result = await client.db("TheMealMine").collection("Recipes").findOne(recipeForm);
-    console.log(commentForm)
-    var update = {$push:{"comments": commentForm}};
-    if (result !== null) {
-        console.log("adding the comment to the recipe")
-        result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
-    }
-    else {
-        console.log("recipe doesn't exist how did you get here")
-    }
-
-
-    
-    var projection = {comments: 1};
-    result = await client.db("TheMealMine").collection("UserAccounts").findOne(recipeForm,projection);
-//    console.log("list " + result.data.likedBy)
+app.post('/getRecipeIngredients', async (req, res) => {
+    var result = await client.db("TheMealMine").collection("Recipes").findOne({ name: req.body.name });
     res.send(result);
-})*/
+});

@@ -11,6 +11,8 @@ import { Select } from '@chakra-ui/react'
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
 import { FindByAllergens } from '../findRecipesByAllergens'
+import { FindByPantry } from '../findRecipesByPantry';
+
 function SearchRecipes() {    
     return(
         <Container
@@ -36,6 +38,7 @@ function SearchRecipes() {
                         <FindByPrepTime/>
                         <FindByRating/>
                         <FindByAllergens/>
+                        <FindByPantry/>
                     </VStack>
                     
                 </VStack>
