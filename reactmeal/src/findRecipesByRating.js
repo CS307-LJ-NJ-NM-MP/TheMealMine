@@ -42,10 +42,8 @@ export const FindByRating = () => {
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
-                            <Box m="5px 0 5px 0" w="90%">
-                                <Center>
-                                    <Button w="100%">{response.data[i].name} Rating: {response.data[i].rating}</Button>
-                                </Center>    
+                            <Box m="5px 0 5px 0">
+                                    <Button>{response.data[i].name} Rating: {response.data[i].rating}</Button>    
                             </Box>
                         );
                     }
@@ -76,7 +74,18 @@ export const FindByRating = () => {
                 </Center>
             </Box>
             <Box padding="5px">
-                {recipeItems}
+                <VStack m="10px 10px 10px 10px" maxH="150px" overflow="hidden" overflowY="scroll"
+                    sx={{
+                        '&::-webkit-scrollbar': {
+                        width: '0px',
+                        backgroundColor: `transparent`,
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `transparent`,
+                        },
+                    }}>
+                    {recipeItems}
+                </VStack>
             </Box>
         </>
     );

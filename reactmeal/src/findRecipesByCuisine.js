@@ -40,10 +40,9 @@ export const FindByCuisine = () => {
                     var recipeArray = []
                     for (var i = 0; i < response.data.length; i++) {
                         recipeArray.push(
-                            <Box m="5px 0 5px 0" w="90%">
-                                <Center>
-                                    <Button w="100%">{response.data[i].name}</Button>
-                                </Center>    
+                            <Box m="5px 0 5px 0">
+                                    <Button>{response.data[i].name}</Button>
+                                
                             </Box>
                         );
                     }
@@ -71,9 +70,20 @@ export const FindByCuisine = () => {
                     />
                     <Button w="200px" onClick={sendRequest} id="categoryButton">Search by Cuisine</Button>
                 </Center>
-                </Box> 
-            <Box padding="5px" w="100%">
-                {recipeItems}
+            </Box> 
+            <Box padding="5px">
+                <VStack m="10px 10px 10px 10px" maxH="150px" overflow="hidden" overflowY="scroll"
+                    sx={{
+                        '&::-webkit-scrollbar': {
+                        width: '0px',
+                        backgroundColor: `transparent`,
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `transparent`,
+                        },
+                    }}>
+                    {recipeItems}
+                </VStack>
             </Box>
         </>
     );
