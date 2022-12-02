@@ -313,12 +313,11 @@ export function Bookmarks() {
                             placeholder={"Instructions: " + newContributedRecipesList[j + 5]}
                             onChange={handleEdit}
                             />
-                            <HStack spacing="80px">
-                                <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
+                            <Center>
                                 <Text>Categories: {
                                 newContributedRecipesList[j + 8]
                                 }</Text>
-                            </HStack>
+                            </Center>
                         </VStack>
                     </HStack>
                     <Center>
