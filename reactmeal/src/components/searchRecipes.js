@@ -71,6 +71,7 @@ function SearchRecipes() {
                             <FindByPrepTime/>
                             <FindByRating/>
                             <FindByAllergens/>
+                            <FindByPantry/>
                         </VStack>
                     </Box>
                     <Box m="0 0 0 20px" h="500px">
