@@ -2,7 +2,7 @@ import { TopNav } from '../topNav'
 import React from "react";
 import { useState } from "react";
 import Axios from "axios";
-import { Divider, list, Textarea } from '@chakra-ui/react'
+import { Divider, Textarea } from '@chakra-ui/react'
 import { Button, VStack, Text, Box, Container, Input, Image, Center,
         FormLabel, HStack, Modal, ModalOverlay, ModalContent,
         ModalHeader, useDisclosure} from '@chakra-ui/react'
@@ -87,7 +87,6 @@ export function Bookmarks() {
             favorites: 0,
             categories: formValue.categories
         });
-        console.log(result2.data.personalRecipes);
         contributedRecipes = [];
         for(var i = 0; i < result2.data.personalRecipes.length; i++){
             let temp = [];
@@ -167,9 +166,7 @@ export function Bookmarks() {
     }
     const handleEdit = (e) => {
 		let value = e.target.value;
-        console.log("new text: " + value)
 		let name = e.target.name;
-        console.log("the thing " + name)
 		setEditFormValue((prevState) => {
 			return {
 				...prevState,
@@ -177,6 +174,7 @@ export function Bookmarks() {
 			}
 		}); 
 	}
+
     const [editFormValue, setEditFormValue] = useState({
         recipeName: '',
         recipeDescription: '',
@@ -184,14 +182,9 @@ export function Bookmarks() {
         recipeInstructions: '',
         
     })
+
     async function updateRecipe(e) {
-
         e.preventDefault()
-
-        console.log("name "+ editFormValue.recipeName)
-        console.log("instructions " + editFormValue.recipeInstructions)
-        console.log("ingredients " + editFormValue.recipeIngredients)
-        console.log("description " + editFormValue.recipeDescription)
 
         var index = newContributedRecipesList.indexOf(editFormValue.recipeName)
 
@@ -207,9 +200,7 @@ export function Bookmarks() {
 
         setList(newContributedRecipesList)
 
-
-        var result = await Axios.post('http://localhost:5000/updateRecipe', {
-
+        await Axios.post('http://localhost:5000/updateRecipe', {
             name: editFormValue.recipeName,
             instructions: editFormValue.recipeInstructions,
             ingredients: editFormValue.recipeIngredients,
@@ -220,14 +211,10 @@ export function Bookmarks() {
 
         });
 
-        console.log(result.data.personalRecipes)
-
         window.location.reload(false);
     }
 
-    
     const [newContributedRecipesList, setList] = useState([])
-
 
     async function findContributedRecipes(e) {
         e.preventDefault()
@@ -244,13 +231,10 @@ export function Bookmarks() {
                 finalList.push(newList[i][j])
             }
         }
-
-        console.log(finalList)
         setList(finalList)
-
     }
-    if(newContributedRecipesList[0] !== []){
 
+    if(newContributedRecipesList[0] !== []){
         var len = newContributedRecipesList.length;
 
         for(j = 0; j < len; j += 9) {
@@ -306,9 +290,7 @@ export function Bookmarks() {
                 </Box>
             );
             stack2.push(temp)
-
         }
-
     }
     return (
     <body onLoad={findContributedRecipes}>
@@ -328,8 +310,6 @@ export function Bookmarks() {
                 borderRadius='lg' borderWidth="1 px"
                 alignContent={"center"}
                 alignItems="center">
-
-
                 <Center>
                     <FormLabel>Favorited Recipes</FormLabel>
                 </Center>
