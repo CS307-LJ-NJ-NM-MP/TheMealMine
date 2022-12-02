@@ -67,6 +67,34 @@ app.post('/findByCuisine', async(req, res) => {
     });
 });
 
+app.post('/findByAllergens', async(req, res) => {
+    console.log(req.body.allergens);
+    if (req.body.allergens === '') {
+        res.status(400).send('query required');
+    }
+    const form = {
+        allergens: req.body.allergens
+    };
+    const projection = {allergens: 1};
+    var string = "" + form.allergens;
+    var list = []
+    await client.db("TheMealMine").collection("Recipes").find({
+        allergens: string 
+
+    }).toArray(function(err, docs) {
+        docs.forEach(function(doc) {
+            list.push(doc)
+        }
+        )
+        if (list.length == 0) {
+            res.send(null);
+        }
+        else {
+            res.send(list);
+        }
+    });
+});
+
 app.post('/findByPrepTime', async(req, res) => {
     console.log(req.body.search);
     if (req.body.search === '') {
@@ -709,6 +737,10 @@ app.post('/addRecipes', async (req,res) => {
     if (categoryArray == '') {
         categoryArray = []
     }
+    let allergensArray = req.body.allergens.split(",")
+    if (allergensArray == '') {
+        allergensArray = []
+    }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
     const difficultyInt = parseInt(req.body.difficulty)
     let temp = req.body.ingredients.split(",");
@@ -725,7 +757,8 @@ app.post('/addRecipes', async (req,res) => {
         categories: categoryArray,
         prepTime: prepTimeInHrs,
         difficulty: difficultyInt,
-        cuisine: req.body.cuisine
+        cuisine: req.body.cuisine,
+        allergens: allergensArray
     }
 
     var resultingRecipe = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
