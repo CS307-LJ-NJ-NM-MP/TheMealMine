@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Center, Container, FormLabel, VStack,
-    Button, Divider} from "@chakra-ui/react";
+    Button, Divider, Textarea} from "@chakra-ui/react";
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { FindByDifficulty } from '../findRecipesByDifficulty';
@@ -9,7 +9,30 @@ import { FindByPrepTime } from "../findRecipesByPrep";
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
 import { FindByAllergens } from '../findRecipesByAllergens'
-function SearchRecipes() {    
+import Axios from "axios";
+
+
+function SearchRecipes() {  
+   
+    //const [finalList, setList] = useState([]);
+    const [recipeItems, setRecipeItems] = useState([])
+
+    async function loadReccommend(){
+        var result = await Axios.post('http://localhost:5000/findUser', {
+            user: localStorage.getItem('username'),  
+        });
+
+        var finalArr = []; 
+        for (var i = 0; i < result.data.recentlyViewed.length; i++) {
+            finalArr.push(result.data.recentlyViewed[i])
+        }
+
+        setRecipeItems(finalArr)
+        console.log(recipeItems)
+
+
+    }
+
     return(
         <Container
             maxW = '100%'
@@ -60,7 +83,11 @@ function SearchRecipes() {
                                 },
                             }}>
                             <FormLabel>Recommended Recipes</FormLabel>
-                            <Button  w="200px">Recipe 1</Button>
+                            {recipeItems}
+                            <Button onClick={loadReccommend}  w="200px">Recipe 1</Button>
+                            <Textarea size='lg' placeholder={recipeItems}></Textarea>
+                        
+                            
                         </VStack>
                     </Box>
                 </Center>
