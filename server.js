@@ -733,17 +733,45 @@ app.post('/getIngredients',async (req,res) => {
 
 app.post('/addRecipes', async (req,res) => {
 
-    let categoryArray = req.body.categories.split(",")
-    if (categoryArray == '') {
-        categoryArray = []
+    var categoryArray = []
+    if (req.body.categories == '') {
+        console.log("no categories")
     }
-    let allergensArray = req.body.allergens.split(",")
-    if (allergensArray == '') {
-        allergensArray = []
+    else {
+        console.log("there be categories yargh")
+        console.log(rea.body.categories)
+        temporaryCategoryArray = req.body.categories.split(",")
+        for (var i = 0; i < req.body.categories.length; i++) {
+            categoryArray.push(temporaryCategoryArray[i])
+        }
+
+    }
+
+    var finalAllergyList = []
+    console.log(req.body.allergens)
+    if (req.body.allergens == undefined) {
+        console.log('no allergies')
+
+    }
+    else {
+        let allergensArray = req.body.allergens.split(",")
+
+        if (req.body.allergens !== null) {
+            for (var i = 0; i < allergensArray.length; i++) {
+                finalAllergyList.push(allergensArray[i])
+            }
+            console.log("there are allergies")
+            console.log(finalAllergyList)
+        }
+        else {
+            console.log("no allergies")
+        }
     }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
     const difficultyInt = parseInt(req.body.difficulty)
     let temp = req.body.ingredients.split(",");
+    console.log("categories")
+    console.log(categoryArray)
     const recipe = {
         name: req.body.name,
         owner: req.body._id,
@@ -758,7 +786,7 @@ app.post('/addRecipes', async (req,res) => {
         prepTime: prepTimeInHrs,
         difficulty: difficultyInt,
         cuisine: req.body.cuisine,
-        allergens: allergensArray
+        allergens: finalAllergyList
     }
 
     var resultingRecipe = await client.db("TheMealMine").collection("Recipes").insertOne(recipe);
@@ -852,7 +880,13 @@ app.post('/addRecipeToUser', async (req,res) => {
     temp.push(req.body.instructions);
     temp.push(req.body.description);
     temp.push(req.body.ingredients);
-    temp.push(req.body.categories);
+    if (req.body.categories !== '') {
+        temp.push(req.body.categories);
+    }
+    else {
+        temp.push("None")
+    }
+
     personalRecipes.push(temp);
     var update = {$set:{"personalRecipes": personalRecipes}};
     result = client.db("TheMealMine").collection("UserAccounts").updateOne(form,update);
