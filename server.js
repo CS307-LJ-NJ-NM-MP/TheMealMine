@@ -85,10 +85,12 @@ app.post('/findByPrepTime', async(req, res) => {
     }).toArray(function(err, docs) {
         docs.forEach(function(doc) {
             list.push(doc)
+            console.log(list)
         }
         )
         if (list.length == 0 || prep <= 0) {
             res.send(null);
+            console.log("it's empty")
         }
         else {
             res.send(list);
