@@ -26,6 +26,22 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.listen(port);
 
+app.post('/addToRecents', async(req, res) => {
+    const form = {
+        user: req.body.user
+    }
+    
+
+    var update = {$push:{"recentlyViewed": req.body.recentlyViewed}};
+
+    
+    
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form, update);
+    var projection = {recentlyViewed: 1};
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form, projection);
+//    console.log("list " + result.data.likedBy)
+    res.send(result);
+})
 
 
 app.post('/findContributedRecipes', async(req, res) => {
