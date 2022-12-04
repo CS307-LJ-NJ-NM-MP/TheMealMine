@@ -1,7 +1,7 @@
 import { TopNav } from './topNav'
 import { SideNav } from './sideNav'
 import { SearchNav } from './searchNav'
-import Pantry from "./addIngredients";
+import Pantry from "./pages/PantryPage";
 
 export const Home = () => {
     return (<>
