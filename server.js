@@ -35,11 +35,7 @@ app.post('/findUserById', async(req, res) => {
     const form = {
         _id: new ObjectId(req.body.userId)
     }
-    
-    
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
-    console.log("user")
-    console.log(result.user)
     res.send(result.user);
 })
 
