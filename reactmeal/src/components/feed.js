@@ -73,16 +73,54 @@ export const Feed = () => {
     }
 
     var id = localStorage.getItem('id');
-    var feed = localStorage.getItem('feed').split(",");
+
+    const [feed, setFeed] = useState([])
+    async function getFromFeed(e) {
+        e.preventDefault()
+        console.log("username " + username)
+        var list = await Axios.post('http://localhost:5000/getFromFeed', {
+            user: username  
+        })
+        console.log("here is feed")
+        console.log(list)
+        var newList = list.data
+        var len = newList.length;
+        var finalList = []
+        var len = newList.length;
+        for (var i = 0; i < len; i++) {
+            for (var j = 0; j < newList[i].length; j++) {
+                finalList.push(newList[i][j])
+            }
+        }
+        setFeed(finalList)
+    }
     let newFeed = [];
-    
+
     async function likeRecipe(e) {
         e.preventDefault();
         var value = parseInt(e.target.id) - 4;
-        await Axios.post('http://localhost:5000/addToFavorites', {
+        console.log(feed[value])
+        var tempId = feed[value]
+        var result = await Axios.post('http://localhost:5000/addToFavorites', {
             userId: id,
             recipeId: feed[value]
         });
+        console.log("like number: " + result.data.likes)
+        var likeNumber = result.data.likes
+        var tempFeed = feed
+        var index = tempFeed.indexOf(tempId)
+        tempFeed[index + 1] = likeNumber
+        console.log("new likes" + tempFeed[index + 1])
+
+
+        result = await Axios.post('http://localhost:5000/updateFeed', {
+            userId: id,
+            newList: tempFeed
+        });
+        setFeed(tempFeed)
+        console.log(feed)
+        window.location.reload(false)
+        
     }
 
     if(feed[0] !== "") { 
@@ -184,7 +222,8 @@ export const Feed = () => {
         document.getElementById(buttonId-1).value = "";
     }
 
-    return(<>
+    return(
+    <body onLoad={getFromFeed}>
         <Container maxW='100%'>
             <TopNav/>
             <Center>
@@ -257,5 +296,6 @@ export const Feed = () => {
             </Center>
             </Center>
         </Container>
-    </>);
+        </body>
+    );
 }

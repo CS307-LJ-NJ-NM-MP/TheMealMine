@@ -47,6 +47,7 @@ function CreateAccount() {
         localStorage.setItem('ranking',0);
         localStorage.setItem('contribution',0);
         localStorage.setItem('friendsList', []);
+        localStorage.setItem('pantry', []);
         localStorage.setItem('blockedList', []); //HAVENT TESTED THESE. CHECK PLEASE
         localStorage.setItem('isSearching', "no");
         localStorage.setItem('searchingBlocked', []);

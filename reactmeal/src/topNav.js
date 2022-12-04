@@ -125,9 +125,14 @@ export function TopNav() {
         }
     }
 
-    function searchRecipes(e) {
+    async function searchRecipes(e) {
         e.preventDefault();
+        
         if(username !== "Guest" && password !== "Guest"){
+            var result = await Axios.post('http://localhost:5000/findUser', {
+                user: localStorage.getItem('username'),  
+            });
+            localStorage.setItem('recommended',result.data.recentlyViewed);
             window.location = "/searchRecipes";
         }
     }

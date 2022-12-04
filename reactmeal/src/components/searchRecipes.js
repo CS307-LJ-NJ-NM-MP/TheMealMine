@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Center, Container, FormLabel, VStack,
-    Button, Divider} from "@chakra-ui/react";
+    Button, Divider, Textarea} from "@chakra-ui/react";
 import { TopNav } from "../topNav";
 import { SideNav } from "../sideNav";
 import { FindByDifficulty } from '../findRecipesByDifficulty';
@@ -9,7 +9,60 @@ import { FindByPrepTime } from "../findRecipesByPrep";
 import searchBackground from '../imgs/searchBackground.jpg'
 import { FindByRating } from '../findRecipesByRating'
 import { FindByAllergens } from '../findRecipesByAllergens'
-function SearchRecipes() {    
+import { FindByPantry } from '../findRecipesByPantry';
+
+import Axios from "axios";
+
+
+function SearchRecipes() {  
+    let recommended = localStorage.getItem('recommended').split(",");
+    const [recipeItems, setRecipeItems] = useState([])
+
+    
+        console.log(recommended);
+        var finalArr = []; 
+        var i;
+        if(recommended.length <= 1){
+            i = 0;
+        }else{
+            i = 1;
+        }
+        while (i < recommended.length) {
+            finalArr.push(
+                <Box>
+                    <Center>
+                        <Button w="200px">{recommended[i]}</Button>
+                    </Center>
+                </Box>
+            );
+            i++;
+        }
+    
+    async function loadReccommend(){
+        var result = await Axios.post('http://localhost:5000/findUser', {
+            user: localStorage.getItem('username'),  
+        });
+
+        var finalArr = []; 
+        var i;
+        if(result.data.recentlyViewed.length <= 1){
+            i = 0;
+        }else{
+            i = 1;
+        }
+        while (i < result.data.recentlyViewed.length) {
+            finalArr.push(
+                <Box>
+                    <Center>
+                        <Button w="200px">{result.data.recentlyViewed[i]}</Button>
+                    </Center>
+                </Box>
+            );
+            i++;
+        }
+        setRecipeItems(finalArr)
+    }
+
     return(
         <Container
             maxW = '100%'
@@ -24,7 +77,7 @@ function SearchRecipes() {
                 m="20px"
                 bg="white"
                 borderRadius='lg'
-                w="50%"
+                w="60%"
                 h="500px"
                 padding="20px"
                 >
@@ -46,6 +99,7 @@ function SearchRecipes() {
                             <FindByPrepTime/>
                             <FindByRating/>
                             <FindByAllergens/>
+                            <FindByPantry/>
                         </VStack>
                     </Box>
                     <Box m="0 0 0 20px" h="500px">
@@ -59,8 +113,8 @@ function SearchRecipes() {
                                 backgroundColor: `transparent`,
                                 },
                             }}>
-                            <FormLabel>Recommended Recipes</FormLabel>
-                            <Button  w="200px">Recipe 1</Button>
+                            <FormLabel onClick={loadReccommend}>Recommended Recipes</FormLabel>
+                            {finalArr}
                         </VStack>
                     </Box>
                 </Center>

@@ -13,8 +13,8 @@ export function Bookmarks() {
     const {isOpen, onOpen, onClose} = useDisclosure();
     var id = localStorage.getItem('id');
     var username = localStorage.getItem('username');
-    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
-    let contributedRecipes = localStorage.getItem('contributedRecipes').split(",");
+//    let favoriteRecipes = localStorage.getItem('favoriteRecipes').split(",");
+
 
     let stack1 = [];
     let stack2 = [];
@@ -87,84 +87,111 @@ export function Bookmarks() {
             favorites: 0,
             categories: formValue.categories
         });
-        contributedRecipes = [];
-        for(var i = 0; i < result2.data.personalRecipes.length; i++){
-            let temp = [];
-            /* img */
-            temp.push(result2.data.personalRecipes[i][4]);
-            /* name */
-            temp.push(result2.data.personalRecipes[i][3]);
-            /* owner */
-            temp.push(result2.data.personalRecipes[i][2]);
-            /* favorites */
-            temp.push(result2.data.personalRecipes[i][1]);
-            /* description */
-            temp.push(result2.data.personalRecipes[i][6]);
-            /* instructions */
-            temp.push(result2.data.personalRecipes[i][5]);
-            /* ingredients */
-            temp.push(result2.data.personalRecipes[i][7]);
-            /* id */
-            temp.push(result2.data.personalRecipes[i][0]);
-            /* categories */
-            temp.push(result2.data.personalRecipes[i][8])
-            
-            contributedRecipes.push(temp);
-        }
-        localStorage.setItem('ranking',result2.data.ranking);
-        localStorage.setItem('contributedRecipes',contributedRecipes);
         window.location.reload(false);
+
     }
+
+    const [favoriteRecipes, setFavoriteRecipes] = useState([])
+
+    async function findFavoriteRecipes(e) {
+        e.preventDefault()
+        //Find the favorite recipes list
+        console.log("user id")
+        console.log(id)
+        var result = await Axios.post('http://localhost:5000/findFavoriteRecipes', {
+            userId: id
+        })
+        console.log(result.data)
+
+        var recipeArray = []
+
+        for (var i = 0; i < result.data.length; i++) {
+            //find the recipe
+            var recipe = await Axios.post('http://localhost:5000/findRecipeById', {
+                recipeId: result.data[i]
+            })
+
+            console.log("recipe name")
+            console.log(recipe.data.name)
+
+            //find the recipe owner
+            var recipeOwner = await Axios.post('http://localhost:5000/findUserById', {
+                userId: recipe.data.owner
+            })
+
+            //add favorite recipes
+            recipeArray.push(recipe.data.name)
+            recipeArray.push(recipeOwner.data)
+            recipeArray.push(recipe.data.description)
+            recipeArray.push(recipe.data.likes)
+            recipeArray.push(recipe.data.image)
+            recipeArray.push(recipe.data.ingredients.join())
+            recipeArray.push(recipe.data.instructions)
+            if (recipe.data.prepTime > 1) {
+               var string = "" + recipe.data.prepTime + " hrs"
+               recipeArray.push(string)
+            }
+            else if (recipe.data.prepTime == 1) {
+                var string = "" + recipe.data.prepTime + " hr"
+                recipeArray.push(string)
+            }
+            else {
+                var timeInMins = recipe.data.prepTime * 60
+                var string = "" + timeInMins + " mins"
+                recipeArray.push(string)
+            }
+
+        }
+        setFavoriteRecipes(recipeArray)
+        console.log(favoriteRecipes)
+    }
+
+
     if(favoriteRecipes[0] !== ''){
         var len = favoriteRecipes.length;
-        for(var i = 0; i < len; i+=40){
-            let temp = [];
-            for(var j = i; j < i+40; j+=8) {
-                if(favoriteRecipes[j] === undefined) {break;}
-                const element = 
-                        <HStack spacing="10px">
-                            <Image w="75px" h="75px" borderRadius="full" src={favoriteRecipes[j]}/>
-                            <VStack>
-                                <Text w="100px">{favoriteRecipes[j+1]}</Text>
-                                <Text w="100px">{favoriteRecipes[j+2]}</Text>
-                                <Text w="100px">Likes: {favoriteRecipes[j+3]}</Text>
-                                <Text w="100px">Description: {favoriteRecipes[j+4]}</Text>
-                            </VStack>
-                        </HStack>;
-                temp.push(element);
-            }
-            stack1.push(<HStack spacing="100px" width="100%">{temp}</HStack>)
-        }
-    }
-    var recipeId = "RecipeId";
-    var name = "Selected Name";
-    var image = "Selected Image";
-    var ingred = "Selected Ingredients";
-    var instruct = "Selected Instructions";
-    var descript = "Selected Descriptions";
-    async function clickRecipe(e) {
-        e.preventDefault();
-        var buttonId = e.target.name;
-        buttonId = parseInt(buttonId);
-        recipeId = contributedRecipes[buttonId+7]
 
-        name = contributedRecipes[buttonId+1];
-        image = contributedRecipes[buttonId];
-        descript = contributedRecipes[buttonId+4];
-        ingred = contributedRecipes[buttonId+6];
-        instruct = contributedRecipes[buttonId+5];
-        var nDoc = document.getElementById("name");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',name);
-        nDoc = document.getElementById("image");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',image);
-        nDoc = document.getElementById("ingredients");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',ingred);
-        nDoc = document.getElementById("instructions");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',instruct);
-        nDoc = document.getElementById("description");
-        nDoc.value = ""; nDoc.setAttribute('placeholder',descript);
+        for(var j = 0; j < len; j+=8){
+            let temp = [];
+            if(favoriteRecipes[j] === undefined) 
+            {
+                break;
+            }
+            temp.push( 
+                <Box w="400px" border="1px" borderRadius="lg">
+                    <HStack p={1}>
+
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={favoriteRecipes[j + 4]}/>
+                        <VStack spacing="15px" w="90%">
+                            <Text w="300px" >{favoriteRecipes[j]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Chef: {favoriteRecipes[j + 1]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Description: {favoriteRecipes[j+2]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Ingredients: {favoriteRecipes[j+5]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <Text w="300px">Instructions: {favoriteRecipes[j+6]}</Text>
+                            <Divider w="90%" p="1px" />
+                            <HStack spacing="80px">
+                                <Text>Likes: {favoriteRecipes[j + 3]}</Text>
+                                <Text>Prep Time: {favoriteRecipes[j + 7]}</Text>
+                            </HStack>
+                        </VStack>
+                    </HStack>
+                    <Center>
+                        <Divider w="90%" p="5px" />
+                    </Center>
+                </Box>
+            );
+            stack1.push(temp)
+        }
+
+
+
     }
+
     const handleEdit = (e) => {
+        console.log(editFormValue)
 		let value = e.target.value;
 		let name = e.target.name;
 		setEditFormValue((prevState) => {
@@ -200,21 +227,34 @@ export function Bookmarks() {
 
         setList(newContributedRecipesList)
 
-        await Axios.post('http://localhost:5000/updateRecipe', {
+
+        
+        var result = await Axios.post('http://localhost:5000/updateRecipe', {
             name: editFormValue.recipeName,
             instructions: editFormValue.recipeInstructions,
             ingredients: editFormValue.recipeIngredients,
             description: editFormValue.recipeDescription,
             owner: id,
             username: username,
-            newList: newContributedRecipesList
+            newList: newContributedRecipesList,
+            _id: id
 
         });
+
+
+        console.log(result.data)
+
+
 
         window.location.reload(false);
     }
 
     const [newContributedRecipesList, setList] = useState([])
+
+    async function findAllRecipes(e) {
+        findFavoriteRecipes(e)
+        findContributedRecipes(e)
+    }
 
     async function findContributedRecipes(e) {
         e.preventDefault()
@@ -243,7 +283,7 @@ export function Bookmarks() {
             temp.push( 
                 <Box w="500px" border="1px" borderRadius="lg">
                     <HStack p={1}>
-                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]} onClick={clickRecipe}/>
+                        <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={newContributedRecipesList[j + 4]}/>
                         <VStack spacing="15px" w="90%">
                             <Input 
                             name="recipeName"
@@ -273,12 +313,11 @@ export function Bookmarks() {
                             placeholder={"Instructions: " + newContributedRecipesList[j + 5]}
                             onChange={handleEdit}
                             />
-                            <HStack spacing="80px">
-                                <Text>Likes: {newContributedRecipesList[j + 1]}</Text>
+                            <Center>
                                 <Text>Categories: {
                                 newContributedRecipesList[j + 8]
                                 }</Text>
-                            </HStack>
+                            </Center>
                         </VStack>
                     </HStack>
                     <Center>
@@ -293,7 +332,7 @@ export function Bookmarks() {
         }
     }
     return (
-    <body onLoad={findContributedRecipes}>
+    <body onLoad={findAllRecipes}>
     <ChakraProvider>
         <Container
         maxW='100%'
@@ -379,3 +418,33 @@ export function Bookmarks() {
 }
 
 export default Bookmarks;
+
+/*
+        contributedRecipes = [];
+        for(var i = 0; i < result2.data.personalRecipes.length; i++){
+            let temp = [];
+            //img
+            temp.push(result2.data.personalRecipes[i][4]);
+            //name
+            temp.push(result2.data.personalRecipes[i][3]);
+            //owner
+            temp.push(result2.data.personalRecipes[i][2]);
+            //favorites
+            temp.push(result2.data.personalRecipes[i][1]);
+            //description
+            temp.push(result2.data.personalRecipes[i][6]);
+            //instructions
+            temp.push(result2.data.personalRecipes[i][5]);
+            //ingredients
+            temp.push(result2.data.personalRecipes[i][7]);
+            //id
+            temp.push(result2.data.personalRecipes[i][0]);
+            //
+            temp.push(result2.data.personalRecipes[i][8])
+            
+            contributedRecipes.push(temp);
+        }
+        localStorage.setItem('ranking',result2.data.ranking);
+        localStorage.setItem('contributedRecipes',contributedRecipes);
+
+*/
