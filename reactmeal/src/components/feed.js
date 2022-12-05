@@ -4,6 +4,7 @@ import { Box, Button, VStack, Text, Container,
     FormLabel, Divider} from '@chakra-ui/react'
 import React, { useState } from "react";
 import Axios from "axios";
+import feedBackground from '../imgs/feedBackground.jpeg'
 
 export const Feed = () => {
     const [formValue, setFormValue] = useState({
@@ -224,11 +225,12 @@ export const Feed = () => {
 
     return(
     <body onLoad={getFromFeed}>
-        <Container maxW='100%'>
+        <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={feedBackground} align="center">
             <TopNav/>
             <Center>
             <Center>
-                <Box border="1px" borderRadius="lg">
+                <Box borderRadius="lg" m="2%" bg="white" padding="10px">
                 <Center>
                     <FormLabel m="10px 0 10px 0">Your Feed</FormLabel>
                 </Center>

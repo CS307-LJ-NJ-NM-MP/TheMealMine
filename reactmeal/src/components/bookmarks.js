@@ -333,13 +333,9 @@ export function Bookmarks() {
     return (
     <body onLoad={findAllRecipes}>
     <ChakraProvider>
-        <Container
-        maxW='100%'
-        backgroundRepeat="no-repeat"
-        bgSize="100%"
-        backgroundImage={cookbookBackground}
-        align="center"
-        >
+    <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={cookbookBackground} align="center">
+        
             <TopNav/>
             <Box m="2%"
                 bg="white" w='80%'

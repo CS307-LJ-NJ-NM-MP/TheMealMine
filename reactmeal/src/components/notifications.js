@@ -6,6 +6,7 @@ import { SideNav } from "../sideNav";
 import { useState } from "react";
 import Axios from "axios";
 
+import notificationsBackground from '../imgs/notificationsBackground.jpeg'
 
 
 
@@ -48,19 +49,24 @@ export const Notifications = () => {
     return (
     
     <>
-        <Container maxW="100%">
+        <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={notificationsBackground} align="center">
             <TopNav/>
+            <Center>
+            <Box m="2%" w="40%" bg="white"
+                borderRadius="lg" padding="10px">
             <Center>
                 <FormLabel>Notifications</FormLabel>
             </Center>
             <br/>
             <Center>
-                
                 <div>
                     {notifications.map((message, index) => (
                         <p key={message}>{message}  <Button value={message} onClick={seen} >Remove</Button></p>
                     ))}
                 </div>
+            </Center>
+            </Box>
             </Center>
         </Container>
     </>);
