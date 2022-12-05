@@ -112,6 +112,9 @@ app.post('/updateFeed', async (req,res) => {
 });
 
 app.post('/getFromFeed', async(req, res) => {
+
+    var ObjectId = require('mongodb').ObjectId;
+
     const form = {
         user: req.body.user
     }
@@ -119,6 +122,22 @@ app.post('/getFromFeed', async(req, res) => {
     console.log(form.user)
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
 
+    var tempFeed = result.feed
+    for (var i = 0; i < result.feed.length; i++) {
+        var tempRecipeId = tempFeed[i][0]
+        const tempForm = {
+            _id: new ObjectId(tempRecipeId)
+        }
+        var tempRecipe = await client.db("TheMealMine").collection("Recipes").findOne(tempForm)
+        tempFeed[i][1] = tempRecipe.likes
+    }
+    
+    var update = {
+        $set: {"feed": tempFeed}
+    }
+
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form, update);
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     res.send(result.feed);
 })
 app.post('/findContributedRecipes', async(req, res) => {
@@ -829,7 +848,7 @@ app.post('/addRecipes', async (req,res) => {
         console.log("no categories")
     }
     else {
-        console.log("there be categories yargh")
+//        console.log("there be categories yargh")
         console.log(req.body.categories)
         temporaryCategoryArray = req.body.categories.split(",")
         for (var i = 0; i < req.body.categories.length; i++) {
@@ -912,7 +931,7 @@ app.post('/addRecipes', async (req,res) => {
             var result = await client.db("TheMealMine").collection("Categories").findOne(categoryForm);
         
             if (result == null) {
-                console.log("adding category")
+//                console.log("adding category")
                 result = await client.db("TheMealMine").collection("Categories").insertOne(newCategoryForm);
             }
         
@@ -920,7 +939,7 @@ app.post('/addRecipes', async (req,res) => {
     
                 result = await client.db("TheMealMine").collection("Categories").findOne(categoryCheckForm);
                 if (result == null) {
-                    console.log("adding the recipe to the category")
+//                    console.log("adding the recipe to the category")
                     var recipeUpdate = {$push:{"recipes": req.body.name}};
                     result = await client.db("TheMealMine").collection("Categories").updateOne(categoryForm,recipeUpdate);
                 }
@@ -933,15 +952,14 @@ app.post('/addRecipes', async (req,res) => {
         
             result = await client.db("TheMealMine").collection("Recipes").findOne(form);
             if (result == null) {
-                console.log("category is not there")
+//                console.log("category is not there")
                 result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
-                console.log("now it is")
+//                console.log("now it is")
             }
         
             else {
-        
-                console.log(result.categories)
-                console.log("category is added")
+//                console.log(result.categories)
+                console.log("category is there")
         
             }
             

@@ -225,8 +225,24 @@ export const Feed = () => {
 
     return(
     <body onLoad={getFromFeed}>
-        <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
-                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={feedBackground} align="center">
+        <Container
+        borderColor="transparent" 
+        maxW='100%' 
+        h='calc(100vh)' 
+        backgroundRepeat="no-repeat" 
+        bgSize="100%" 
+        backgroundImage={feedBackground}
+        align="center"
+        overflowY={"scroll"}
+        sx={{
+            '&::-webkit-scrollbar': {
+                width: '0px',
+                backgroundColor: `transparent`,
+            },
+            '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `transparent`,
+            },
+        }}>
             <TopNav/>
             <Center>
             <Center>
