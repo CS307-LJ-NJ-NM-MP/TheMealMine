@@ -123,8 +123,10 @@ app.post('/getFromFeed', async(req, res) => {
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
 
     var tempFeed = result.feed
+
     for (var i = 0; i < result.feed.length; i++) {
         var tempRecipeId = tempFeed[i][0]
+
         const tempForm = {
             _id: new ObjectId(tempRecipeId)
         }
@@ -877,7 +879,13 @@ app.post('/addRecipes', async (req,res) => {
         }
     }
     const prepTimeInHrs = parseFloat(req.body.prepTime)
-    const difficultyInt = parseInt(req.body.difficulty)
+    var difficultyInt = parseInt(req.body.difficulty)
+    if (difficultyInt > 5) {
+        difficultyInt = 5
+    }
+    if (difficultyInt < 1) {
+        difficultyInt = 1
+    }
     let temp = req.body.ingredients.split(",");
 
     const recipe = {
