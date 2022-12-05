@@ -227,8 +227,23 @@ export function Settings() {
         }    
 	}
     return(<ChakraProvider>
-            <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
-                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={loginBackground}>
+            <Container
+            borderColor="transparent"
+            maxW='100%'
+            h='calc(100vh)' 
+            backgroundRepeat="no-repeat"
+            bgSize="100%"
+            backgroundImage={loginBackground}
+            overflowY={"scroll"}
+            sx={{
+                '&::-webkit-scrollbar': {
+                width: '0px',
+                backgroundColor: `transparent`,
+                },
+                '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `transparent`,
+                },
+            }}>
             <TopNav/>
             <Center>
             <Box bg="whiteAlpha.700"

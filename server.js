@@ -112,6 +112,9 @@ app.post('/updateFeed', async (req,res) => {
 });
 
 app.post('/getFromFeed', async(req, res) => {
+
+    var ObjectId = require('mongodb').ObjectId;
+
     const form = {
         user: req.body.user
     }
@@ -119,6 +122,22 @@ app.post('/getFromFeed', async(req, res) => {
     console.log(form.user)
     var result = await client.db("TheMealMine").collection("UserAccounts").findOne(form)
 
+    var tempFeed = result.feed
+    for (var i = 0; i < result.feed.length; i++) {
+        var tempRecipeId = tempFeed[i][0]
+        const tempForm = {
+            _id: new ObjectId(tempRecipeId)
+        }
+        var tempRecipe = await client.db("TheMealMine").collection("Recipes").findOne(tempForm)
+        tempFeed[i][1] = tempRecipe.likes
+    }
+    
+    var update = {
+        $set: {"feed": tempFeed}
+    }
+
+    result = await client.db("TheMealMine").collection("UserAccounts").updateOne(form, update);
+    result = await client.db("TheMealMine").collection("UserAccounts").findOne(form);
     res.send(result.feed);
 })
 app.post('/findContributedRecipes', async(req, res) => {

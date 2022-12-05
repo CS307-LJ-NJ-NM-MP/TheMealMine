@@ -343,8 +343,23 @@ function FriendsPage() {
         friends = [<Text>No Friends to Display</Text>];
     }
     return(
-        <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
-                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={friendsBackground} align="center">
+        <Container borderColor="transparent"
+                maxW='100%'
+                h='calc(100vh)' 
+                backgroundRepeat="no-repeat"
+                bgSize="100%"
+                backgroundImage={friendsBackground}
+                align="center"
+                overflowY={'scroll'}
+                sx={{
+                    '&::-webkit-scrollbar': {
+                    width: '0px',
+                    backgroundColor: `transparent`,
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: `transparent`,
+                    },
+                }}>
             <TopNav/>
                 <Center padding="10px">
                     <Box w="80%" border="1px" borderRadius="lg" bg="white">
@@ -356,7 +371,7 @@ function FriendsPage() {
                     </Box>
                 </Center>
                 <Center padding="10px">
-                    <Box w="80%" border="1px" borderRadius="lg">
+                    <Box w="80%" border="1px" borderRadius="lg" bg = "white">
                         <Center padding="10px">
                             <VStack>
                             <FormLabel> My Friends</FormLabel>
@@ -383,9 +398,18 @@ function FriendsPage() {
                     </Box>
                 </Center>
                 <Center padding="10px">
-                    <Box w="80%" border="1px" borderRadius="lg">
+                    <Box w="80%" border="1px" borderRadius="lg" bg="white">
                         <Center padding="10px">
-                            <VStack>
+                        <VStack m="10px 10px 0 10px" maxH="200px" overflow="hidden" overflowY="scroll"
+                                    sx={{
+                                        '&::-webkit-scrollbar': {
+                                        width: '0px',
+                                        backgroundColor: `transparent`,
+                                        },
+                                        '&::-webkit-scrollbar-thumb': {
+                                        backgroundColor: `transparent`,
+                                        },
+                                    }}>
                                 <Text id="blocked" fontWeight="bold">My Blocked List</Text>
                                 <DisplayAllBlocked />
                             </VStack>
@@ -393,7 +417,16 @@ function FriendsPage() {
                     </Box>
                 </Center>
                 <Center padding="10px">
-                    <Box w="80%" border="1px" borderRadius="lg">
+                    <Box w="80%" border="1px" borderRadius="lg" background="white" overflowY={"scroll"}
+                    sx={{
+                        '&::-webkit-scrollbar': {
+                        width: '0px',
+                        backgroundColor: `transparent`,
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: `transparent`,
+                        },
+                    }}>
                         <Center padding="10px">
                             <VStack>
                                 <Text fontWeight="bold">Friend Requests</Text>

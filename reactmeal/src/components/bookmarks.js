@@ -161,7 +161,7 @@ export function Bookmarks() {
                     <HStack p={1}>
                         <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={favoriteRecipes[j + 4]}/>
                         <VStack spacing="15px" w="90%">
-                            <FormLabel w="300px" >Text<Divider w="90%"/>
+                            <FormLabel w="300px" >Recipe Name<Divider w="90%"/>
                                 {favoriteRecipes[j]}</FormLabel>
                             <FormLabel w="300px" >Chef<Divider w="90%"/>
                                 {favoriteRecipes[j+1]}</FormLabel>
@@ -312,15 +312,16 @@ export function Bookmarks() {
                             placeholder={"Instructions: " + newContributedRecipesList[j + 5]}
                             onChange={handleEdit}
                             />
-                            <Center>
-                                <Text>Categories: {
-                                newContributedRecipesList[j + 8]
-                                }</Text>
-                            </Center>
+
                         </VStack>
                     </HStack>
                     <Center>
                         <Divider w="90%" p="5px" />
+                    </Center>
+                    <Center>
+                    <Text>
+                        Categories: {newContributedRecipesList[j + 8]}
+                    </Text>
                     </Center>
                     <Center>
                         <Button m="5px 5px 5px 5px" w="100%" onClick={updateRecipe}>Edit Contribution</Button> 
@@ -333,18 +334,33 @@ export function Bookmarks() {
     return (
     <body onLoad={findAllRecipes}>
     <ChakraProvider>
-    <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
-                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={cookbookBackground} align="center">
+    <Container borderColor="transparent"
+        maxW='100%'
+        h='calc(100vh)' 
+        backgroundRepeat="no-repeat"
+        bgSize="100%"
+        backgroundImage={cookbookBackground}
+        align="center"
+        overflowY={"scroll"}
+        sx={{
+            '&::-webkit-scrollbar': {
+            width: '0px',
+            backgroundColor: `transparent`,
+            },
+            '&::-webkit-scrollbar-thumb': {
+            backgroundColor: `transparent`,
+            },
+        }}>
         
             <TopNav/>
             <Box m="2%"
-                bg="white" w='80%'
+                w='80%'
                 p={5}
                 borderRadius='lg' borderWidth="1 px"
                 alignContent={"center"}
                 alignItems="center">
                 <Center>
-                    <Box border="1px" borderRadius="lg">
+                    <Box border="1px" borderRadius="lg" background="white">
                         <VStack padding="10px" w="100%">
                             <Center>
                             <Box w="525px">Favorited Recipes</Box>
@@ -380,6 +396,9 @@ export function Bookmarks() {
                         </Center>
                         <Center>
                             <Divider w="90%" p="5px" />
+                        </Center>
+                        <Center>
+                            <Button m="10px 5px 5px 5px" w="90%" onClick={onOpen}>Add Contribution</Button>
                         </Center>
                     </Box>
                 </Center><br/>

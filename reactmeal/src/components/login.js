@@ -103,7 +103,7 @@ export function Login()  {
 			<Button colorScheme="red"
                 width="100%"
                 style={{ marginTop : 15}}
-                >
+                onClick={guest}>
             	Continue as Guest
         	</Button>
 			<Button onClick={recovery}> Forgot Password </Button>
