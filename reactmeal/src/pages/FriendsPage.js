@@ -347,7 +347,7 @@ function FriendsPage() {
                 backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={friendsBackground} align="center">
             <TopNav/>
                 <Center padding="10px">
-                    <Box w="80%" border="1px" borderRadius="lg">
+                    <Box w="80%" border="1px" borderRadius="lg" bg="white">
                         <VStack m="10px 10px 10px 10px">
                             <Input id="searchBar" name="searchBar" placeholder="Search for user by 'name' or 'ranking #'" onChange={search}/>
                             <Divider/>
