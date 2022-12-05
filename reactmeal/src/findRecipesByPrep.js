@@ -114,7 +114,7 @@ export const FindByPrepTime = () => {
                         variant="flushed"
                         onChange={handleChange('prepTime')}
                     />
-            <Button w="200px" onClick={sendRequest} id="categoryButton">Search by prepTime</Button>
+            <Button w="200px" onClick={sendRequest} id="categoryButton">Search by Prep Time</Button>
             </Center>
         </Box>
         <Box padding="5px">

@@ -1,17 +1,9 @@
-import { TopNav } from './topNav'
-import { SideNav } from './sideNav'
-import { SearchNav } from './searchNav'
-import Pantry from "./addIngredients";
+import  SearchRecipes  from './components/searchRecipes'
+import { ChakraProvider, Container} from '@chakra-ui/react';
 
 export const Home = () => {
-    return (<>
-            <div>
-                <TopNav/>
-                <div className="home-display">
-                    <Pantry/>
-                    <SideNav/>
-                </div>
-            </div>
-        </>
+    return (<ChakraProvider>
+        <SearchRecipes/>
+        </ChakraProvider>
     );
 }

@@ -15,24 +15,52 @@ import Axios from "axios";
 
 
 function SearchRecipes() {  
-   
-    //const [finalList, setList] = useState([]);
+    let recommended = localStorage.getItem('recommended').split(",");
     const [recipeItems, setRecipeItems] = useState([])
 
+    
+        console.log(recommended);
+        var finalArr = []; 
+        var i;
+        if(recommended.length <= 1){
+            i = 0;
+        }else{
+            i = 1;
+        }
+        while (i < recommended.length) {
+            finalArr.push(
+                <Box>
+                    <Center>
+                        <Button w="200px">{recommended[i]}</Button>
+                    </Center>
+                </Box>
+            );
+            i++;
+        }
+    
     async function loadReccommend(){
         var result = await Axios.post('http://localhost:5000/findUser', {
             user: localStorage.getItem('username'),  
         });
 
         var finalArr = []; 
-        for (var i = 0; i < result.data.recentlyViewed.length; i++) {
-            finalArr.push(result.data.recentlyViewed[i])
+        var i;
+        if(result.data.recentlyViewed.length <= 1){
+            i = 0;
+        }else{
+            i = 1;
         }
-
+        while (i < result.data.recentlyViewed.length) {
+            finalArr.push(
+                <Box>
+                    <Center>
+                        <Button w="200px">{result.data.recentlyViewed[i]}</Button>
+                    </Center>
+                </Box>
+            );
+            i++;
+        }
         setRecipeItems(finalArr)
-        console.log(recipeItems)
-
-
     }
 
     return(
@@ -49,7 +77,7 @@ function SearchRecipes() {
                 m="20px"
                 bg="white"
                 borderRadius='lg'
-                w="50%"
+                w="60%"
                 h="500px"
                 padding="20px"
                 >
@@ -85,12 +113,8 @@ function SearchRecipes() {
                                 backgroundColor: `transparent`,
                                 },
                             }}>
-                            <FormLabel>Recommended Recipes</FormLabel>
-                            {recipeItems}
-                            <Button onClick={loadReccommend}  w="200px">Recipe 1</Button>
-                            <Textarea size='lg' placeholder={recipeItems}></Textarea>
-                        
-                            
+                            <FormLabel onClick={loadReccommend}>Recommended Recipes</FormLabel>
+                            {finalArr}
                         </VStack>
                     </Box>
                 </Center>

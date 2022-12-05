@@ -157,25 +157,24 @@ export function Bookmarks() {
                 break;
             }
             temp.push( 
-                <Box w="400px" border="1px" borderRadius="lg">
+                <Box w="500px" border="1px" borderRadius="lg">
                     <HStack p={1}>
-
                         <Image m="0 0 0 10px" name={j} w="50px" h="50px" borderRadius="full" src={favoriteRecipes[j + 4]}/>
                         <VStack spacing="15px" w="90%">
-                            <Text w="300px" >{favoriteRecipes[j]}</Text>
-                            <Divider w="90%" p="1px" />
-                            <Text w="300px">Chef: {favoriteRecipes[j + 1]}</Text>
-                            <Divider w="90%" p="1px" />
-                            <Text w="300px">Description: {favoriteRecipes[j+2]}</Text>
-                            <Divider w="90%" p="1px" />
-                            <Text w="300px">Ingredients: {favoriteRecipes[j+5]}</Text>
-                            <Divider w="90%" p="1px" />
-                            <Text w="300px">Instructions: {favoriteRecipes[j+6]}</Text>
-                            <Divider w="90%" p="1px" />
-                            <HStack spacing="80px">
-                                <Text>Likes: {favoriteRecipes[j + 3]}</Text>
-                                <Text>Prep Time: {favoriteRecipes[j + 7]}</Text>
-                            </HStack>
+                            <FormLabel w="300px" >Text<Divider w="90%"/>
+                                {favoriteRecipes[j]}</FormLabel>
+                            <FormLabel w="300px" >Chef<Divider w="90%"/>
+                                {favoriteRecipes[j+1]}</FormLabel>
+                            <FormLabel w="300px" >Description<Divider w="90%"/>
+                                {favoriteRecipes[j+2]}</FormLabel>
+                            <FormLabel w="300px" >Ingredients<Divider w="90%"/>
+                                {favoriteRecipes[j+5]}</FormLabel>
+                            <FormLabel w="300px" >Instructions<Divider w="90%"/>
+                                {favoriteRecipes[j+6]}</FormLabel>
+                            <FormLabel w="300px">Likes<Divider w="90%"/>
+                                {favoriteRecipes[j+3]}</FormLabel>
+                            <FormLabel w="300px">Prep Time<Divider w="90%"/> 
+                                {favoriteRecipes[j+7]}</FormLabel>
                         </VStack>
                     </HStack>
                     <Center>
@@ -334,40 +333,39 @@ export function Bookmarks() {
     return (
     <body onLoad={findAllRecipes}>
     <ChakraProvider>
-        <Container
-        maxW='100%'
-        backgroundRepeat="no-repeat"
-        bgSize="100%"
-        backgroundImage={cookbookBackground}
-        align="center"
-        >
+    <Container borderColor="transparent" maxW='100%' h='calc(100vh)' 
+                backgroundRepeat="no-repeat" bgSize="100%" backgroundImage={cookbookBackground} align="center">
+        
             <TopNav/>
-            <Box
-                m="2%"
-                bg="white" w='45%'
-                p={12}
+            <Box m="2%"
+                bg="white" w='80%'
+                p={5}
                 borderRadius='lg' borderWidth="1 px"
                 alignContent={"center"}
                 alignItems="center">
                 <Center>
-                    <FormLabel>Favorited Recipes</FormLabel>
-                </Center>
-                <Center>
-                <VStack maxH="400px" overflowY="scroll">
-                        {stack1}
-                    </VStack>
-                </Center><br/>
-                
-                <Center>
                     <Box border="1px" borderRadius="lg">
+                        <VStack padding="10px" w="100%">
+                            <Center>
+                            <Box w="525px">Favorited Recipes</Box>
+                            <Box w="525px">Contributed Recipes</Box>
+                            </Center>
+                            <Divider/>
+                        </VStack>
                         <Center>
-                            <FormLabel m="10px 0 0 0">Contributed Recipes</FormLabel>
-                        </Center>
-                        <Center>
-                            <Divider p="5px" w="90%" />
-                        </Center>
-                        <Center>
-                            <VStack m="10px 10px 0 10px" maxH="450px" overflow="hidden" overflowY="scroll"
+                            <VStack m="10px 10px 0 10px" maxH="550px" overflow="hidden" overflowY="scroll"
+                                sx={{
+                                    '&::-webkit-scrollbar': {
+                                    width: '0px',
+                                    backgroundColor: `transparent`,
+                                    },
+                                    '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: `transparent`,
+                                    },
+                                }}>
+                                {stack1}
+                            </VStack>
+                            <VStack m="10px 10px 0 10px" maxH="550px" overflow="hidden" overflowY="scroll"
                                 sx={{
                                     '&::-webkit-scrollbar': {
                                     width: '0px',
@@ -382,9 +380,6 @@ export function Bookmarks() {
                         </Center>
                         <Center>
                             <Divider w="90%" p="5px" />
-                        </Center>
-                        <Center>
-                            <Button m="10px 5px 5px 5px" w="90%" onClick={onOpen}>Add Contribution</Button>
                         </Center>
                     </Box>
                 </Center><br/>
@@ -418,33 +413,3 @@ export function Bookmarks() {
 }
 
 export default Bookmarks;
-
-/*
-        contributedRecipes = [];
-        for(var i = 0; i < result2.data.personalRecipes.length; i++){
-            let temp = [];
-            //img
-            temp.push(result2.data.personalRecipes[i][4]);
-            //name
-            temp.push(result2.data.personalRecipes[i][3]);
-            //owner
-            temp.push(result2.data.personalRecipes[i][2]);
-            //favorites
-            temp.push(result2.data.personalRecipes[i][1]);
-            //description
-            temp.push(result2.data.personalRecipes[i][6]);
-            //instructions
-            temp.push(result2.data.personalRecipes[i][5]);
-            //ingredients
-            temp.push(result2.data.personalRecipes[i][7]);
-            //id
-            temp.push(result2.data.personalRecipes[i][0]);
-            //
-            temp.push(result2.data.personalRecipes[i][8])
-            
-            contributedRecipes.push(temp);
-        }
-        localStorage.setItem('ranking',result2.data.ranking);
-        localStorage.setItem('contributedRecipes',contributedRecipes);
-
-*/

@@ -102,7 +102,7 @@ export const FindByAllergens = () => {
                         variant="flushed"
                         onChange={handleChange('allergens')}
                     />
-                    <Button w="200px" onClick={sendRequest} id="allergyButton">Search by allergen</Button>
+                    <Button w="200px" onClick={sendRequest} id="allergyButton">Search by Allergen</Button>
                 </Center>
                 </Box> 
                 <Box padding="5px">

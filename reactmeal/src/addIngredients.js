@@ -84,7 +84,7 @@ function Pantry () {
 	return (<> 
 		<Container maxW='100%'>
 			<Center>
-				<Box w='60%' borderRadius="lg" border='1px' p={1}>
+				<Box w='60%' borderRadius="lg" p={1} bg="white" m="2%">
 					<Box p={1}>
 						<Center>
 							<FormLabel m="0 0 10px 0">My Pantry</FormLabel>
