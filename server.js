@@ -886,6 +886,9 @@ app.post('/addRecipes', async (req,res) => {
     if (difficultyInt < 1) {
         difficultyInt = 1
     }
+    if (difficultyInt == null || difficultyInt == undefined) {
+        difficultyInt = 1
+    }
     let temp = req.body.ingredients.split(",");
 
     const recipe = {
