@@ -848,7 +848,7 @@ app.post('/addRecipes', async (req,res) => {
         console.log("no categories")
     }
     else {
-        console.log("there be categories yargh")
+//        console.log("there be categories yargh")
         console.log(req.body.categories)
         temporaryCategoryArray = req.body.categories.split(",")
         for (var i = 0; i < req.body.categories.length; i++) {
@@ -931,7 +931,7 @@ app.post('/addRecipes', async (req,res) => {
             var result = await client.db("TheMealMine").collection("Categories").findOne(categoryForm);
         
             if (result == null) {
-                console.log("adding category")
+//                console.log("adding category")
                 result = await client.db("TheMealMine").collection("Categories").insertOne(newCategoryForm);
             }
         
@@ -939,7 +939,7 @@ app.post('/addRecipes', async (req,res) => {
     
                 result = await client.db("TheMealMine").collection("Categories").findOne(categoryCheckForm);
                 if (result == null) {
-                    console.log("adding the recipe to the category")
+//                    console.log("adding the recipe to the category")
                     var recipeUpdate = {$push:{"recipes": req.body.name}};
                     result = await client.db("TheMealMine").collection("Categories").updateOne(categoryForm,recipeUpdate);
                 }
@@ -952,15 +952,14 @@ app.post('/addRecipes', async (req,res) => {
         
             result = await client.db("TheMealMine").collection("Recipes").findOne(form);
             if (result == null) {
-                console.log("category is not there")
+//                console.log("category is not there")
                 result = await client.db("TheMealMine").collection("Recipes").updateOne(recipeForm,update);
-                console.log("now it is")
+//                console.log("now it is")
             }
         
             else {
-        
-                console.log(result.categories)
-                console.log("category is added")
+//                console.log(result.categories)
+                console.log("category is there")
         
             }
             
