@@ -49,7 +49,7 @@ export function Login()  {
 			localStorage.setItem('notifications', result.data.notifications);
 			localStorage.setItem('requestedBy', result.data.requestedBy);
 
-			window.location = "/home";
+			window.location = "/bookmarks";
 		} 
 	}
 
